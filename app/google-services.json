@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "111573005809",
+    "firebase_url": "https://parle-12cb8.firebaseio.com",
+    "project_id": "parle-12cb8",
+    "storage_bucket": "parle-12cb8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111573005809:android:e9c54e4e6bd023dc",
+        "android_client_info": {
+          "package_name": "cs48.project.com.parl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111573005809-aokkcl4svjbt8g13f1832r2rdsmvuflh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cs48.project.com.parl",
+            "certificate_hash": "bb6a0577898621d6924bc9827d5469ee9c183c54"
+          }
+        },
+        {
+          "client_id": "111573005809-u1vv0928012kc8l9nr1j28996oek0f8b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRTpn5aZWmDJw2zAzE8xphHyAs_RNsSC0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111573005809-u1vv0928012kc8l9nr1j28996oek0f8b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
