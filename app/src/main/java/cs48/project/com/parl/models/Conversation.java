@@ -1,4 +1,4 @@
-package cs48.project.com.parl;
+package cs48.project.com.parl.models;
 
 /**
  * Created by yaoyuan on 4/15/17.
@@ -26,6 +26,7 @@ public class Conversation {
     public String getLastMessage(){
         return lastMessage;
     }
+
     public void setLastMessage(String lastMessage){
         this.lastMessage = lastMessage;
     }
@@ -33,6 +34,7 @@ public class Conversation {
     public String getTime(){
         return time;
     }
+
     public void setTime(String time){
         this.time = time;
     }

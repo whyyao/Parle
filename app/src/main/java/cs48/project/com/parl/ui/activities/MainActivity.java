@@ -1,10 +1,14 @@
-package cs48.project.com.parl;
+package cs48.project.com.parl.ui.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+
+import cs48.project.com.parl.R;
+import cs48.project.com.parl.models.Conversation;
+import cs48.project.com.parl.ui.adapters.ConversationAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

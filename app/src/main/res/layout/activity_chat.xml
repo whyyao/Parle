@@ -10,7 +10,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="cs48.project.com.parl.MainActivity">
+    tools:context="cs48.project.com.parl.ui.activities.MainActivity">
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"

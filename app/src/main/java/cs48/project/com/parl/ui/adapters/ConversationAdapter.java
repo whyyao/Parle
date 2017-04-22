@@ -1,16 +1,18 @@
-package cs48.project.com.parl;
+package cs48.project.com.parl.ui.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.view.menu.ListMenuItemView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
 
 import java.util.List;
+
+import cs48.project.com.parl.R;
+import cs48.project.com.parl.models.Conversation;
+import cs48.project.com.parl.ui.activities.ChatActivity;
 
 /**
  * Created by yaoyuan on 4/15/17.
