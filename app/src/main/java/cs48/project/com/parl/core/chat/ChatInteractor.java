@@ -2,14 +2,18 @@ package cs48.project.com.parl.core.chat;
 
 import android.content.Context;
 import android.util.Log;
-import cs48.project.com.parl.utils.Constants;
-import cs48.project.com.parl.models.Chat;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import cs48.project.com.parl.fcm.FcmNotificationBuilder;
+import cs48.project.com.parl.models.Chat;
+import cs48.project.com.parl.utils.Constants;
+import cs48.project.com.parl.utils.SharedPrefUtil;
 
 /**
  * Created by yaoyuan on 4/22/17.

@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import cs48.project.com.parl.R;
+import cs48.project.com.parl.core.logout.LogoutContract;
+import cs48.project.com.parl.core.logout.LogoutPresenter;
+import cs48.project.com.parl.ui.adapters.ConvoListingPagerAdapter;
 
 public class ConvoListingActivity extends AppCompatActivity implements LogoutContract.View {
     private Toolbar mToolbar;
@@ -63,7 +66,7 @@ public class ConvoListingActivity extends AppCompatActivity implements LogoutCon
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_user_listing, menu);
+        getMenuInflater().inflate(R.menu.menu_convo_listing, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

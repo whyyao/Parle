@@ -2,18 +2,21 @@ package cs48.project.com.parl.ui.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+
+import cs48.project.com.parl.ui.fragments.ConvoFragment;
 
 /**
  * Created by yaoyuan on 4/23/17.
  */
 
-public class ConvoListingAdapter {
+public class ConvoListingPagerAdapter extends FragmentPagerAdapter{
     private static final Fragment[] sFragments = new Fragment[]{/*UsersFragment.newInstance(UsersFragment.TYPE_CHATS),*/
-            UsersFragment.newInstance(UsersFragment.TYPE_ALL)};
+            ConvoFragment.newInstance(ConvoFragment.TYPE_ALL)};
     private static final String[] sTitles = new String[]{/*"Chats",*/
             "All Users"};
 
-    public UserListingPagerAdapter(FragmentManager fm) {
+    public ConvoListingPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
