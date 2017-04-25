@@ -14,7 +14,7 @@ public class Chat {
     public long timestamp;
 
     public Chat(){
-
+//.
     }
 
     public Chat(String sender, String receiver, String senderUid, String receiverUid, String message, long timestamp){
