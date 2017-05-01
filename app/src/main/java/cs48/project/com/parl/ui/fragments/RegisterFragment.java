@@ -38,7 +38,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private RegisterPresenter mRegisterPresenter;
     private AddUserPresenter mAddUserPresenter;
 
-    private EditText mETxtEmail, mETxtPassword;
+    private EditText mETxtEmail, mETxtPassword, mETxtUsername;
     private Button mBtnRegister;
 
     private ProgressDialog mProgressDialog;
@@ -61,6 +61,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private void bindViews(View view) {
         mETxtEmail = (EditText) view.findViewById(R.id.edit_text_email_id);
         mETxtPassword = (EditText) view.findViewById(R.id.edit_text_password);
+        mETxtUsername = (EditText) view.findViewById(R.id.edit_text_username);
         mBtnRegister = (Button) view.findViewById(R.id.button_register);
     }
 
@@ -96,7 +97,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private void onRegister(View view) {
         String emailId = mETxtEmail.getText().toString();
         String password = mETxtPassword.getText().toString();
-
         mRegisterPresenter.register(getActivity(), emailId, password);
         mProgressDialog.show();
     }
@@ -105,7 +105,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     public void onRegistrationSuccess(FirebaseUser firebaseUser) {
         mProgressDialog.setMessage(getString(R.string.adding_user_to_db));
         Toast.makeText(getActivity(), "Registration Successful!", Toast.LENGTH_SHORT).show();
-        mAddUserPresenter.addUser(getActivity().getApplicationContext(), firebaseUser);
+        String username = mETxtUsername.getText().toString();
+        mAddUserPresenter.addUser(getActivity().getApplicationContext(), firebaseUser, username);
     }
 
     @Override
