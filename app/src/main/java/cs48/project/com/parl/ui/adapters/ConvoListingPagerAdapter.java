@@ -4,17 +4,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import cs48.project.com.parl.ui.fragments.ConvoFragment;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yaoyuan on 4/23/17.
  */
 
 public class ConvoListingPagerAdapter extends FragmentPagerAdapter{
-    private static final Fragment[] sFragments = new Fragment[]{/*UsersFragment.newInstance(UsersFragment.TYPE_CHATS),*/
-            ConvoFragment.newInstance(ConvoFragment.TYPE_ALL)};
-    private static final String[] sTitles = new String[]{/*"Chats",*/
-            "All Users"};
+    private static final List<Fragment> sFragments = new ArrayList<>();
+    private static final List<String> sTitles = new ArrayList<>();
 
     public ConvoListingPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -22,16 +21,24 @@ public class ConvoListingPagerAdapter extends FragmentPagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
-        return sFragments[position];
+        return sFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return sFragments.length;
+        return sFragments.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return sTitles[position];
+        return sTitles.get(position);
     }
+
+    public void addFrag(Fragment fragment, String title){
+        sFragments.add(fragment);
+        sTitles.add(title);
+    }
+
+
 }
+
