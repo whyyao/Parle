@@ -53,17 +53,17 @@ public class ConvoListingActivity extends AppCompatActivity implements LogoutCon
     }
 
     private void init() {
-        // set the toolbar
+        //set the toolbar
         setSupportActionBar(mToolbar);
 
-        // set the view pager adapter
+        //set the view pager adapter
         ConvoListingPagerAdapter convoListingPagerAdapter = new ConvoListingPagerAdapter(getSupportFragmentManager());
         mViewPagerUserListing.setAdapter(convoListingPagerAdapter);
 
         //add
         setupViewPager(mViewPagerUserListing);
 
-        // attach tab layout with view pager
+        //attach tab layout with view pager
         mTabLayoutUserListing.setupWithViewPager(mViewPagerUserListing);
 
         mLogoutPresenter = new LogoutPresenter(this);

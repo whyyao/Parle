@@ -10,9 +10,10 @@ import android.support.v7.widget.Toolbar;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.ui.fragments.RegisterFragment;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity{
 
     private Toolbar mToolbar;
+
 
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, RegisterActivity.class);
@@ -42,4 +43,5 @@ public class RegisterActivity extends AppCompatActivity {
                 RegisterFragment.class.getSimpleName());
         fragmentTransaction.commit();
     }
+
 }

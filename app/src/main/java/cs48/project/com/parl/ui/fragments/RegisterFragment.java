@@ -3,20 +3,19 @@ package cs48.project.com.parl.ui.fragments;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Spinner;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 
 import cs48.project.com.parl.R;
@@ -25,6 +24,7 @@ import cs48.project.com.parl.core.registration.RegisterPresenter;
 import cs48.project.com.parl.core.users.add.AddUserContract;
 import cs48.project.com.parl.core.users.add.AddUserPresenter;
 import cs48.project.com.parl.ui.activities.ConvoListingActivity;
+import cs48.project.com.parl.ui.activities.RegisterActivity;
 
 //import cs48.project.com.parl.R;
 
@@ -36,7 +36,7 @@ import cs48.project.com.parl.ui.activities.ConvoListingActivity;
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegisterFragment extends Fragment implements View.OnClickListener, RegisterContract.View, AddUserContract.View{
+public class RegisterFragment extends Fragment implements View.OnClickListener, RegisterContract.View, AddUserContract.View, AdapterView.OnItemSelectedListener {
     private static final String TAG = RegisterFragment.class.getSimpleName();
 
     private RegisterPresenter mRegisterPresenter;
@@ -46,6 +46,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private Button mBtnRegister;
 
     private ProgressDialog mProgressDialog;
+
+    private Spinner spinner;
+    private static final String[] paths = {"Arabic", "Bengali", "Chinese (Simplified)", "Chinese (Traditional)", "English", "French", "Hindi", "Italian", "Japanese", "Portuguese", "Russian", "Spanish"};
+    private String language;
 
     public static RegisterFragment newInstance() {
         Bundle args = new Bundle();
@@ -67,6 +71,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mETxtPassword = (EditText) view.findViewById(R.id.edit_text_password);
         mETxtUsername = (EditText) view.findViewById(R.id.edit_text_username);
         mBtnRegister = (Button) view.findViewById(R.id.button_register);
+        spinner = (Spinner) view.findViewById(R.id.spinner);
     }
 
     @Override
@@ -85,6 +90,60 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mProgressDialog.setIndeterminate(true);
 
         mBtnRegister.setOnClickListener(this);
+
+        //text box is filled with each element in the array
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, paths);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch(position) {
+            case 0:
+                language = "ar";
+                break;
+            case 1:
+                language = "bn";
+                break;
+            case 2:
+                language = "zh-CN";
+                break;
+            case 3:
+                language = "zh-TW";
+                break;
+            case 4:
+                language = "en";
+                break;
+            case 5:
+                language = "fr";
+                break;
+            case 6:
+                language = "hi";
+                break;
+            case 7:
+                language = "it";
+                break;
+            case 8:
+                language = "ja";
+                break;
+            case 9:
+                language = "pt";
+                break;
+            case 10:
+                language = "ru";
+                break;
+            case 11:
+                language = "es";
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        //do nothing
     }
 
     @Override
@@ -94,9 +153,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         switch (viewId) {
             case R.id.button_register:
                 onRegister(view);
-                break;
-            case R.id.button_google_sign_in:
-                //googleSignIn();
                 break;
         }
     }
@@ -113,7 +169,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mProgressDialog.setMessage(getString(R.string.adding_user_to_db));
         Toast.makeText(getActivity(), "Registration Successful!", Toast.LENGTH_SHORT).show();
         String username = mETxtUsername.getText().toString();
-        mAddUserPresenter.addUser(getActivity().getApplicationContext(), firebaseUser, username);
+        mAddUserPresenter.addUser(getActivity().getApplicationContext(), firebaseUser, username, language);
     }
 
     @Override
@@ -137,5 +193,4 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mProgressDialog.dismiss();
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
-
 }

@@ -27,6 +27,18 @@
         android:hint="@string/password"
         android:inputType="textPassword" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Language"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"/>
+
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/space_avg" />
