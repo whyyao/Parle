@@ -3,6 +3,7 @@ package cs48.project.com.parl.ui.fragments;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -33,7 +36,7 @@ import cs48.project.com.parl.ui.activities.ConvoListingActivity;
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegisterFragment extends Fragment implements View.OnClickListener, RegisterContract.View, AddUserContract.View, GoogleApiClient.OnConnectionFailedListener{
+public class RegisterFragment extends Fragment implements View.OnClickListener, RegisterContract.View, AddUserContract.View{
     private static final String TAG = RegisterFragment.class.getSimpleName();
 
     private RegisterPresenter mRegisterPresenter;
@@ -41,7 +44,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
 
     private EditText mETxtEmail, mETxtPassword, mETxtUsername;
     private Button mBtnRegister;
-    private Button mBtnGoogleSignin;
 
     private ProgressDialog mProgressDialog;
 
@@ -83,8 +85,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mProgressDialog.setIndeterminate(true);
 
         mBtnRegister.setOnClickListener(this);
-        mBtnGoogleSignin.findViewById(R.id.button_google_sign_in).setOnClickListener(this);
-
     }
 
     @Override
@@ -94,6 +94,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         switch (viewId) {
             case R.id.button_register:
                 onRegister(view);
+                break;
+            case R.id.button_google_sign_in:
+                //googleSignIn();
                 break;
         }
     }

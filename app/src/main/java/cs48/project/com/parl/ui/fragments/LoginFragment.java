@@ -73,12 +73,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
         mBtnLogin.setOnClickListener(this);
         mBtnRegister.setOnClickListener(this);
 
-        setDummyCredentials();
-    }
-
-    private void setDummyCredentials() {
-        mETxtEmail.setText("test@test.com");
-        mETxtPassword.setText("123456");
     }
 
     @Override
