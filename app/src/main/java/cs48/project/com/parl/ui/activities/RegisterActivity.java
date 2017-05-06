@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.Spinner;
-import android.widget.ArrayAdapter;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.ui.fragments.RegisterFragment;
@@ -15,8 +13,7 @@ import cs48.project.com.parl.ui.fragments.RegisterFragment;
 public class RegisterActivity extends AppCompatActivity{
 
     private Toolbar mToolbar;
-    private Spinner spinner;
-    private static final String[]paths = {"item 1", "item 2", "item 3"};
+
 
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, RegisterActivity.class);
@@ -29,15 +26,6 @@ public class RegisterActivity extends AppCompatActivity{
         setContentView(R.layout.activity_register);
         bindViews();
         init();
-
-        //for language spinner
-        spinner = (Spinner)findViewById(R.id.spinner);
-        ArrayAdapter<String>adapter = new ArrayAdapter<String>(RegisterActivity.this,
-                android.R.layout.simple_spinner_item,paths);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
     }
 
     private void bindViews() {
@@ -55,5 +43,5 @@ public class RegisterActivity extends AppCompatActivity{
                 RegisterFragment.class.getSimpleName());
         fragmentTransaction.commit();
     }
-}
 
+}

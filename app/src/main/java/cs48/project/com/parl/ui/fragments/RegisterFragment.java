@@ -9,9 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -21,6 +24,7 @@ import cs48.project.com.parl.core.registration.RegisterPresenter;
 import cs48.project.com.parl.core.users.add.AddUserContract;
 import cs48.project.com.parl.core.users.add.AddUserPresenter;
 import cs48.project.com.parl.ui.activities.ConvoListingActivity;
+import cs48.project.com.parl.ui.activities.RegisterActivity;
 
 //import cs48.project.com.parl.R;
 
@@ -32,16 +36,20 @@ import cs48.project.com.parl.ui.activities.ConvoListingActivity;
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegisterFragment extends Fragment implements View.OnClickListener, RegisterContract.View, AddUserContract.View {
+public class RegisterFragment extends Fragment implements View.OnClickListener, RegisterContract.View, AddUserContract.View, AdapterView.OnItemSelectedListener {
     private static final String TAG = RegisterFragment.class.getSimpleName();
 
     private RegisterPresenter mRegisterPresenter;
     private AddUserPresenter mAddUserPresenter;
 
-    private EditText mETxtEmail, mETxtPassword, mETxtUsername, mEtxtLanguage;
+    private EditText mETxtEmail, mETxtPassword, mETxtUsername;
     private Button mBtnRegister;
 
     private ProgressDialog mProgressDialog;
+
+    private Spinner spinner;
+    private static final String[] paths = {"Chinese Simplified", "English", "Spanish"};
+    private String language;
 
     public static RegisterFragment newInstance() {
         Bundle args = new Bundle();
@@ -62,8 +70,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mETxtEmail = (EditText) view.findViewById(R.id.edit_text_email_id);
         mETxtPassword = (EditText) view.findViewById(R.id.edit_text_password);
         mETxtUsername = (EditText) view.findViewById(R.id.edit_text_username);
-        mEtxtLanguage  = (EditText)  view.findViewById(R.id.edit_text_language);
         mBtnRegister = (Button) view.findViewById(R.id.button_register);
+        spinner = (Spinner) view.findViewById(R.id.spinner);
     }
 
     @Override
@@ -82,6 +90,33 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mProgressDialog.setIndeterminate(true);
 
         mBtnRegister.setOnClickListener(this);
+
+        //text box is filled with each element in the array
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, paths);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch(position) {
+            case 0:
+                language = "zh-CHS";
+                break;
+            case 1:
+                language = "en";
+                break;
+            case 2:
+                language = "es";
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        //do nothing
     }
 
     @Override
@@ -107,7 +142,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mProgressDialog.setMessage(getString(R.string.adding_user_to_db));
         Toast.makeText(getActivity(), "Registration Successful!", Toast.LENGTH_SHORT).show();
         String username = mETxtUsername.getText().toString();
-        String language = mEtxtLanguage.getText().toString();
         mAddUserPresenter.addUser(getActivity().getApplicationContext(), firebaseUser, username, language);
     }
 
