@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="cs48.project.com.parl.ui.fragments.SettingFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your Username is"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:id="@+id/setting_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sam"
+        android:textSize="32dp"/>
+
+</LinearLayout>

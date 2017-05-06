@@ -49,6 +49,10 @@ public class ConvoFragment extends Fragment implements GetUsersContract.View, It
         return fragment;
     }
 
+    public ConvoFragment(){
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -100,7 +104,7 @@ public class ConvoFragment extends Fragment implements GetUsersContract.View, It
     @Override
     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
         ChatActivity.startActivity(getActivity(),
-                mUserListingRecyclerAdapter.getUser(position).email,
+                mUserListingRecyclerAdapter.getUser(position).userName,
                 mUserListingRecyclerAdapter.getUser(position).uid,
                 mUserListingRecyclerAdapter.getUser(position).firebaseToken);
     }

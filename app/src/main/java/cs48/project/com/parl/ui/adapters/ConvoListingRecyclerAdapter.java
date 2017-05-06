@@ -37,9 +37,9 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
     public void onBindViewHolder(ViewHolder holder, int position) {
         User user = mUsers.get(position);
 
-        String alphabet = user.email.substring(0, 1);
+        String alphabet = user.userName.substring(0, 1);
 
-        holder.txtUsername.setText(user.email);
+        holder.txtUsername.setText(user.userName);
         holder.txtUserAlphabet.setText(alphabet);
     }
 
