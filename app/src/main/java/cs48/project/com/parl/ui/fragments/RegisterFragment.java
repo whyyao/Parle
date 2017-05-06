@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 
 import cs48.project.com.parl.R;
@@ -32,7 +33,7 @@ import cs48.project.com.parl.ui.activities.ConvoListingActivity;
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegisterFragment extends Fragment implements View.OnClickListener, RegisterContract.View, AddUserContract.View {
+public class RegisterFragment extends Fragment implements View.OnClickListener, RegisterContract.View, AddUserContract.View, GoogleApiClient.OnConnectionFailedListener{
     private static final String TAG = RegisterFragment.class.getSimpleName();
 
     private RegisterPresenter mRegisterPresenter;
@@ -40,6 +41,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
 
     private EditText mETxtEmail, mETxtPassword, mETxtUsername;
     private Button mBtnRegister;
+    private Button mBtnGoogleSignin;
 
     private ProgressDialog mProgressDialog;
 
@@ -81,6 +83,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mProgressDialog.setIndeterminate(true);
 
         mBtnRegister.setOnClickListener(this);
+        mBtnGoogleSignin.findViewById(R.id.button_google_sign_in).setOnClickListener(this);
+
     }
 
     @Override
@@ -130,4 +134,5 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mProgressDialog.dismiss();
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
 }
