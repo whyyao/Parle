@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import cs48.project.com.parl.ParleMainApp;
 import cs48.project.com.parl.R;
@@ -63,6 +64,7 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        Log.d("Reach","pause");
         super.onPause();
         ParleMainApp.setChatActivityOpen(false);
     }

@@ -17,6 +17,8 @@ import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.logout.LogoutContract;
 import cs48.project.com.parl.core.logout.LogoutPresenter;
 import cs48.project.com.parl.ui.adapters.ConvoListingPagerAdapter;
+import cs48.project.com.parl.ui.fragments.ConvoFragment;
+import cs48.project.com.parl.ui.fragments.SettingFragment;
 
 public class ConvoListingActivity extends AppCompatActivity implements LogoutContract.View {
     private Toolbar mToolbar;
@@ -58,11 +60,22 @@ public class ConvoListingActivity extends AppCompatActivity implements LogoutCon
         ConvoListingPagerAdapter convoListingPagerAdapter = new ConvoListingPagerAdapter(getSupportFragmentManager());
         mViewPagerUserListing.setAdapter(convoListingPagerAdapter);
 
+        //add
+        setupViewPager(mViewPagerUserListing);
+
         // attach tab layout with view pager
         mTabLayoutUserListing.setupWithViewPager(mViewPagerUserListing);
 
         mLogoutPresenter = new LogoutPresenter(this);
     }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ConvoListingPagerAdapter adapter = new ConvoListingPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new ConvoFragment().newInstance(ConvoFragment.TYPE_ALL), "All Users");
+        adapter.addFrag(new SettingFragment(), "SETTING");
+        viewPager.setAdapter(adapter);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

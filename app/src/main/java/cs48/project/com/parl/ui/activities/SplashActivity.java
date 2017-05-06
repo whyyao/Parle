@@ -52,6 +52,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mHandler.postDelayed(mRunnable, SPLASH_TIME_MS);
+        mHandler.postDelayed(mRunnable, SPLASH_TIME_MS) ;
     }*/
 }

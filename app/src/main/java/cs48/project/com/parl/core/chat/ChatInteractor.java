@@ -115,6 +115,7 @@ public class ChatInteractor implements ChatContract.Interactor {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Chat chat = dataSnapshot.getValue(Chat.class);
+                            Log.e(TAG,chat.message);
                             mOnGetMessagesListener.onGetMessagesSuccess(chat);
                         }
 
@@ -147,6 +148,7 @@ public class ChatInteractor implements ChatContract.Interactor {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Chat chat = dataSnapshot.getValue(Chat.class);
+                            Log.e(TAG,chat.message);
                             mOnGetMessagesListener.onGetMessagesSuccess(chat);
                         }
 
