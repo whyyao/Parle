@@ -26,12 +26,24 @@
         android:hint="@string/password"
         android:inputType="textPassword" />
 
-    <EditText
-        android:id="@+id/edit_text_language"
+    <!--<EditText-->
+    <!--android:id="@+id/edit_text_language"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:hint="Language"-->
+    <!--android:inputType="textLanguage" />-->
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Language"
-        android:inputType="textLanguage" />
+        android:hint="Language"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"/>
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
