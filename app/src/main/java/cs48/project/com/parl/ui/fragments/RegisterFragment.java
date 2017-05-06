@@ -194,4 +194,3 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }
-
