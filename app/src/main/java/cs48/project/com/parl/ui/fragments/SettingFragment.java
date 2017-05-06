@@ -56,6 +56,17 @@ public class SettingFragment extends Fragment {
         usernameTextView = (TextView) view.findViewById(R.id.setting_username);
     }
 
+
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        init();
+    }
+
+    private void init(){
+        setUsernameTextView();
+    }
+
+
     private void setUsernameTextView(){
         databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -70,16 +81,6 @@ public class SettingFragment extends Fragment {
 
             }
         });
-
-    }
-
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        init();
-    }
-
-    private void init(){
-        setUsernameTextView();
 
     }
 
