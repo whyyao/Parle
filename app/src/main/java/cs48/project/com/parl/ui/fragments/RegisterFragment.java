@@ -42,7 +42,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private RegisterPresenter mRegisterPresenter;
     private AddUserPresenter mAddUserPresenter;
 
-    private EditText mETxtEmail, mETxtPassword, mETxtUsername;
+    private EditText mETxtEmail, mETxtPassword, mETxtVerify,  mETxtUsername;
     private Button mBtnRegister;
 
     private ProgressDialog mProgressDialog;
@@ -69,6 +69,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private void bindViews(View view) {
         mETxtEmail = (EditText) view.findViewById(R.id.edit_text_email_id);
         mETxtPassword = (EditText) view.findViewById(R.id.edit_text_password);
+        mETxtVerify = (EditText) view.findViewById(R.id.edit_text_verify);
         mETxtUsername = (EditText) view.findViewById(R.id.edit_text_username);
         mBtnRegister = (Button) view.findViewById(R.id.button_register);
         spinner = (Spinner) view.findViewById(R.id.spinner);
@@ -160,8 +161,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private void onRegister(View view) {
         String emailId = mETxtEmail.getText().toString();
         String password = mETxtPassword.getText().toString();
-        mRegisterPresenter.register(getActivity(), emailId, password);
-        mProgressDialog.show();
+        String verify = mETxtVerify.getText().toString();
+        if(!password.equals(verify)) {
+            Toast.makeText(getActivity(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+        } else {
+            mRegisterPresenter.register(getActivity(), emailId, password);
+            mProgressDialog.show();
+        }
     }
 
     @Override

@@ -72,6 +72,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
 
         mBtnLogin.setOnClickListener(this);
         mBtnRegister.setOnClickListener(this);
+    }
+
+
 
     }
 
