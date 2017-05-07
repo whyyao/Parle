@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.ui.fragments.LoginFragment;
 
+
 public class LoginActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 

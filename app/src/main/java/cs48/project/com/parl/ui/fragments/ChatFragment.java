@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,19 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.cloud.translate.Detection;
+import com.google.cloud.translate.Language;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.Translate.LanguageListOption;
+import com.google.cloud.translate.Translate.TranslateOption;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
+
+/*
+import com.google.api.services.translate.Translate;
+import com.google.api.services.translate.model.TranslationsListResponse;
+import com.google.api.services.translate.model.TranslationsResource;*/
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -29,14 +43,6 @@ import cs48.project.com.parl.models.Chat;
 import cs48.project.com.parl.ui.adapters.ChatRecyclerAdapter;
 import cs48.project.com.parl.utils.Constants;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ChatFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ChatFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ChatFragment extends Fragment implements ChatContract.View, TextView.OnEditorActionListener {
     private RecyclerView mRecyclerViewChat;
     private EditText mETxtMessage;
@@ -113,7 +119,13 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     }
 
     private void sendMessage() {
+        String userLang = "en";
         String message = mETxtMessage.getText().toString();
+
+        Translator myTranslator = new Translator();
+        String translatedMessage = myTranslator.startThread(message,userLang);
+
+        System.out.println(translatedMessage + "This is the translated message");
         String receiver = getArguments().getString(Constants.ARG_RECEIVER);
         String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
         String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -124,6 +136,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
                 senderUid,
                 receiverUid,
                 message,
+                translatedMessage,
                 System.currentTimeMillis());
         mChatPresenter.sendMessage(getActivity().getApplicationContext(),
                 chat,
