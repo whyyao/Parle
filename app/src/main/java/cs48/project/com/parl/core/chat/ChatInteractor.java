@@ -2,6 +2,7 @@ package cs48.project.com.parl.core.chat;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -12,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import cs48.project.com.parl.fcm.FcmNotificationBuilder;
 import cs48.project.com.parl.models.Chat;
+import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.utils.Constants;
 import cs48.project.com.parl.utils.SharedPrefUtil;
 
@@ -24,7 +26,8 @@ public class ChatInteractor implements ChatContract.Interactor {
 
     private ChatContract.OnSendMessageListener mOnSendMessageListener;
     private ChatContract.OnGetMessagesListener mOnGetMessagesListener;
-
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    String username;
 
     //CONSTRUCTORS
     public ChatInteractor(ChatContract.OnSendMessageListener onSendMessageListener) {
@@ -49,7 +52,22 @@ public class ChatInteractor implements ChatContract.Interactor {
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
+        databaseReference.child("users").child(chat.senderUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                username = user.userName;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         databaseReference.child(Constants.ARG_CHAT_ROOMS).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(room_type_1)) {
@@ -63,12 +81,12 @@ public class ChatInteractor implements ChatContract.Interactor {
                     databaseReference.child(Constants.ARG_CHAT_ROOMS).child(room_type_1).child(String.valueOf(chat.timestamp)).setValue(chat);
                     getMessageFromFirebaseUser(chat.senderUid, chat.receiverUid);
                 }
+
                 // send push notification to the receiver
-                sendPushNotificationToReceiver(chat.sender,
-                        chat.message,
-                        chat.senderUid,
-                        new SharedPrefUtil(context).getString(Constants.ARG_FIREBASE_TOKEN),//only send push notification if allowed
-                        receiverFirebaseToken);
+                sendPushNotificationToReceiver(username, chat.message, chat.senderUid,
+                                                new SharedPrefUtil(context).getString(Constants.ARG_FIREBASE_TOKEN),
+                                                //only send push notification if allowed
+                                                receiverFirebaseToken);
                 mOnSendMessageListener.onSendMessageSuccess();
             }
 
@@ -80,11 +98,10 @@ public class ChatInteractor implements ChatContract.Interactor {
         });
     }
 
-    private void sendPushNotificationToReceiver(String username,
-                                                String message,
-                                                String uid,
-                                                String firebaseToken,
-                                                String receiverFirebaseToken) {
+    private void sendPushNotificationToReceiver(String username, String message, String uid, String firebaseToken,
+                                                String receiverFirebaseToken)
+    {
+
         FcmNotificationBuilder.initialize()
                 .title(username)
                 .message(message)
