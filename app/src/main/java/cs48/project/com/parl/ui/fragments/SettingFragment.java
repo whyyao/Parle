@@ -19,6 +19,7 @@ import cs48.project.com.parl.R;
 import cs48.project.com.parl.models.User;
 
 import static cs48.project.com.parl.R.string.username;
+import static cs48.project.com.parl.utils.Constants.convertFromAcronym;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +31,7 @@ import static cs48.project.com.parl.R.string.username;
  */
 public class SettingFragment extends Fragment {
     private TextView usernameTextView;
+    private TextView languageTextView;
     private String mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -54,6 +56,7 @@ public class SettingFragment extends Fragment {
 
     private void bindViews(View view) {
         usernameTextView = (TextView) view.findViewById(R.id.setting_username);
+        languageTextView = (TextView) view.findViewById(R.id.setting_language);
     }
 
 
@@ -64,6 +67,7 @@ public class SettingFragment extends Fragment {
 
     private void init(){
         setUsernameTextView();
+        setLanguageTextView();
     }
 
 
@@ -81,7 +85,23 @@ public class SettingFragment extends Fragment {
 
             }
         });
+    }
 
+
+    private void setLanguageTextView(){
+        databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                String language = user.language;
+                languageTextView.setText(convertFromAcronym(language));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }
