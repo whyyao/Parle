@@ -5,22 +5,12 @@ package cs48.project.com.parl.models;
  */
 
 public class Conversation {
-    private String name;
     private String lastMessage;
-    private String time;
+    private long time;
 
-    public Conversation(String name, String lastMessage, String time){
-        this.name = name;
+    public Conversation(String lastMessage, long time){
         this.lastMessage = lastMessage;
         this.time = time;
-    }
-
-    public String getName(){
-        return name;
-    }
-
-    public void setName(String name){
-        this.name = name;
     }
 
     public String getLastMessage(){
@@ -31,11 +21,11 @@ public class Conversation {
         this.lastMessage = lastMessage;
     }
 
-    public String getTime(){
+    public long getTime(){
         return time;
     }
 
-    public void setTime(String time){
+    public void setTime(long time){
         this.time = time;
     }
 
