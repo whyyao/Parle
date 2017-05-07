@@ -111,6 +111,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     @Override
     public void onLoginFailure(String message) {
         mProgressDialog.dismiss();
-        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Error: Incorrect email or password", Toast.LENGTH_SHORT).show();
     }
 }
