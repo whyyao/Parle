@@ -38,14 +38,16 @@ import static cs48.project.com.parl.utils.Constants.convertFromAcronym;
  * Use the {@link SettingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingFragment extends Fragment  implements LogoutContract.View{
+public class SettingFragment extends Fragment  implements View.OnClickListener, LogoutContract.View{
     private TextView usernameTextView;
     private TextView languageTextView;
     private String mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private LogoutPresenter mLogoutPresenter;
+    private Button mBtnLogout;
 
-    public SettingFragment() {
+
+    public SettingFragment () {
         // Required empty public constructor
     }
 
@@ -53,19 +55,6 @@ public class SettingFragment extends Fragment  implements LogoutContract.View{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Button logoutButton = (Button) findViewById(R.id.logout);
-
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                int viewId = view.getId();
-
-                switch (viewId) {
-                    case R.id.logout:
-                        logout();
-                        break;
-                }
-            }
-        });
     }
 
     @Override
@@ -80,6 +69,8 @@ public class SettingFragment extends Fragment  implements LogoutContract.View{
     private void bindViews(View view) {
         usernameTextView = (TextView) view.findViewById(R.id.setting_username);
         languageTextView = (TextView) view.findViewById(R.id.setting_language);
+
+        mBtnLogout = (Button) view.findViewById(R.id.setting_logout);
     }
 
 
@@ -93,6 +84,7 @@ public class SettingFragment extends Fragment  implements LogoutContract.View{
         setLanguageTextView();
 
         mLogoutPresenter = new LogoutPresenter(this);
+        mBtnLogout.setOnClickListener(this);
     }
 
 
@@ -149,7 +141,14 @@ public class SettingFragment extends Fragment  implements LogoutContract.View{
                 .show();
     }
 
+    public void onClick(View view){
+        int viewId = view.getId();
 
+        switch(viewId){
+            case R.id.setting_logout:
+                logout();
+        }
+    }
 
     @Override
     public void onLogoutSuccess(String message) {
