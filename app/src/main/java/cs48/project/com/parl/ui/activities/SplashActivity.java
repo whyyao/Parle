@@ -7,18 +7,15 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import cs48.project.com.parl.R;
-
 
 public class SplashActivity extends AppCompatActivity {
-    private static final int SPLASH_TIME_MS = 2000;
+    private static final int SPLASH_TIME_MS = 300;
     private Handler mHandler;
     private Runnable mRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
 
         mHandler = new Handler();
 
@@ -42,8 +39,8 @@ public class SplashActivity extends AppCompatActivity {
 
         mHandler.postDelayed(mRunnable, SPLASH_TIME_MS);
     }
-
-    /*@Override
+/*
+    @Override
     protected void onPause() {
         super.onPause();
         mHandler.removeCallbacks(mRunnable);
