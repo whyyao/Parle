@@ -31,12 +31,14 @@ public class ConvoListingPagerAdapter extends FragmentPagerAdapter{
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return sTitles.get(position);
+        return null;
+        //sTitles.get(position)
     }
 
     public void addFrag(Fragment fragment, String title){
-        sFragments.add(fragment);
-        sTitles.add(title);
+        if(this.getCount() <2){
+            sFragments.add(fragment);
+            sTitles.add(title);}
     }
 
 
