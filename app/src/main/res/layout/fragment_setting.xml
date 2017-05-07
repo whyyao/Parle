@@ -43,9 +43,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@color/red_400"
+            android:background="@color/grey_500"
             android:text="Logout"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             />
 
     </RelativeLayout>
