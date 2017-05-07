@@ -28,12 +28,9 @@ import cs48.project.com.parl.ui.activities.RegisterActivity;
  */
 public class LoginFragment extends Fragment implements View.OnClickListener, LoginContract.View {
     private LoginPresenter mLoginPresenter;
-
     private EditText mETxtEmail, mETxtPassword;
     private Button mBtnLogin, mBtnRegister;
-
     private ProgressDialog mProgressDialog;
-
     public static LoginFragment newInstance() {
         Bundle args = new Bundle();
         LoginFragment fragment = new LoginFragment();
@@ -64,12 +61,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
 
     private void init() {
         mLoginPresenter = new LoginPresenter(this);
-
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setTitle(getString(R.string.loading));
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setIndeterminate(true);
-
         mBtnLogin.setOnClickListener(this);
         mBtnRegister.setOnClickListener(this);
     }
@@ -91,7 +86,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     private void onLogin(View view) {
         String emailId = mETxtEmail.getText().toString();
         String password = mETxtPassword.getText().toString();
-
         mLoginPresenter.login(getActivity(), emailId, password);
         mProgressDialog.show();
     }
