@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your Username is"
+        android:text="Hello,"
         android:textSize="16dp"/>
 
     <TextView
@@ -17,6 +17,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sam"
+        android:textSize="32dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_avg"
+        android:text="Your Language Selection"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:id="@+id/setting_language"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="English"
         android:textSize="32dp"/>
 
 </LinearLayout>

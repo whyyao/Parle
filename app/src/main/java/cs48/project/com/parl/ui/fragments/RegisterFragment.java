@@ -42,13 +42,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private RegisterPresenter mRegisterPresenter;
     private AddUserPresenter mAddUserPresenter;
 
-    private EditText mETxtEmail, mETxtPassword, mETxtUsername;
+    private EditText mETxtEmail, mETxtPassword, mETxtVerify,  mETxtUsername;
     private Button mBtnRegister;
 
     private ProgressDialog mProgressDialog;
 
     private Spinner spinner;
-    private static final String[] paths = {"Chinese Simplified", "English", "Spanish"};
+    private static final String[] paths = {"Arabic", "Bengali", "Chinese (Simplified)", "Chinese (Traditional)", "English", "French", "Hindi", "Italian", "Japanese", "Portuguese", "Russian", "Spanish"};
     private String language;
 
     public static RegisterFragment newInstance() {
@@ -69,6 +69,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private void bindViews(View view) {
         mETxtEmail = (EditText) view.findViewById(R.id.edit_text_email_id);
         mETxtPassword = (EditText) view.findViewById(R.id.edit_text_password);
+        mETxtVerify = (EditText) view.findViewById(R.id.edit_text_verify);
         mETxtUsername = (EditText) view.findViewById(R.id.edit_text_username);
         mBtnRegister = (Button) view.findViewById(R.id.button_register);
         spinner = (Spinner) view.findViewById(R.id.spinner);
@@ -103,12 +104,39 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch(position) {
             case 0:
-                language = "zh-CHS";
+                language = "ar";
                 break;
             case 1:
-                language = "en";
+                language = "bn";
                 break;
             case 2:
+                language = "zh-CN";
+                break;
+            case 3:
+                language = "zh-TW";
+                break;
+            case 4:
+                language = "en";
+                break;
+            case 5:
+                language = "fr";
+                break;
+            case 6:
+                language = "hi";
+                break;
+            case 7:
+                language = "it";
+                break;
+            case 8:
+                language = "ja";
+                break;
+            case 9:
+                language = "pt";
+                break;
+            case 10:
+                language = "ru";
+                break;
+            case 11:
                 language = "es";
                 break;
         }
@@ -133,8 +161,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private void onRegister(View view) {
         String emailId = mETxtEmail.getText().toString();
         String password = mETxtPassword.getText().toString();
-        mRegisterPresenter.register(getActivity(), emailId, password);
-        mProgressDialog.show();
+        String verify = mETxtVerify.getText().toString();
+        if(!password.equals(verify)) {
+            Toast.makeText(getActivity(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+        } else {
+            mRegisterPresenter.register(getActivity(), emailId, password);
+            mProgressDialog.show();
+        }
     }
 
     @Override
@@ -167,4 +200,3 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }
-
