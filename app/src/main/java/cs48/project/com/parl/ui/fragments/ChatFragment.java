@@ -125,7 +125,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
         Translator myTranslator = new Translator();
         String translatedMessage = myTranslator.startThread(message,userLang);
 
-        System.out.println(translatedMessage + "This is the translated message");
+        System.out.println(translatedMessage + " This is the translated message");
         String receiver = getArguments().getString(Constants.ARG_RECEIVER);
         String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
         String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();

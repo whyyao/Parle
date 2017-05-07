@@ -2,7 +2,10 @@ package cs48.project.com.parl.ui.fragments;
 
 /**
  * Created by Chandler on 5/7/17.
+ * Some methods within this class are made by Google
+ * https://cloud.google.com/translate/docs/reference/libraries
  */
+
 
 import com.google.cloud.translate.Detection;
 import com.google.cloud.translate.Language;
@@ -16,6 +19,7 @@ import com.google.common.collect.ImmutableList;
 import java.io.PrintStream;
 import java.util.List;
 
+// Main class that does translation. Makes new thread with join as well.
 
 public class Translator {
 
@@ -31,7 +35,7 @@ public class Translator {
 
             return runner.getResult();
         } catch (Exception e) {
-            System.out.println("Thread issue, closing");
+            System.out.println("Thread issue, closing..");
         }
         return null;
     }
@@ -61,6 +65,7 @@ public class Translator {
         Translation translation = translate.translate(sourceText);
         return translation.getTranslatedText();
     }
+
     /**
      * Translate the source text from source to target language.
      * Make sure that your project is whitelisted.
@@ -68,55 +73,21 @@ public class Translator {
      * @param sourceText source text to be translated
      * @param sourceLang source language of the text
      * @param targetLang target language of translated text
-     * @param out print stream
      */
-    public static void translateTextWithOptionsAndModel(
-            String sourceText,
-            String sourceLang,
-            String targetLang,
-            PrintStream out) {
+    public static String translateTextComplete (String sourceText, String sourceLang, String targetLang) {
 
         Translate translate = createTranslateService();
-        TranslateOption srcLang = TranslateOption.sourceLanguage(sourceLang);
-        TranslateOption tgtLang = TranslateOption.targetLanguage(targetLang);
 
-        // Use translate `model` parameter with `base` and `nmt` options.
-        TranslateOption model = TranslateOption.model("nmt");
-
-        Translation translation = translate.translate(sourceText, srcLang, tgtLang, model);
-        out.printf("Source Text:\n\tLang: %s, Text: %s\n", sourceLang, sourceText);
-        out.printf("TranslatedText:\n\tLang: %s, Text: %s\n", targetLang,
-                translation.getTranslatedText());
-    }
-
-    /**
-     * Translate the source text from source to target language.
-     *
-     * @param sourceText source text to be translated
-     * @param sourceLang source language of the text
-     * @param targetLang target language of translated text
-     */
-    public String translateTextWithOptions(
-            String sourceText,
-            String sourceLang,
-            String targetLang
-    ) {
-
-        Translate translate = createTranslateService();
-        TranslateOption srcLang = TranslateOption.sourceLanguage(sourceLang);
-        TranslateOption tgtLang = TranslateOption.targetLanguage(targetLang);
-
-        Translation translation = translate.translate(sourceText, srcLang, tgtLang);
-
+        Translation translation = translate.translate(sourceText, TranslateOption.sourceLanguage(sourceLang), TranslateOption.targetLanguage(targetLang));
+        System.out.printf("Source Text:\n\tLang: %s, Text: %s\n", sourceLang, sourceText);
+        System.out.printf("TranslatedText:\n\tLang: %s, Text: %s\n", targetLang, translation.getTranslatedText());
 
         return translation.getTranslatedText();
     }
 
-    /**
-     * Create Google Translate API Service.
-     *
-     * @return Google Translate Service
-     */
+
+    // Create Google Translate API Service, OUR API KEY SHOULD NOT BE HERE BUT FUCK IT
+
     public static Translate createTranslateService() {
         Translate translate = TranslateOptions.newBuilder().setApiKey("AIzaSyBCxeg8nqdk-581zxxtyOJ_jnTYHCAlABY").setProjectId("parle-12cb8").build().getService();
         return translate;
