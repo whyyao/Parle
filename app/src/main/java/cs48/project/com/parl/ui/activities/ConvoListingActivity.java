@@ -20,12 +20,12 @@ import cs48.project.com.parl.ui.adapters.ConvoListingPagerAdapter;
 import cs48.project.com.parl.ui.fragments.ConvoFragment;
 import cs48.project.com.parl.ui.fragments.SettingFragment;
 
-public class ConvoListingActivity extends AppCompatActivity implements LogoutContract.View {
+public class ConvoListingActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private TabLayout mTabLayoutUserListing;
     private ViewPager mViewPagerUserListing;
 
-    private LogoutPresenter mLogoutPresenter;
+
 
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, ConvoListingActivity.class);
@@ -66,13 +66,12 @@ public class ConvoListingActivity extends AppCompatActivity implements LogoutCon
         //attach tab layout with view pager
         mTabLayoutUserListing.setupWithViewPager(mViewPagerUserListing);
 
-        mLogoutPresenter = new LogoutPresenter(this);
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ConvoListingPagerAdapter adapter = new ConvoListingPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ConvoFragment().newInstance(ConvoFragment.TYPE_ALL), "All Users");
-        adapter.addFrag(new SettingFragment(), "SETTING");
+        adapter.addFrag(new SettingFragment(), "ME");
         viewPager.setAdapter(adapter);
     }
 
@@ -84,45 +83,7 @@ public class ConvoListingActivity extends AppCompatActivity implements LogoutCon
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_logout:
-                logout();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
-    private void logout() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.logout)
-                .setMessage(R.string.are_you_sure)
-                .setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        mLogoutPresenter.logout();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
 
-    @Override
-    public void onLogoutSuccess(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        LoginActivity.startIntent(this,
-                Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-    }
 
-    @Override
-    public void onLogoutFailure(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
 }

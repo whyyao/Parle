@@ -33,4 +33,20 @@
         android:text="English"
         android:textSize="32dp"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/red_400"
+            android:text="Logout"
+            android:textColor="@color/black"
+            />
+
+    </RelativeLayout>
 </LinearLayout>
