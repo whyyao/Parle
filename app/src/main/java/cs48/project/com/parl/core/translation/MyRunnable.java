@@ -1,7 +1,7 @@
-package cs48.project.com.parl.ui.fragments;
+package cs48.project.com.parl.core.translation;
 
 
-import android.util.Log;
+import cs48.project.com.parl.core.translation.Translator;
 
 /**
  * Created by Chandler on 5/6/17.
@@ -11,16 +11,17 @@ import android.util.Log;
 
 public class MyRunnable implements Runnable {
 
-    private String result, input, userLang;
+    private String result, input, userLang, recieverLang;
 
-    public MyRunnable(String input, String userLang) {
+    public MyRunnable(String input, String userLang, String recieverLang) {
         this.input = input;
         this.userLang = userLang;
+        this.recieverLang = recieverLang;
     }
     @Override
     public void run() {
         Translator myTrans = new Translator();
-        result = myTrans.translateTextComplete(input,"en","es");
+        result = myTrans.translateTextComplete(input,userLang,recieverLang);
     }
 
     String getResult() {

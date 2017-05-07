@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,20 +14,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.cloud.translate.Detection;
-import com.google.cloud.translate.Language;
-import com.google.cloud.translate.Translate;
-import com.google.cloud.translate.Translate.LanguageListOption;
-import com.google.cloud.translate.Translate.TranslateOption;
-import com.google.cloud.translate.TranslateOptions;
-import com.google.cloud.translate.Translation;
-
 /*
 import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.model.TranslationsListResponse;
 import com.google.api.services.translate.model.TranslationsResource;*/
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,8 +34,10 @@ import java.util.ArrayList;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.chat.ChatContract;
 import cs48.project.com.parl.core.chat.ChatPresenter;
+import cs48.project.com.parl.core.translation.Translator;
 import cs48.project.com.parl.events.PushNotificationEvent;
 import cs48.project.com.parl.models.Chat;
+import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.adapters.ChatRecyclerAdapter;
 import cs48.project.com.parl.utils.Constants;
 
@@ -55,11 +53,13 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
 
     public static ChatFragment newInstance(String receiver,
                                            String receiverUid,
-                                           String firebaseToken) {
+                                           String firebaseToken,
+                                           String language) {
         Bundle args = new Bundle();
         args.putString(Constants.ARG_RECEIVER, receiver);
         args.putString(Constants.ARG_RECEIVER_UID, receiverUid);
         args.putString(Constants.ARG_FIREBASE_TOKEN, firebaseToken);
+        args.putString(Constants.ARG_RECEIVER_LANGUAGE, language);
         ChatFragment fragment = new ChatFragment();
         fragment.setArguments(args);
         return fragment;
@@ -117,19 +117,39 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
         }
         return false;
     }
-
+    private String senderLang;
     private void sendMessage() {
-        String userLang = "en";
+
+        String recieverLang = getArguments().getString(Constants.ARG_RECEIVER_LANGUAGE);
+
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child(Constants.ARG_USERS).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User currentUser = dataSnapshot.getValue(User.class);
+                senderLang = currentUser.language;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         String message = mETxtMessage.getText().toString();
 
         Translator myTranslator = new Translator();
-        String translatedMessage = myTranslator.startThread(message,userLang);
+        String translatedMessage = myTranslator.startThread(message,senderLang,recieverLang);
 
         System.out.println(translatedMessage + " This is the translated message");
         String receiver = getArguments().getString(Constants.ARG_RECEIVER);
         String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
         String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+
         String receiverFirebaseToken = getArguments().getString(Constants.ARG_FIREBASE_TOKEN);
         Chat chat = new Chat(sender,
                 receiver,

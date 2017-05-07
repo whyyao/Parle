@@ -1,4 +1,4 @@
-package cs48.project.com.parl.ui.fragments;
+package cs48.project.com.parl.core.translation;
 
 /**
  * Created by Chandler on 5/7/17.
@@ -8,9 +8,7 @@ package cs48.project.com.parl.ui.fragments;
 
 
 import com.google.cloud.translate.Detection;
-import com.google.cloud.translate.Language;
 import com.google.cloud.translate.Translate;
-import com.google.cloud.translate.Translate.LanguageListOption;
 import com.google.cloud.translate.Translate.TranslateOption;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
@@ -23,12 +21,12 @@ import java.util.List;
 
 public class Translator {
 
-    Translator() {
+    public Translator() {
     }
 
-    String startThread(String message, String userLang) {
+    public static String startThread(String message, String senderLang, String receiverLang) {
         try {
-            MyRunnable runner = new MyRunnable(message, userLang);
+            MyRunnable runner = new MyRunnable(message, senderLang, receiverLang);
             Thread myThread = new Thread(runner);
             myThread.start();
             myThread.join();
