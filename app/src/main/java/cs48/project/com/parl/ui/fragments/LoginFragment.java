@@ -86,6 +86,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     private void onLogin(View view) {
         String emailId = mETxtEmail.getText().toString();
         String password = mETxtPassword.getText().toString();
+
         mLoginPresenter.login(getActivity(), emailId, password);
         mProgressDialog.show();
     }
