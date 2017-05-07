@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cs48.project.com.parl">
-
+   <uses-sdk android:minSdkVersion="9" />
     <application
+        
         android:name="cs48.project.com.parl.ParleMainApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

@@ -74,7 +74,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         String alphabet = chat.sender.substring(0, 1);
 
-        otherChatViewHolder.txtChatMessage.setText(chat.message);
+        otherChatViewHolder.txtChatMessage.setText(chat.translatedMessage);
         otherChatViewHolder.txtUserAlphabet.setText(alphabet);
     }
 

@@ -19,11 +19,13 @@ public class ChatActivity extends AppCompatActivity {
     public static void startActivity(Context context,
                                      String receiver,
                                      String receiverUid,
-                                     String firebaseToken) {
+                                     String firebaseToken,
+                                     String language) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra(Constants.ARG_RECEIVER, receiver);
         intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
         intent.putExtra(Constants.ARG_FIREBASE_TOKEN, firebaseToken);
+        intent.putExtra(Constants.ARG_RECEIVER_LANGUAGE, language);
         context.startActivity(intent);
     }
 
@@ -51,7 +53,8 @@ public class ChatActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout_content_chat,
                 ChatFragment.newInstance(getIntent().getExtras().getString(Constants.ARG_RECEIVER),
                         getIntent().getExtras().getString(Constants.ARG_RECEIVER_UID),
-                        getIntent().getExtras().getString(Constants.ARG_FIREBASE_TOKEN)),
+                        getIntent().getExtras().getString(Constants.ARG_FIREBASE_TOKEN),
+                        getIntent().getExtras().getString(Constants.ARG_RECEIVER_LANGUAGE)),
                 ChatFragment.class.getSimpleName());
         fragmentTransaction.commit();
     }

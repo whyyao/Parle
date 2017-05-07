@@ -106,7 +106,8 @@ public class ConvoFragment extends Fragment implements GetUsersContract.View, It
         ChatActivity.startActivity(getActivity(),
                 mUserListingRecyclerAdapter.getUser(position).userName,
                 mUserListingRecyclerAdapter.getUser(position).uid,
-                mUserListingRecyclerAdapter.getUser(position).firebaseToken);
+                mUserListingRecyclerAdapter.getUser(position).firebaseToken,
+                mUserListingRecyclerAdapter.getUser(position).language);
     }
 
     @Override
