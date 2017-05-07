@@ -166,7 +166,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     @Override
     public void onSendMessageSuccess() {
         mETxtMessage.setText("");
-        Toast.makeText(getActivity(), "Message sent", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "Message sent", Toast.LENGTH_SHORT).show();
     }
 
     @Override

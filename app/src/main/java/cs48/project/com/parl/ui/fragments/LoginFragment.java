@@ -103,7 +103,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     @Override
     public void onLoginSuccess(String message) {
         mProgressDialog.dismiss();
-        Toast.makeText(getActivity(), "Logged in successfully", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "Logged in successfully", Toast.LENGTH_SHORT).show();
         ConvoListingActivity.startActivity(getActivity(),
                 Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
     }
