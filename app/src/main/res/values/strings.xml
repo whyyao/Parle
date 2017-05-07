@@ -7,7 +7,7 @@
     <string name="password">Password</string>
     <string name="verify">Verify Password</string>
     <string name="login">Login</string>
-    <string name="login_register">New user? Register here!</string>
+    <string name="login_register">Register</string>
     <string name="register">Register</string>
 
     <string name="user_successfully_added">User successfully added!</string>
