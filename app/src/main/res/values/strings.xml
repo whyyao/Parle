@@ -7,7 +7,7 @@
     <string name="password">Password</string>
     <string name="verify">Verify Password</string>
     <string name="login">Login</string>
-    <string name="login_register">New user, tap here to register !</string>
+    <string name="login_register">New user? Register here!</string>
     <string name="register">Register</string>
 
     <string name="user_successfully_added">User successfully added!</string>
@@ -21,7 +21,7 @@
     <string name="action_logout">Logout</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="logout">Logout</string>
-    <string name="are_you_sure">Are you sure ?</string>
+    <string name="are_you_sure">Are you sure?</string>
     <string name="cancel">Cancel</string>
 
     <!-- TODO: Remove or change this placeholder text -->
