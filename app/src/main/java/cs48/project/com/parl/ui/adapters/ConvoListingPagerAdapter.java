@@ -31,7 +31,8 @@ public class ConvoListingPagerAdapter extends FragmentPagerAdapter{
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return sTitles.get(position);
+        return null;
+        //sTitles.get(position)
     }
 
     public void addFrag(Fragment fragment, String title){

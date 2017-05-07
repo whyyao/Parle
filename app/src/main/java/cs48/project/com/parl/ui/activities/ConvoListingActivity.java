@@ -66,7 +66,17 @@ public class ConvoListingActivity extends AppCompatActivity implements LogoutCon
         //attach tab layout with view pager
         mTabLayoutUserListing.setupWithViewPager(mViewPagerUserListing);
 
+        setupTabIcons();
         mLogoutPresenter = new LogoutPresenter(this);
+    }
+
+    private void setupTabIcons() {
+        int[] tabIcons = {
+                R.drawable.ic_conversation_icon,
+                R.drawable.ic_me_icon
+        };
+        mTabLayoutUserListing.getTabAt(0).setIcon(tabIcons[0]);
+        mTabLayoutUserListing.getTabAt(1).setIcon(tabIcons[1]);
     }
 
     private void setupViewPager(ViewPager viewPager) {
