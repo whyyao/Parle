@@ -26,6 +26,7 @@ public class Constants {
         languageDic.put("bn", "Bengali");
         languageDic.put("zh-CN", "Chinese (Simplified)");
         languageDic.put("zh-TW", "Chinese (Traditional)");
+        languageDic.put("en", "English");
         languageDic.put("fr", "French");
         languageDic.put("hi", "Hindi");
         languageDic.put("it", "Italian");
