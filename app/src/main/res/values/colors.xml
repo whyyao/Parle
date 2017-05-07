@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<color name="colorPrimary">#3F51B5</color>-->
-    <color name="colorPrimary">#043EA3</color>
-    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+
+    <!--<color name="colorPrimary">#043EA3</color>-->
+    <!--<color name="colorPrimaryDark">#000000</color>-->
+    <!--<color name="colorAccent">#043EA3</color>-->
+
+
+    <!--<color name="colorPrimary">#373B44</color>-->
+    <!--<color name="colorPrimaryDark">#272A30</color>-->
+    <!--<color name="colorAccent">#73C8A9</color>-->
+    <!--<color name="buttons">#BD5532</color>-->
+    <!--<color name="chatSender">#AC92A6</color>-->
+    <!--<color name="chatReceiver">#AC92A6</color>-->
+
+
+    <color name="colorPrimary">#AC4941</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#313851</color>
+    <color name="buttons">#F99947</color>
+    <color name="chatSender">#313851</color>
+    <color name="chatReceiver">#BCBCBC</color>
+
 
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>
