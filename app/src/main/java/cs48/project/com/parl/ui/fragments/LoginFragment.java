@@ -74,10 +74,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
         mBtnRegister.setOnClickListener(this);
     }
 
-
-
-    }
-
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
