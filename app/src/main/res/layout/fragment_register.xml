@@ -27,6 +27,13 @@
         android:hint="@string/password"
         android:inputType="textPassword" />
 
+    <EditText
+        android:id="@+id/edit_text_verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/verify"
+        android:inputType="textPassword" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
