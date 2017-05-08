@@ -87,8 +87,8 @@ public class ConvoListingActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ConvoListingPagerAdapter adapter = new ConvoListingPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new ConvoFragment().newInstance(ConvoFragment.TYPE_ALL), "All Users");
-        adapter.addFrag(new ContactsFragment().newInstance(), "Contacts");
+        adapter.addFrag(new ConvoFragment().newInstance(), "All Users");
+        adapter.addFrag(new ContactsFragment().newInstance(ContactsFragment.TYPE_ALL), "Contacts");
         adapter.addFrag(new SettingFragment(), "ME");
         viewPager.setAdapter(adapter);
     }
