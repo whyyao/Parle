@@ -43,5 +43,17 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
 }
 
+repositories {
+    mavenCentral()
+
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+dependencies {
+    compile 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
+}
+
 
 apply plugin: 'com.google.gms.google-services'

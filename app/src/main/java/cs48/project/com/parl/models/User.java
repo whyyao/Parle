@@ -1,5 +1,7 @@
 package cs48.project.com.parl.models;
 
+import java.util.ArrayList;
+
 /**
  * Created by yaoyuan on 4/22/17.
  */
