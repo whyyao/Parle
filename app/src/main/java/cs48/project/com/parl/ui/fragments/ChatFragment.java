@@ -14,7 +14,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*
+import com.google.api.services.translate.Translate;
+import com.google.api.services.translate.model.TranslationsListResponse;
+import com.google.api.services.translate.model.TranslationsResource;*/
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -27,9 +37,11 @@ import cs48.project.com.parl.core.chat.ChatContract;
 import cs48.project.com.parl.core.chat.ChatPresenter;
 import cs48.project.com.parl.core.conversation.ConversationContract;
 import cs48.project.com.parl.core.conversation.ConversationPresenter;
+import cs48.project.com.parl.core.translation.Translator;
 import cs48.project.com.parl.events.PushNotificationEvent;
 import cs48.project.com.parl.models.Chat;
 import cs48.project.com.parl.models.Conversation;
+import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.adapters.ChatRecyclerAdapter;
 import cs48.project.com.parl.utils.Constants;
 
@@ -54,11 +66,13 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
 
     public static ChatFragment newInstance(String receiver,
                                            String receiverUid,
-                                           String firebaseToken) {
+                                           String firebaseToken,
+                                           String language) {
         Bundle args = new Bundle();
         args.putString(Constants.ARG_RECEIVER, receiver);
         args.putString(Constants.ARG_RECEIVER_UID, receiverUid);
         args.putString(Constants.ARG_FIREBASE_TOKEN, firebaseToken);
+        args.putString(Constants.ARG_RECEIVER_LANGUAGE, language);
         ChatFragment fragment = new ChatFragment();
         fragment.setArguments(args);
         return fragment;
@@ -118,9 +132,39 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         }
         return false;
     }
-
+    private String senderLang;
     private void sendMessage() {
+
+        String translatedMessage = null;
+
+        String recieverLang = getArguments().getString(Constants.ARG_RECEIVER_LANGUAGE);
+
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child(Constants.ARG_USERS).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User currentUser = dataSnapshot.getValue(User.class);
+                senderLang = currentUser.language;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         String message = mETxtMessage.getText().toString();
+
+        if (senderLang != recieverLang) {
+            Translator myTranslator = new Translator();
+            translatedMessage = myTranslator.startThread(message,senderLang,recieverLang);
+        }
+        else {
+            translatedMessage = message;
+        }
+
+        System.out.println(translatedMessage + " This is the translated message");
         String receiver = getArguments().getString(Constants.ARG_RECEIVER);
         String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
         String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -133,6 +177,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                 senderUid,
                 receiverUid,
                 message,
+                translatedMessage,
                 System.currentTimeMillis());
         mChatPresenter.sendMessage(getActivity().getApplicationContext(),
                 chat,
@@ -146,7 +191,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
     @Override
     public void onSendMessageSuccess() {
         mETxtMessage.setText("");
-        Toast.makeText(getActivity(), "Message sent", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -166,7 +210,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
 
     @Override
     public void onGetMessagesFailure(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

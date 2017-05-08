@@ -43,10 +43,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@color/grey_500"
+            android:background="@color/buttons"
             android:text="Logout"
             android:textColor="@color/white"
             />
+
 
     </RelativeLayout>
 </LinearLayout>

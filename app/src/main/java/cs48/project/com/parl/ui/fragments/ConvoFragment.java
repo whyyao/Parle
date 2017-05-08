@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +25,8 @@ import java.util.List;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.conversation.ConversationContract;
 import cs48.project.com.parl.core.conversation.ConversationPresenter;
+import cs48.project.com.parl.core.contacts.add.AddContactContract;
+import cs48.project.com.parl.core.contacts.add.AddContactPresenter;
 import cs48.project.com.parl.core.users.getall.GetUsersContract;
 import cs48.project.com.parl.core.users.getall.GetUsersPresenter;
 import cs48.project.com.parl.models.Conversation;
