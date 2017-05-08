@@ -184,7 +184,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                 receiverFirebaseToken);
 
         Conversation conversation = new Conversation(sender, receiver, senderUid, receiverUid, message, System.currentTimeMillis(),
-                                                    senderUserName, receiverUserName);
+                                                    "Yao", "Jake");
         mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
     }
 

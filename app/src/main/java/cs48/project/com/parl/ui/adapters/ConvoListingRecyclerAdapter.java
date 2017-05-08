@@ -54,7 +54,7 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
 
         System.out.printf("Conversation Print: %s\n", userName);
         holder.txtUsername.setText(userName);
-        String alphabet = "abc".substring(0, 1);
+        String alphabet = userName.substring(0, 1);
 
 
         holder.txtUserAlphabet.setText(alphabet);
