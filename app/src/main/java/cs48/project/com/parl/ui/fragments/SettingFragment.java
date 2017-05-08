@@ -152,7 +152,7 @@ public class SettingFragment extends Fragment  implements View.OnClickListener, 
 
     @Override
     public void onLogoutSuccess(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
         LoginActivity.startIntent(getActivity(),
                 Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
     }
