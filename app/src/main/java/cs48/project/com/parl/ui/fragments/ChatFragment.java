@@ -120,6 +120,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     private String senderLang;
     private void sendMessage() {
 
+        String translatedMessage = null;
+
         String recieverLang = getArguments().getString(Constants.ARG_RECEIVER_LANGUAGE);
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -139,8 +141,10 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
 
         String message = mETxtMessage.getText().toString();
 
-        Translator myTranslator = new Translator();
-        String translatedMessage = myTranslator.startThread(message,senderLang,recieverLang);
+        if (senderLang != recieverLang) {
+            Translator myTranslator = new Translator();
+            translatedMessage = myTranslator.startThread(message,senderLang,recieverLang);
+        }
 
         System.out.println(translatedMessage + " This is the translated message");
         String receiver = getArguments().getString(Constants.ARG_RECEIVER);
