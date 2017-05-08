@@ -18,6 +18,7 @@ import cs48.project.com.parl.models.Conversation;
 /**
  * Created by yaoyuan on 4/24/17.
  */
+//.
 
 public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListingRecyclerAdapter.ViewHolder> {
     private List<Conversation> mConversation;
