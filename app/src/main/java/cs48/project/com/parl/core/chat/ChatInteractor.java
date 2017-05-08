@@ -2,7 +2,6 @@ package cs48.project.com.parl.core.chat;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -83,7 +82,7 @@ public class ChatInteractor implements ChatContract.Interactor {
                 }
 
                 // send push notification to the receiver
-                sendPushNotificationToReceiver(username, chat.message, chat.senderUid,
+                sendPushNotificationToReceiver(username, chat.translatedMessage, chat.senderUid,
                                                 new SharedPrefUtil(context).getString(Constants.ARG_FIREBASE_TOKEN),
                                                 //only send push notification if allowed
                                                 receiverFirebaseToken);
