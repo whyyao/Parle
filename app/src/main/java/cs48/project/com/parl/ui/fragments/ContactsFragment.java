@@ -6,12 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-import android.util.Log;
 
 import java.util.List;
 
@@ -22,7 +22,8 @@ import cs48.project.com.parl.core.users.getall.GetUsersContract;
 import cs48.project.com.parl.core.users.getall.GetUsersPresenter;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.activities.ChatActivity;
-import cs48.project.com.parl.ui.adapters.ConvoListingRecyclerAdapter;
+import cs48.project.com.parl.ui.adapters.ContactListingRecyclerAdapter;
+import cs48.project.com.parl.ui.adapters.ContactListingRecyclerAdapter;
 import cs48.project.com.parl.utils.ItemClickSupport;
 
 /**
@@ -43,7 +44,7 @@ public class ContactsFragment extends Fragment implements View.OnClickListener, 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerViewAllUserListing;
 
-    private ConvoListingRecyclerAdapter mUserListingRecyclerAdapter;
+    private ContactListingRecyclerAdapter mUserListingRecyclerAdapter;
 
     private GetUsersPresenter mGetUsersPresenter;
 
@@ -127,7 +128,7 @@ public class ContactsFragment extends Fragment implements View.OnClickListener, 
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-        mUserListingRecyclerAdapter = new ConvoListingRecyclerAdapter(users);
+        mUserListingRecyclerAdapter = new ContactListingRecyclerAdapter(users);
         mRecyclerViewAllUserListing.setAdapter(mUserListingRecyclerAdapter);
         mUserListingRecyclerAdapter.notifyDataSetChanged();
     }
@@ -178,7 +179,7 @@ public class ContactsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onAddContactSuccess(String message) {
 //        mProgressDialog.dismiss();
-//        ConvoListingActivity.startActivity(getActivity(),
+//        ContactListingActivity.startActivity(getActivity(),
 //                Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         Toast.makeText(getActivity(), "Added Contact", Toast.LENGTH_SHORT).show();
     }

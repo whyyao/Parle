@@ -35,6 +35,8 @@ import cs48.project.com.parl.ui.activities.ChatActivity;
 import cs48.project.com.parl.ui.adapters.ConvoListingRecyclerAdapter;
 import cs48.project.com.parl.utils.ItemClickSupport;
 
+import static cs48.project.com.parl.ui.fragments.ContactsFragment.ARG_TYPE;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -44,9 +46,9 @@ import cs48.project.com.parl.utils.ItemClickSupport;
  * create an instance of this fragment.
  */
 public class ConvoFragment extends Fragment implements ConversationContract.View, GetUsersContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
-    public static final String ARG_TYPE = "type";
-    public static final String TYPE_CHATS = "type_chats";
-    public static final String TYPE_ALL = "type_all";
+//    public static final String ARG_TYPE = "type";
+//    public static final String TYPE_CHATS = "type_chats";
+//    public static final String TYPE_ALL = "type_all";
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerViewAllUserListing;
@@ -57,9 +59,9 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
 
     private ConversationPresenter mConversationPresenter;
 
-    public static ConvoFragment newInstance(String type) {
+    public static ConvoFragment newInstance() {
         Bundle args = new Bundle();
-        args.putString(ARG_TYPE, type);
+        //args.putString(ARG_TYPE, type);
         ConvoFragment fragment = new ConvoFragment();
         fragment.setArguments(args);
         return fragment;
@@ -127,6 +129,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
     private String FirebaseReceiverUid;
     private String FirebaseEmail;
     private String FirebaseFirebaseToken;
+    private String FirebaseLanguage;
     @Override
     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
         Conversation conversation = mUserListingRecyclerAdapter.getConversation(position);
@@ -146,6 +149,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
                 User receiver = dataSnapshot.getValue(User.class);
                 FirebaseEmail = receiver.email;
                 FirebaseFirebaseToken = receiver.firebaseToken;
+                FirebaseLanguage = receiver.language;
             }
 
             @Override
@@ -154,7 +158,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
             }
         });
 
-        ChatActivity.startActivity(getActivity(),FirebaseEmail,FirebaseReceiverUid,FirebaseFirebaseToken);
+        ChatActivity.startActivity(getActivity(),FirebaseEmail,FirebaseReceiverUid,FirebaseFirebaseToken, FirebaseLanguage);
     }
 
     @Override
