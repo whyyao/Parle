@@ -125,6 +125,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
         String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String senderUserName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        String receiverUserName = getArguments().getString(Constants.ARG_RECEIVER_USERNAME);
         String receiverFirebaseToken = getArguments().getString(Constants.ARG_FIREBASE_TOKEN);
         Chat chat = new Chat(sender,
                 receiver,
@@ -135,7 +137,9 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         mChatPresenter.sendMessage(getActivity().getApplicationContext(),
                 chat,
                 receiverFirebaseToken);
-        Conversation conversation = new Conversation(sender, receiver, senderUid, receiverUid, message, System.currentTimeMillis());
+
+        Conversation conversation = new Conversation(sender, receiver, senderUid, receiverUid, message, System.currentTimeMillis(),
+                                                    senderUserName, receiverUserName);
         mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
     }
 

@@ -22,7 +22,7 @@ import cs48.project.com.parl.models.Conversation;
 public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListingRecyclerAdapter.ViewHolder> {
     private List<Conversation> mConversation;
 
-    publi c ConvoListingRecyclerAdapter(List<Conversation> conversations) {
+    public ConvoListingRecyclerAdapter(List<Conversation> conversations) {
         this.mConversation = conversations;
     }
 
@@ -42,38 +42,17 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
         Conversation conversation = mConversation.get(position);
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
- //       Log.e("last message", conversation.lastMessage);
-//        if(conversation.receiverUid.equals(currentUserUid)){
-//            FirebaseDatabase.getInstance().getReference().child("users").child(conversation.senderUid).addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    User displayUser = dataSnapshot.getValue(User.class);
-//                    userName = displayUser.userName;
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-//        }
-//        else{
-//            FirebaseDatabase.getInstance().getReference().child("users").child(conversation.receiverUid).addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    User displayUser = dataSnapshot.getValue(User.class);
-//                    userName = displayUser.userName;
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-//        }
- //       Log.e("username",userName);
-        holder.txtUsername.setText("abc");
+        System.out.println(currentUserUid);
+        System.out.println(conversation.receiverUid);
+         if(currentUserUid.equals(conversation.receiverUid)){
+             userName = conversation.senderUserName;
+        }
+        else{
+             userName = conversation.receiverUserName;
+        }
+
+        System.out.printf("Conversation Print: %s\n", userName);
+        holder.txtUsername.setText(userName);
         String alphabet = "abc".substring(0, 1);
 
 
@@ -88,6 +67,7 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
         holder.textTime.setText(formattedTime);
 
     }
+
     private String formatDate(Date dateObject){
         SimpleDateFormat dateFormat=new SimpleDateFormat("LLL dd, yyyy");
         return dateFormat.format(dateObject);

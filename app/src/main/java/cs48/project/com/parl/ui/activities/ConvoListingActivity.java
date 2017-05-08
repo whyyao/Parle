@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.logout.LogoutPresenter;
 import cs48.project.com.parl.ui.adapters.ConvoListingPagerAdapter;
+import cs48.project.com.parl.ui.fragments.ContactsFragment;
 import cs48.project.com.parl.ui.fragments.ConvoFragment;
 import cs48.project.com.parl.ui.fragments.SettingFragment;
 
@@ -67,16 +68,19 @@ public class ConvoListingActivity extends AppCompatActivity {
     private void setupTabIcons() {
         int[] tabIcons = {
                 R.drawable.ic_conversation_icon,
-                R.drawable.ic_me_icon
+                R.drawable.ic_me_icon,
+                R.drawable.ic_contacts_icon
         };
         mTabLayoutUserListing.getTabAt(0).setIcon(tabIcons[0]);
         mTabLayoutUserListing.getTabAt(1).setIcon(tabIcons[1]);
+        mTabLayoutUserListing.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ConvoListingPagerAdapter adapter = new ConvoListingPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ConvoFragment().newInstance(ConvoFragment.TYPE_ALL), "All Users");
         adapter.addFrag(new SettingFragment(), "ME");
+        adapter.addFrag(new ContactsFragment(), "CONTACTS");
         viewPager.setAdapter(adapter);
     }
 
