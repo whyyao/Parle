@@ -145,6 +145,9 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
             Translator myTranslator = new Translator();
             translatedMessage = myTranslator.startThread(message,senderLang,recieverLang);
         }
+        else {
+            translatedMessage = message;
+        }
 
         System.out.println(translatedMessage + " This is the translated message");
         String receiver = getArguments().getString(Constants.ARG_RECEIVER);
