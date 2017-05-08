@@ -12,7 +12,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import cs48.project.com.parl.fcm.FcmNotificationBuilder;
 import cs48.project.com.parl.models.Chat;
-import cs48.project.com.parl.models.Conversation;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.utils.Constants;
 import cs48.project.com.parl.utils.SharedPrefUtil;
@@ -71,20 +70,20 @@ public class ChatInteractor implements ChatContract.Interactor {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(room_type_1)) {
-                    Conversation convo = new Conversation(chat.message, chat.timestamp);
+ //                   Conversation convo = new Conversation(chat.message, chat.timestamp);
                     Log.e(TAG, "sendMessageToFirebaseUser: " + room_type_1 + " exists");
                     databaseReference.child(Constants.ARG_CHAT_ROOMS).child(room_type_1).child(String.valueOf(chat.timestamp)).setValue(chat);
-                    databaseReference.child(Constants.ARG_LAST).child(room_type_1).setValue(convo);
+ //                   databaseReference.child(Constants.ARG_LAST).child(room_type_1).setValue(convo);
                 } else if (dataSnapshot.hasChild(room_type_2)) {
-                    Conversation convo = new Conversation(chat.message, chat.timestamp);
+ //                   Conversation convo = new Conversation(chat.message, chat.timestamp);
                     Log.e(TAG, "sendMessageToFirebaseUser: " + room_type_2 + " exists");
                     databaseReference.child(Constants.ARG_CHAT_ROOMS).child(room_type_2).child(String.valueOf(chat.timestamp)).setValue(chat);
-                    databaseReference.child(Constants.ARG_LAST).child(room_type_2).setValue(convo);
+   //                 databaseReference.child(Constants.ARG_LAST).child(room_type_2).setValue(convo);
                 } else { //creates new chatroom if it doesnt exist
-                    Conversation convo = new Conversation(chat.message, chat.timestamp);
+  //                  Conversation convo = new Conversation(chat.message, chat.timestamp);
                     Log.e(TAG, "sendMessageToFirebaseUser: success");
                     databaseReference.child(Constants.ARG_CHAT_ROOMS).child(room_type_1).child(String.valueOf(chat.timestamp)).setValue(chat);
-                    databaseReference.child(Constants.ARG_LAST).child(room_type_1).setValue(convo);
+  //                  databaseReference.child(Constants.ARG_LAST).child(room_type_1).setValue(convo);
                     getMessageFromFirebaseUser(chat.senderUid, chat.receiverUid);
                 }
 

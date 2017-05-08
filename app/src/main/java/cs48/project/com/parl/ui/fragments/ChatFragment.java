@@ -20,12 +20,16 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.chat.ChatContract;
 import cs48.project.com.parl.core.chat.ChatPresenter;
+import cs48.project.com.parl.core.conversation.ConversationContract;
+import cs48.project.com.parl.core.conversation.ConversationPresenter;
 import cs48.project.com.parl.events.PushNotificationEvent;
 import cs48.project.com.parl.models.Chat;
+import cs48.project.com.parl.models.Conversation;
 import cs48.project.com.parl.ui.adapters.ChatRecyclerAdapter;
 import cs48.project.com.parl.utils.Constants;
 
@@ -37,7 +41,7 @@ import cs48.project.com.parl.utils.Constants;
  * Use the {@link ChatFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatFragment extends Fragment implements ChatContract.View, TextView.OnEditorActionListener {
+public class ChatFragment extends Fragment implements ChatContract.View, ConversationContract.View, TextView.OnEditorActionListener {
     private RecyclerView mRecyclerViewChat;
     private EditText mETxtMessage;
 
@@ -46,6 +50,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     private ChatRecyclerAdapter mChatRecyclerAdapter;
 
     private ChatPresenter mChatPresenter;
+    private ConversationPresenter mConversationPresenter;
 
     public static ChatFragment newInstance(String receiver,
                                            String receiverUid,
@@ -99,6 +104,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
         mETxtMessage.setOnEditorActionListener(this);
 
         mChatPresenter = new ChatPresenter(this);
+        mConversationPresenter = new ConversationPresenter(this);
+
         mChatPresenter.getMessage(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                 getArguments().getString(Constants.ARG_RECEIVER_UID));
     }
@@ -128,6 +135,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
         mChatPresenter.sendMessage(getActivity().getApplicationContext(),
                 chat,
                 receiverFirebaseToken);
+        Conversation conversation = new Conversation(sender, receiver, senderUid, receiverUid, message, System.currentTimeMillis());
+        mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
     }
 
     @Override
@@ -155,6 +164,27 @@ public class ChatFragment extends Fragment implements ChatContract.View, TextVie
     public void onGetMessagesFailure(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onSendConversationSuccess(){
+
+    }
+
+    @Override
+    public void onSendConversationFailure(String message){
+
+    }
+
+    @Override
+    public void onGetConversationSuccess(List<Conversation> conversations){
+
+    }
+
+    @Override
+    public void onGetConversationFailure(String message){
+
+    }
+
 
     @Subscribe
     public void onPushNotificationEvent(PushNotificationEvent pushNotificationEvent) {

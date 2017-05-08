@@ -6,16 +6,27 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.List;
 
 import cs48.project.com.parl.R;
+import cs48.project.com.parl.core.conversation.ConversationContract;
+import cs48.project.com.parl.core.conversation.ConversationPresenter;
 import cs48.project.com.parl.core.users.getall.GetUsersContract;
 import cs48.project.com.parl.core.users.getall.GetUsersPresenter;
+import cs48.project.com.parl.models.Conversation;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.activities.ChatActivity;
 import cs48.project.com.parl.ui.adapters.ConvoListingRecyclerAdapter;
@@ -29,7 +40,7 @@ import cs48.project.com.parl.utils.ItemClickSupport;
  * Use the {@link ConvoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConvoFragment extends Fragment implements GetUsersContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
+public class ConvoFragment extends Fragment implements ConversationContract.View, GetUsersContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
     public static final String ARG_TYPE = "type";
     public static final String TYPE_CHATS = "type_chats";
     public static final String TYPE_ALL = "type_all";
@@ -40,6 +51,8 @@ public class ConvoFragment extends Fragment implements GetUsersContract.View, It
     private ConvoListingRecyclerAdapter mUserListingRecyclerAdapter;
 
     private GetUsersPresenter mGetUsersPresenter;
+
+    private ConversationPresenter mConversationPresenter;
 
     public static ConvoFragment newInstance(String type) {
         Bundle args = new Bundle();
@@ -73,8 +86,10 @@ public class ConvoFragment extends Fragment implements GetUsersContract.View, It
     }
 
     private void init() {
+        mConversationPresenter = new ConversationPresenter(this);
         mGetUsersPresenter = new GetUsersPresenter(this);
-        getUsers();
+
+        getConversations();
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -86,40 +101,66 @@ public class ConvoFragment extends Fragment implements GetUsersContract.View, It
                 .setOnItemClickListener(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
     }
 
     @Override
     public void onRefresh() {
-        getUsers();
+        getConversations();
     }
 
-    private void getUsers() {
-        if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
-
-        } else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
-            mGetUsersPresenter.getAllUsers();
-        }
+//    private void getUsers() {
+//        if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
+//
+//        } else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
+//            mGetUsersPresenter.getAllUsers();
+//        }
+//    }
+    private void getConversations(){
+        Log.e("1","trying to get conversations");
+        mConversationPresenter.getConversation();
     }
 
+    private String FirebaseReceiverUid;
+    private String FirebaseEmail;
+    private String FirebaseFirebaseToken;
     @Override
     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-        ChatActivity.startActivity(getActivity(),
-                mUserListingRecyclerAdapter.getUser(position).userName,
-                mUserListingRecyclerAdapter.getUser(position).uid,
-                mUserListingRecyclerAdapter.getUser(position).firebaseToken);
+        Conversation conversation = mUserListingRecyclerAdapter.getConversation(position);
+        String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+        if(conversation.receiverUid == currentUserUid){
+            FirebaseReceiverUid = conversation.senderUid;
+        }
+        else{
+            FirebaseReceiverUid = conversation.receiverUid;
+        }
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseReceiverUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User receiver = dataSnapshot.getValue(User.class);
+                FirebaseEmail = receiver.email;
+                FirebaseFirebaseToken = receiver.firebaseToken;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        ChatActivity.startActivity(getActivity(),FirebaseEmail,FirebaseReceiverUid,FirebaseFirebaseToken);
     }
 
     @Override
     public void onGetAllUsersSuccess(List<User> users) {
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
-        mUserListingRecyclerAdapter = new ConvoListingRecyclerAdapter(users);
-        mRecyclerViewAllUserListing.setAdapter(mUserListingRecyclerAdapter);
-        mUserListingRecyclerAdapter.notifyDataSetChanged();
+
+//        User testUser = users.get(0);
+//        Log.e("testUseid", testUser.uid);
+
+//        Log.e("skipped","presenter");
     }
 
     @Override
@@ -135,11 +176,36 @@ public class ConvoFragment extends Fragment implements GetUsersContract.View, It
 
     @Override
     public void onGetChatUsersSuccess(List<User> users) {
-
     }
 
     @Override
     public void onGetChatUsersFailure(String message) {
+
+    }
+
+    public void onSendConversationSuccess(){
+
+        }
+
+    public void onSendConversationFailure(String message){
+
+    }
+
+    public void onGetConversationSuccess(List<Conversation> conversations){
+        Log.e("1","getConversation success");
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        //Log.e("output",conversations.get(0).lastMessage);
+        mUserListingRecyclerAdapter = new ConvoListingRecyclerAdapter(conversations);
+        mRecyclerViewAllUserListing.setAdapter(mUserListingRecyclerAdapter);
+        mUserListingRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    public void onGetConversationFailure(String message){
 
     }
 }
