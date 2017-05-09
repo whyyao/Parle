@@ -1,8 +1,9 @@
 package cs48.project.com.parl.ui.fragments;
 
-import android.app.Fragment;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;

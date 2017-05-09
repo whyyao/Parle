@@ -16,6 +16,7 @@ import android.view.View;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.logout.LogoutPresenter;
 import cs48.project.com.parl.ui.adapters.ConvoListingPagerAdapter;
+import cs48.project.com.parl.ui.fragments.AddContactFragment;
 import cs48.project.com.parl.ui.fragments.ContactsFragment;
 import cs48.project.com.parl.ui.fragments.ConvoFragment;
 import cs48.project.com.parl.ui.fragments.SettingFragment;
@@ -24,7 +25,7 @@ public class ConvoListingActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private TabLayout mTabLayoutUserListing;
     private ViewPager mViewPagerUserListing;
-    private FloatingActionButton mFloatingActionButton;
+
 
     private LogoutPresenter mLogoutPresenter;
 
@@ -51,7 +52,7 @@ public class ConvoListingActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mTabLayoutUserListing = (TabLayout) findViewById(R.id.tab_layout_user_listing);
         mViewPagerUserListing = (ViewPager) findViewById(R.id.view_pager_user_listing);
-        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.FloatingActionButton);
+
     }
 
     private void init() {
@@ -86,11 +87,13 @@ public class ConvoListingActivity extends AppCompatActivity {
 
     }
 
+
     private void setupViewPager(ViewPager viewPager) {
         ConvoListingPagerAdapter adapter = new ConvoListingPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ConvoFragment().newInstance(), "All Users");
         adapter.addFrag(new ContactsFragment().newInstance(ContactsFragment.TYPE_ALL), "Contacts");
         adapter.addFrag(new SettingFragment(), "ME");
+        adapter.addFrag(new AddContactFragment(), "AddContact");
         viewPager.setAdapter(adapter);
     }
 
