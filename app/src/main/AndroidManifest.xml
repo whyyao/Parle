@@ -28,6 +28,10 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.ContactAddActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:name=".ui.activities.LoginActivity" />

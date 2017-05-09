@@ -4,28 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.logout.LogoutPresenter;
 import cs48.project.com.parl.ui.adapters.ConvoListingPagerAdapter;
-import cs48.project.com.parl.ui.fragments.AddContactFragment;
 import cs48.project.com.parl.ui.fragments.ContactsFragment;
 import cs48.project.com.parl.ui.fragments.ConvoFragment;
 import cs48.project.com.parl.ui.fragments.SettingFragment;
 
-public class ConvoListingActivity extends AppCompatActivity {
+public class ConvoListingActivity extends AppCompatActivity implements View.OnClickListener{
     private Toolbar mToolbar;
     private TabLayout mTabLayoutUserListing;
     private ViewPager mViewPagerUserListing;
-
+    private FloatingActionButton mFloatingActionButton;
 
     private LogoutPresenter mLogoutPresenter;
 
@@ -52,7 +48,7 @@ public class ConvoListingActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mTabLayoutUserListing = (TabLayout) findViewById(R.id.tab_layout_user_listing);
         mViewPagerUserListing = (ViewPager) findViewById(R.id.view_pager_user_listing);
-
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.FloatingActionButton);
     }
 
     private void init() {
@@ -72,6 +68,8 @@ public class ConvoListingActivity extends AppCompatActivity {
 
         setupTabIcons();
 //        mLogoutPresenter = new LogoutPresenter(this);
+
+        mFloatingActionButton.setOnClickListener(this);
     }
 
     private void setupTabIcons() {
@@ -93,8 +91,19 @@ public class ConvoListingActivity extends AppCompatActivity {
         adapter.addFrag(new ConvoFragment().newInstance(), "All Users");
         adapter.addFrag(new ContactsFragment().newInstance(ContactsFragment.TYPE_ALL), "Contacts");
         adapter.addFrag(new SettingFragment(), "ME");
-        adapter.addFrag(new AddContactFragment(), "AddContact");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int viewId = view.getId();
+
+        switch (viewId) {
+            case R.id.FloatingActionButton:
+//               ContactAddActivity.startIntent(ConvoListingActivity.this);
+                startActivity(new Intent(this, ContactAddActivity.class));
+                break;
+        }
     }
 
 

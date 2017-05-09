@@ -36,7 +36,7 @@ import cs48.project.com.parl.utils.ItemClickSupport;
  */
 
 
-public class ContactsFragment extends Fragment implements View.OnClickListener, AddContactContract.View, GetUsersContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
+public class ContactsFragment extends Fragment implements AddContactContract.View, GetUsersContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
     public static final String ARG_TYPE = "type";
     public static final String TYPE_CHATS = "type_chats";
     public static final String TYPE_ALL = "type_all";
@@ -71,7 +71,6 @@ public class ContactsFragment extends Fragment implements View.OnClickListener, 
     private void bindViews(View view) {
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         mRecyclerViewAllUserListing = (RecyclerView) view.findViewById(R.id.recycler_view_all_user_listing);
-        mBtnTest = (Button) view.findViewById(R.id.addContactFab);
     }
 
     @Override
@@ -91,7 +90,6 @@ public class ContactsFragment extends Fragment implements View.OnClickListener, 
         });
         mAddContactPresenter = new AddContactPresenter(this);
 
-        mBtnTest.setOnClickListener(this);
         ItemClickSupport.addTo(mRecyclerViewAllUserListing)
                 .setOnItemClickListener(this);
 
@@ -156,20 +154,6 @@ public class ContactsFragment extends Fragment implements View.OnClickListener, 
 
     private AddContactPresenter mAddContactPresenter;
 
-    //buttons
-    private Button mBtnTest;
-
-    @Override
-    public void onClick(View view) {
-        int viewId = view.getId();
-        String value = "yes";
-        Log.d("Inside on Click: ", value);
-        switch (viewId){
-            case R.id.addContactFab:
-                onAddContact(view);
-                break;
-        }
-    }
 
     private String newContactId = "newone23";
     private void onAddContact(View view){
