@@ -1,4 +1,4 @@
-package cs48.project.com.parl.core.users.getall;
+package cs48.project.com.parl.core.users.getone;
 
 import android.text.TextUtils;
 
@@ -12,25 +12,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import cs48.project.com.parl.core.users.getall.GetUsersContract;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.utils.Constants;
 
 /**
- * Created by yaoyuan on 4/24/17.
+ * Created by yaoyuan on 5/9/17.
  */
 
-public class GetUsersInteractor implements GetUsersContract.Interactor {
+public class GetoneUserInteractor implements GetoneUserContract.Interactor {
     private static final String TAG = "GetUsersInteractor";
 
-    private GetUsersContract.OnGetAllUsersListener mOnGetAllUsersListener;
+    private GetUsersContract.OnGetOneUserListener mOnGetOneUserListener;
 
-    public GetUsersInteractor(GetUsersContract.OnGetAllUsersListener onGetAllUsersListener) {
-        this.mOnGetAllUsersListener = onGetAllUsersListener;
+    public GetUsersInteractor(GetUsersContract.OnGetOneUserListener onGetOneUserListener) {
+        this.mOnGetOneUserListener = onGetOneUserListener;
     }
 
 
     @Override
-    public void getAllUsersFromFirebase() {
+    public void getOneUserFromFirebase() {
         FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -43,13 +44,13 @@ public class GetUsersInteractor implements GetUsersContract.Interactor {
                         users.add(user);
                     }
                 }
-                mOnGetAllUsersListener.onGetAllUsersSuccess(users);
+                mOnGetOneUserListener.onGetOneUserSuccess(users);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                mOnGetAllUsersListener.onGetAllUsersFailure(databaseError.getMessage());
+                mOnGetOneUserListener.onGetOneUserFailure(databaseError.getMessage());
             }
         });
     }
-
+}
