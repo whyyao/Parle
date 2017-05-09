@@ -24,6 +24,7 @@ public class ConvoListingActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private TabLayout mTabLayoutUserListing;
     private ViewPager mViewPagerUserListing;
+    private FloatingActionButton mFloatingActionButton;
 
     private LogoutPresenter mLogoutPresenter;
 
@@ -50,6 +51,7 @@ public class ConvoListingActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mTabLayoutUserListing = (TabLayout) findViewById(R.id.tab_layout_user_listing);
         mViewPagerUserListing = (ViewPager) findViewById(R.id.view_pager_user_listing);
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.FloatingActionButton);
     }
 
     private void init() {
@@ -65,6 +67,7 @@ public class ConvoListingActivity extends AppCompatActivity {
 
         //attach tab layout with view pager
         mTabLayoutUserListing.setupWithViewPager(mViewPagerUserListing);
+
 
         setupTabIcons();
 //        mLogoutPresenter = new LogoutPresenter(this);
