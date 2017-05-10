@@ -15,6 +15,7 @@ import android.widget.Toast;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +26,7 @@ import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.logout.LogoutContract;
 import cs48.project.com.parl.core.logout.LogoutPresenter;
 import cs48.project.com.parl.models.User;
+import cs48.project.com.parl.ui.activities.ConvoListingActivity;
 import cs48.project.com.parl.ui.activities.LoginActivity;
 
 import static cs48.project.com.parl.R.string.username;
@@ -38,7 +40,7 @@ import static cs48.project.com.parl.utils.Constants.convertFromAcronym;
  * Use the {@link SettingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingFragment extends Fragment  implements View.OnClickListener, LogoutContract.View{
+public class SettingFragment extends Fragment implements View.OnClickListener, LogoutContract.View{
     private TextView usernameTextView;
     private TextView languageTextView;
     private String mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -48,9 +50,7 @@ public class SettingFragment extends Fragment  implements View.OnClickListener, 
 
 
     public SettingFragment () {
-        // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,14 @@ public class SettingFragment extends Fragment  implements View.OnClickListener, 
 
 
     private void setUsernameTextView(){
+
+        String curUserUsername;
+        FirebaseUser curUser = FirebaseAuth.getInstance().getCurrentUser();
+        curUserUsername = curUser.getDisplayName();
+        usernameTextView.setText(curUserUsername);
+
         databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);

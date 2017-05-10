@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.ui.fragments.LoginFragment;
+import cs48.project.com.parl.ui.fragments.SettingFragment;
 
 
 public class LoginActivity extends AppCompatActivity {
