@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_all_user_listing"
+            android:id="@+id/recycler_view_all_contacts_listing"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager" />

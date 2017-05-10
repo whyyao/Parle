@@ -133,6 +133,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         return false;
     }
     private String senderLang;
+    //private String myUsername;
     private void sendMessage() {
 
         String translatedMessage = null;
@@ -145,6 +146,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User currentUser = dataSnapshot.getValue(User.class);
                 senderLang = currentUser.language;
+                //myUsername = currentUser.userName;
+                //System.out.println(myUsername);
             }
 
             @Override
@@ -152,7 +155,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
 
             }
         });
-
 
         String message = mETxtMessage.getText().toString();
 
@@ -169,8 +171,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
         String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String senderUserName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        String receiverUserName = getArguments().getString(Constants.ARG_RECEIVER_USERNAME);
         String receiverFirebaseToken = getArguments().getString(Constants.ARG_FIREBASE_TOKEN);
         Chat chat = new Chat(sender,
                 receiver,
@@ -184,7 +184,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                 receiverFirebaseToken);
 
         Conversation conversation = new Conversation(sender, receiver, senderUid, receiverUid, message, System.currentTimeMillis(),
-                                                    "Yao", "Jake");
+                                                    "Jake", getArguments().getString(Constants.ARG_RECEIVER));
+
         mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
     }
 
