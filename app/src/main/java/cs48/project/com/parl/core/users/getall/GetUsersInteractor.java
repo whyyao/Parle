@@ -20,7 +20,7 @@ import cs48.project.com.parl.utils.Constants;
  */
 
 public class GetUsersInteractor implements GetUsersContract.Interactor {
-    private static final String TAG = "GetUsersInteractor";
+    private static final String TAG = "GetOneUserInteractor";
 
     private GetUsersContract.OnGetAllUsersListener mOnGetAllUsersListener;
 
