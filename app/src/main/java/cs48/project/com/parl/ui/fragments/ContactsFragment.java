@@ -59,7 +59,7 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
     public ContactsFragment(){
 
     }
-
+    //hi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
