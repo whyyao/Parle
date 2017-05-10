@@ -115,7 +115,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
     }
 
     private String FirebaseReceiverUid;
-    private String FirebaseReceiverEmail;
+    private String FirebaseReceiverUserName;
     private String FirebaseFirebaseToken;
     private String FirebaseLanguage;
     @Override
@@ -135,7 +135,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User receiver = dataSnapshot.getValue(User.class);
-                FirebaseReceiverEmail = receiver.email;
+                FirebaseReceiverUserName = receiver.userName;
                 FirebaseFirebaseToken = receiver.firebaseToken;
                 FirebaseLanguage = receiver.language;
             }
@@ -146,7 +146,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
             }
         });
 
-        ChatActivity.startActivity(getActivity(),FirebaseReceiverEmail,FirebaseReceiverUid,FirebaseFirebaseToken, FirebaseLanguage);
+        ChatActivity.startActivity(getActivity(),FirebaseReceiverUserName,FirebaseReceiverUid,FirebaseFirebaseToken, FirebaseLanguage);
     }
 
     public void onSendConversationSuccess(){

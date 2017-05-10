@@ -16,8 +16,8 @@ public class GetOneUserPresenter implements GetOneUserContract.Presenter, GetOne
     }
 
     @Override
-    public void getOneUserWithEmail(String email) {
-        mGetOneUserInteractor.getOneUserFromFirebaseWithEmail(email);
+    public void getOneUser(String target) {
+        mGetOneUserInteractor.getOneUserFromFirebase(target);
     }
 
 

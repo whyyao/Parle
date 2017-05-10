@@ -11,19 +11,15 @@ public interface GetOneUserContract {
         void onGetOneUserSuccess(User users);
 
         void onGetOneUserFailure(String message);
-
-        void onGetChatUsersSuccess(User users);
-
-        void onGetChatUsersFailure(String message);
     }
 
     interface Presenter {
-        void getOneUserWithEmail(String email);
+        void getOneUser(String target);
 
     }
 
     interface Interactor {
-        void getOneUserFromFirebaseWithEmail(String email);
+        void getOneUserFromFirebase(String target);
 
     }
 

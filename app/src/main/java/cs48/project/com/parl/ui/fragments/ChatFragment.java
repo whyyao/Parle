@@ -38,6 +38,7 @@ import cs48.project.com.parl.core.chat.ChatPresenter;
 import cs48.project.com.parl.core.conversation.ConversationContract;
 import cs48.project.com.parl.core.conversation.ConversationPresenter;
 import cs48.project.com.parl.core.translation.Translator;
+import cs48.project.com.parl.core.users.getOne.GetMyUserName;
 import cs48.project.com.parl.events.PushNotificationEvent;
 import cs48.project.com.parl.models.Chat;
 import cs48.project.com.parl.models.Conversation;
@@ -182,9 +183,9 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         mChatPresenter.sendMessage(getActivity().getApplicationContext(),
                 chat,
                 receiverFirebaseToken);
-
+        GetMyUserName myUserName = new GetMyUserName();
         Conversation conversation = new Conversation(sender, receiver, senderUid, receiverUid, message, System.currentTimeMillis(),
-                                                    "Jake", getArguments().getString(Constants.ARG_RECEIVER));
+                                                    myUserName.userName, getArguments().getString(Constants.ARG_RECEIVER));
 
         mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
     }
