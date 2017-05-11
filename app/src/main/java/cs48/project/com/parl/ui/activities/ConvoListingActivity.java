@@ -34,6 +34,7 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
 
     private LogoutPresenter mLogoutPresenter;
 
+
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, ConvoListingActivity.class);
         context.startActivity(intent);
@@ -53,27 +54,13 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
         init();
     }
 
+
+
     @Override
     protected void onResume(){
         super.onResume();
     }
 
-    @Override
-    protected void onStop(){
-        super.onStop();
-        System.out.println("Activity Stopped");
-    }
-
-    @Override
-    protected void onPause(){
-        super.onPause();
-        Fragment frg = null;
-        frg = getSupportFragmentManager().findFragmentByTag("ME");
-        final android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.detach(frg);
-        ft.commit();
-        System.out.println("Activity Paused");
-    }
 
     private void bindViews() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);

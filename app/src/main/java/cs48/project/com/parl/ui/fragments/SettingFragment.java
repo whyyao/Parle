@@ -47,6 +47,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private LogoutPresenter mLogoutPresenter;
     private Button mBtnLogout;
+    FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
+
 
 
     public SettingFragment () {
@@ -55,7 +58,22 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(FirebaseAuth firebaseAuth){
+                setUsernameTextView();
+                setLanguageTextView();
+            }
+        };
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,12 +106,16 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     }
 
 
-    private void setUsernameTextView(){
 
+
+
+    private void setUsernameTextView(){
         String curUserUsername;
-        FirebaseUser curUser = FirebaseAuth.getInstance().getCurrentUser();
-        curUserUsername = curUser.getDisplayName();
-        usernameTextView.setText(curUserUsername);
+       FirebaseUser curUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (curUser != null) {
+            curUserUsername = curUser.getDisplayName();
+            usernameTextView.setText(curUserUsername);
+        }
 
         databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
 
