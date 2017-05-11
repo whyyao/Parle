@@ -43,9 +43,6 @@ public class GetOneUserInteractor implements GetOneUserContract.Interactor {
                     if (user.userName.equals(target)) {
                         mOnGetOneUserListener.onGetOneUserSuccess(user);
                     }
-                    else{
-                        mOnGetOneUserListener.onGetOneUserFailure("Didnt find matched");
-                    }
                 }
             }
 
