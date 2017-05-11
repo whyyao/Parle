@@ -64,6 +64,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
 
     private ChatPresenter mChatPresenter;
     private ConversationPresenter mConversationPresenter;
+    GetMyUserName myUserName;
 
     public static ChatFragment newInstance(String receiver,
                                            String receiverUid,
@@ -123,6 +124,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
 
         mChatPresenter.getMessage(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                 getArguments().getString(Constants.ARG_RECEIVER_UID));
+        myUserName = new GetMyUserName();
     }
 
     @Override
@@ -147,8 +149,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User currentUser = dataSnapshot.getValue(User.class);
                 senderLang = currentUser.language;
-                //myUsername = currentUser.userName;
-                //System.out.println(myUsername);
             }
 
             @Override
@@ -183,9 +183,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         mChatPresenter.sendMessage(getActivity().getApplicationContext(),
                 chat,
                 receiverFirebaseToken);
-        GetMyUserName myUserName = new GetMyUserName();
         Conversation conversation = new Conversation(sender, receiver, senderUid, receiverUid, message, System.currentTimeMillis(),
-                                                    myUserName.userName, getArguments().getString(Constants.ARG_RECEIVER));
+                                                    myUserName.userName, receiver);
 
         mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
     }

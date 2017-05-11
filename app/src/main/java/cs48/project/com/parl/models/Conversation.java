@@ -20,6 +20,8 @@ public class Conversation {
         this.receiverUid = receiverUid;
         this.lastMessage = lastMessage;
         this.time = time;
+        this.senderEmail = senderEmail;
+        this.receiverEmail = receiverEmail;
         this.senderUserName = senderUserName;
         this.receiverUserName = receiverUserName;
     }
