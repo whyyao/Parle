@@ -64,6 +64,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
             public void onAuthStateChanged(FirebaseAuth firebaseAuth){
                 setUsernameTextView();
                 setLanguageTextView();
+
             }
         };
     }
@@ -110,44 +111,48 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
 
 
     private void setUsernameTextView(){
-        String curUserUsername;
        FirebaseUser curUser = FirebaseAuth.getInstance().getCurrentUser();
         if (curUser != null) {
-            curUserUsername = curUser.getDisplayName();
-            usernameTextView.setText(curUserUsername);
+            mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    String username = user.userName;
+                    usernameTextView.setText(username);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
-
-        databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                String username = user.userName;
-                usernameTextView.setText(username);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
 
     private void setLanguageTextView(){
-        databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                String language = user.language;
-                languageTextView.setText(convertFromAcronym(language));
-            }
+        FirebaseUser curUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (curUser != null) {
+            mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
 
-            }
-        });
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    String language = user.language;
+                    languageTextView.setText(convertFromAcronym(language));
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     private void logout() {
