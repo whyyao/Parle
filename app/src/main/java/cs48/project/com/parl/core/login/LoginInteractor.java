@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import cs48.project.com.parl.utils.Constants;
@@ -21,6 +22,8 @@ import static android.content.ContentValues.TAG;
 
 public class LoginInteractor implements LoginContract.Interactor {
     private LoginContract.OnLoginListener mOnLoginListener;
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private String mUid;
 
     public LoginInteractor(LoginContract.OnLoginListener onLoginListener) {
         this.mOnLoginListener = onLoginListener;
@@ -42,6 +45,8 @@ public class LoginInteractor implements LoginContract.Interactor {
                             mOnLoginListener.onSuccess(task.getResult().toString());
                             updateFirebaseToken(task.getResult().getUser().getUid(),
                                     new SharedPrefUtil(activity.getApplicationContext()).getString(Constants.ARG_FIREBASE_TOKEN, null));
+                            mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            databaseReference.child("users").child(mUid).child("loggedIn").setValue(true);
                         } else {
                             mOnLoginListener.onFailure(task.getException().getMessage());
                         }

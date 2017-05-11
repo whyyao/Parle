@@ -16,11 +16,11 @@ public interface AddUserContract {
     }
 
     interface Presenter {
-        void addUser(Context context, FirebaseUser firebaseUser, String username, String language);
+        void addUser(Context context, FirebaseUser firebaseUser, String username, String language, boolean loggedIn);
     }
 
     interface Interactor {
-        void addUserToDatabase(Context context, FirebaseUser firebaseUser, String username, String language);
+        void addUserToDatabase(Context context, FirebaseUser firebaseUser, String username, String language, boolean loggedIn);
     }
 
     interface OnUserDatabaseListener {

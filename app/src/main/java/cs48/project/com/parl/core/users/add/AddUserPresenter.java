@@ -18,8 +18,8 @@ public class AddUserPresenter implements AddUserContract.Presenter, AddUserContr
     }
 
     @Override
-    public void addUser(Context context, FirebaseUser firebaseUser, String username, String language) {
-        mAddUserInteractor.addUserToDatabase(context, firebaseUser, username, language);
+    public void addUser(Context context, FirebaseUser firebaseUser, String username, String language, boolean loggedIn) {
+        mAddUserInteractor.addUserToDatabase(context, firebaseUser, username, language, loggedIn);
     }
 
     @Override

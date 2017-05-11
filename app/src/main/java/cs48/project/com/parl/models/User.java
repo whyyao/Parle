@@ -12,16 +12,18 @@ public class User {
     public String firebaseToken;
     public String userName;
     public String language;
+    public boolean loggedIn;
 
-    public User(){
+    public User() {
 
     }
 
-    public User(String uid, String email, String firebaseToken, String userName, String language){
+    public User(String uid, String email, String firebaseToken, String userName, String language, boolean loggedIn) {
         this.uid = uid;
         this.email = email;
         this.firebaseToken = firebaseToken;
         this.userName = userName;
         this.language = language;
+        this.loggedIn = loggedIn;
     }
 }

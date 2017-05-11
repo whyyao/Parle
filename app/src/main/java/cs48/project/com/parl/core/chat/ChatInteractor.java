@@ -3,6 +3,7 @@ package cs48.project.com.parl.core.chat;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +28,8 @@ public class ChatInteractor implements ChatContract.Interactor {
     private ChatContract.OnGetMessagesListener mOnGetMessagesListener;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     String username;
+    boolean loggedIn;
+    private String mUid;
 
     //CONSTRUCTORS
     public ChatInteractor(ChatContract.OnSendMessageListener onSendMessageListener) {
@@ -87,12 +90,14 @@ public class ChatInteractor implements ChatContract.Interactor {
                     getMessageFromFirebaseUser(chat.senderUid, chat.receiverUid);
                 }
 
-                // send push notification to the receiver
-                sendPushNotificationToReceiver(username, chat.translatedMessage, chat.senderUid,
-                                                new SharedPrefUtil(context).getString(Constants.ARG_FIREBASE_TOKEN),
-                                                //only send push notification if allowed
-                                                receiverFirebaseToken);
-                mOnSendMessageListener.onSendMessageSuccess();
+                if(databaseReference.child("users").child(chat.receiverUid).child("loggedIn").equals(true)) {
+                    // send push notification to the receiver
+                    sendPushNotificationToReceiver(username, chat.translatedMessage, chat.senderUid,
+                            new SharedPrefUtil(context).getString(Constants.ARG_FIREBASE_TOKEN),
+                            //only send push notification if allowed
+                            receiverFirebaseToken);
+                    mOnSendMessageListener.onSendMessageSuccess();
+                }
             }
 
             @Override
