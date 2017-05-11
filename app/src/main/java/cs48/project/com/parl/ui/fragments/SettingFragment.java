@@ -31,7 +31,7 @@ import cs48.project.com.parl.ui.activities.LoginActivity;
 
 import static cs48.project.com.parl.R.string.username;
 import static cs48.project.com.parl.utils.Constants.convertFromAcronym;
-
+//123
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
