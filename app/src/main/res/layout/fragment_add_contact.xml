@@ -4,24 +4,35 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <EditText
-        android:id="@+id/edit_text_new_contact_username"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/edit_text_password"
-        android:layout_alignParentStart="true"
-        android:hint="Username"
-        android:inputType="textEmailAddress" />
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_avg"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
-    <Button
-        android:id="@+id/button_search"
-        style="?attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:textColor="@color/white"
-        android:background="@color/buttons"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/button_register" />
+        <EditText
+            android:id="@+id/edit_text_new_contact_username"
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/edit_text_password"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_weight="0.95"
+            android:hint="Username"
+            android:inputType="textEmailAddress" />
+
+        <Button
+            android:id="@+id/button_search"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="65dp"
+            android:layout_height="33dp"
+            android:layout_alignStart="@+id/button_register"
+            android:layout_centerVertical="true"
+            android:background="@color/buttons"
+            android:text="Search"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
 
 </LinearLayout>

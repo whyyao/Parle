@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.ui.fragments.AddContactFragment;
-import cs48.project.com.parl.ui.fragments.LoginFragment;
 
 /**
  * Created by jakebliss on 5/8/17.
@@ -32,7 +31,7 @@ public class ContactAddActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_contact_activity);
+        setContentView(R.layout.activity_add_contact);
         bindViews();
         init();
     }

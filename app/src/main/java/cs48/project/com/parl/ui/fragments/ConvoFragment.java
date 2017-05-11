@@ -45,23 +45,20 @@ import static cs48.project.com.parl.ui.fragments.ContactsFragment.ARG_TYPE;
  * Use the {@link ConvoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConvoFragment extends Fragment implements ConversationContract.View, GetUsersContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
+public class ConvoFragment extends Fragment implements ConversationContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
 //    public static final String ARG_TYPE = "type";
 //    public static final String TYPE_CHATS = "type_chats";
 //    public static final String TYPE_ALL = "type_all";
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView mRecyclerViewAllUserListing;
+    private RecyclerView mRecyclerViewAllConvoListing;
 
-    private ConvoListingRecyclerAdapter mUserListingRecyclerAdapter;
-
-    private GetUsersPresenter mGetUsersPresenter;
+    private ConvoListingRecyclerAdapter mConvoListingRecyclerAdapter;
 
     private ConversationPresenter mConversationPresenter;
 
     public static ConvoFragment newInstance() {
         Bundle args = new Bundle();
-        //args.putString(ARG_TYPE, type);
         ConvoFragment fragment = new ConvoFragment();
         fragment.setArguments(args);
         return fragment;
@@ -81,7 +78,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
 
     private void bindViews(View view) {
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-        mRecyclerViewAllUserListing = (RecyclerView) view.findViewById(R.id.recycler_view_all_user_listing);
+        mRecyclerViewAllConvoListing = (RecyclerView) view.findViewById(R.id.recycler_view_all_contacts_listing);
     }
 
     @Override
@@ -92,8 +89,6 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
 
     private void init() {
         mConversationPresenter = new ConversationPresenter(this);
-        mGetUsersPresenter = new GetUsersPresenter(this);
-
         getConversations();
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
@@ -102,7 +97,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
             }
         });
 
-        ItemClickSupport.addTo(mRecyclerViewAllUserListing)
+        ItemClickSupport.addTo(mRecyclerViewAllConvoListing)
                 .setOnItemClickListener(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -113,26 +108,19 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
     public void onRefresh() {
         getConversations();
     }
-
-//    private void getUsers() {
-//        if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
-//
-//        } else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
-//            mGetUsersPresenter.getAllUsers();
-//        }
-//    }
+    
     private void getConversations(){
-        Log.e("1","trying to get conversations");
+    //    Log.e("1","trying to get conversations");
         mConversationPresenter.getConversation();
     }
 
     private String FirebaseReceiverUid;
-    private String FirebaseEmail;
+    private String FirebaseReceiverUserName;
     private String FirebaseFirebaseToken;
     private String FirebaseLanguage;
     @Override
     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-        Conversation conversation = mUserListingRecyclerAdapter.getConversation(position);
+        Conversation conversation = mConvoListingRecyclerAdapter.getConversation(position);
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
@@ -147,7 +135,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User receiver = dataSnapshot.getValue(User.class);
-                FirebaseEmail = receiver.email;
+                FirebaseReceiverUserName = receiver.userName;
                 FirebaseFirebaseToken = receiver.firebaseToken;
                 FirebaseLanguage = receiver.language;
             }
@@ -158,36 +146,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
             }
         });
 
-        ChatActivity.startActivity(getActivity(),FirebaseEmail,FirebaseReceiverUid,FirebaseFirebaseToken, FirebaseLanguage);
-    }
-
-    @Override
-    public void onGetAllUsersSuccess(List<User> users) {
-
-//        User testUser = users.get(0);
-//        Log.e("testUseid", testUser.uid);
-
-//        Log.e("skipped","presenter");
-    }
-
-    @Override
-    public void onGetAllUsersFailure(String message) {
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
-        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onGetChatUsersSuccess(List<User> users) {
-    }
-
-    @Override
-    public void onGetChatUsersFailure(String message) {
-
+        ChatActivity.startActivity(getActivity(),FirebaseReceiverUserName,FirebaseReceiverUid,FirebaseFirebaseToken, FirebaseLanguage);
     }
 
     public void onSendConversationSuccess(){
@@ -199,17 +158,15 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
     }
 
     public void onGetConversationSuccess(List<Conversation> conversations){
-        Log.e("1","getConversation success");
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-        //Log.e("output",conversations.get(0).lastMessage);
-        mUserListingRecyclerAdapter = new ConvoListingRecyclerAdapter(conversations);
-        mRecyclerViewAllUserListing.setAdapter(mUserListingRecyclerAdapter);
-        mUserListingRecyclerAdapter.notifyDataSetChanged();
+        mConvoListingRecyclerAdapter = new ConvoListingRecyclerAdapter(conversations);
+        mRecyclerViewAllConvoListing.setAdapter(mConvoListingRecyclerAdapter);
+        mConvoListingRecyclerAdapter.notifyDataSetChanged();
     }
 
     public void onGetConversationFailure(String message){

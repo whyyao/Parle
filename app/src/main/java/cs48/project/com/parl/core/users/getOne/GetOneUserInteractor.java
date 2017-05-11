@@ -1,56 +1,55 @@
-package cs48.project.com.parl.core.users.getall;
-
-import android.text.TextUtils;
-
-import com.google.firebase.auth.FirebaseAuth;
+package cs48.project.com.parl.core.users.getOne;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.utils.Constants;
 
+
 /**
- * Created by yaoyuan on 4/24/17.
+ * Created by yaoyuan on 5/9/17.
  */
 
-public class GetUsersInteractor implements GetUsersContract.Interactor {
+public class GetOneUserInteractor implements GetOneUserContract.Interactor {
     private static final String TAG = "GetOneUserInteractor";
 
-    private GetUsersContract.OnGetAllUsersListener mOnGetAllUsersListener;
+    private GetOneUserContract.OnGetOneUserListener mOnGetOneUserListener;
 
-    public GetUsersInteractor(GetUsersContract.OnGetAllUsersListener onGetAllUsersListener) {
-        this.mOnGetAllUsersListener = onGetAllUsersListener;
+    public GetOneUserInteractor(GetOneUserContract.OnGetOneUserListener onGetOneUserListener) {
+        this.mOnGetOneUserListener = onGetOneUserListener;
     }
 
 
     @Override
-    public void getAllUsersFromFirebase() {
+    public void getOneUserFromFirebase(final String target) {
         FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren().iterator();
-                List<User> users = new ArrayList<>();
                 while (dataSnapshots.hasNext()) {
                     DataSnapshot dataSnapshotChild = dataSnapshots.next();
                     User user = dataSnapshotChild.getValue(User.class);
-                    if (!TextUtils.equals(user.uid, FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                        users.add(user);
+                    //System.out.println(user.userName);
+                    if (user.email.equals(target)) {
+                        mOnGetOneUserListener.onGetOneUserSuccess(user);
+                    }
+                    if (user.uid.equals(target)) {
+                        mOnGetOneUserListener.onGetOneUserSuccess(user);
+                    }
+                    if (user.userName.equals(target)) {
+                        mOnGetOneUserListener.onGetOneUserSuccess(user);
                     }
                 }
-                mOnGetAllUsersListener.onGetAllUsersSuccess(users);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                mOnGetAllUsersListener.onGetAllUsersFailure(databaseError.getMessage());
+                mOnGetOneUserListener.onGetOneUserFailure(databaseError.getMessage());
             }
         });
     }
 }
-
