@@ -28,10 +28,4 @@ public interface GetOneUserContract {
 
         void onGetOneUserFailure(String message);
     }
-
-    interface OnGetChatUsersListener {
-        void onGetChatUsersSuccess(User users);
-
-        void onGetChatUsersFailure(String message);
-    }
 }
