@@ -13,7 +13,7 @@ import cs48.project.com.parl.utils.Constants;
 
 /**
  * Created by yaoyuan on 5/10/17.
- */
+ 4*/
 
 public class GetMyUserName {
     public String userName;
