@@ -67,8 +67,9 @@
         android:backgroundTint="@color/buttons"
         app:layout_anchor="@id/FAB_recycler_view"
         app:layout_anchorGravity="bottom|right|end"
+        app:layout_behavior=".ui.ScrollAwareFABBehavior"
         />
 
-    <!--app:layout_behavior="com.codepath.floatingactionbuttontest.ScrollAwareFABBehavior"-->
+
 
 </android.support.design.widget.CoordinatorLayout>
