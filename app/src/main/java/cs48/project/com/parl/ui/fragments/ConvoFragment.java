@@ -114,7 +114,8 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
         mConversationPresenter.getConversation();
     }
 
-    private String FirebaseReceiverUid;
+    private String othersUid;
+    private String myUid;
     private String FirebaseReceiverUserName;
     private String FirebaseFirebaseToken;
     private String FirebaseLanguage;
@@ -123,15 +124,16 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
         Conversation conversation = mConvoListingRecyclerAdapter.getConversation(position);
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-
-        if(conversation.receiverUid == currentUserUid){
-            FirebaseReceiverUid = conversation.senderUid;
+        if(conversation.receiverUid.equals(currentUserUid)){
+            othersUid = conversation.senderUid;
+            myUid = conversation.receiverUid;
         }
         else{
-            FirebaseReceiverUid = conversation.receiverUid;
+            othersUid = conversation.receiverUid;
+            myUid = conversation.senderUid;
         }
 
-        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseReceiverUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(othersUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User receiver = dataSnapshot.getValue(User.class);
@@ -146,7 +148,7 @@ public class ConvoFragment extends Fragment implements ConversationContract.View
             }
         });
 
-        ChatActivity.startActivity(getActivity(),FirebaseReceiverUserName,FirebaseReceiverUid,FirebaseFirebaseToken, FirebaseLanguage);
+        ChatActivity.startActivity(getActivity(),FirebaseReceiverUserName,othersUid,FirebaseFirebaseToken, FirebaseLanguage);
     }
 
     public void onSendConversationSuccess(){

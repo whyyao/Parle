@@ -84,7 +84,6 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
 
     private void onAddContact(View view){
         String target = mETxtUsername.getText().toString();
-        System.out.println(target);
         mGetOneUserPresenter.getOneUser(target);
       //  mAddContactPresenter.addContact(getActivity(), target);
 
@@ -105,6 +104,7 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
     @Override
     public void onGetOneUserSuccess(User user){
         Toast.makeText(getActivity(), user.userName, Toast.LENGTH_SHORT).show();
+        mAddContactPresenter.addContact(getActivity(),user.uid);
 
     }
     @Override
