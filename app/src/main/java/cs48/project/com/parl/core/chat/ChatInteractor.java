@@ -26,9 +26,9 @@ public class ChatInteractor implements ChatContract.Interactor {
 
     private ChatContract.OnSendMessageListener mOnSendMessageListener;
     private ChatContract.OnGetMessagesListener mOnGetMessagesListener;
-    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
     String username;
-    boolean loggedIn;
+    boolean isLoggedIn;
     private String mUid;
 
     //CONSTRUCTORS
@@ -51,14 +51,12 @@ public class ChatInteractor implements ChatContract.Interactor {
     public void sendMessageToFirebaseUser(final Context context, final Chat chat, final String receiverFirebaseToken) {
         final String room_type_1 = chat.senderUid + "_" + chat.receiverUid;
         final String room_type_2 = chat.receiverUid + "_" + chat.senderUid;
-
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         databaseReference.child("users").child(chat.senderUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                username = user.userName;
+
             }
 
             @Override
@@ -67,11 +65,27 @@ public class ChatInteractor implements ChatContract.Interactor {
             }
         });
 
+        databaseReference.child(Constants.ARG_USERS).child(chat.receiverUid).child("loggedIn").getRef().addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                isLoggedIn = dataSnapshot.getValue(boolean.class);
+                System.out.println(isLoggedIn);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
         databaseReference.child(Constants.ARG_CHAT_ROOMS).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
 
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
                 if (dataSnapshot.hasChild(room_type_1)) {
  //                   Conversation convo = new Conversation(chat.message, chat.timestamp);
                     Log.e(TAG, "sendMessageToFirebaseUser: " + room_type_1 + " exists");
@@ -90,7 +104,9 @@ public class ChatInteractor implements ChatContract.Interactor {
                     getMessageFromFirebaseUser(chat.senderUid, chat.receiverUid);
                 }
 
-                if(databaseReference.child("users").child(chat.receiverUid).child("loggedIn").equals(true)) {
+                System.out.println(isLoggedIn);
+                if(isLoggedIn == true ) {
+                    System.out.println("Inside If");
                     // send push notification to the receiver
                     sendPushNotificationToReceiver(username, chat.translatedMessage, chat.senderUid,
                             new SharedPrefUtil(context).getString(Constants.ARG_FIREBASE_TOKEN),

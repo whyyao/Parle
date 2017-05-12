@@ -11,7 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class LogoutInteractor implements LogoutContract.Interactor {
     private LogoutContract.OnLogoutListener mOnLogoutListener;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-    private String mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private String mUid;
 
     public LogoutInteractor(LogoutContract.OnLogoutListener onLogoutListener) {
         mOnLogoutListener = onLogoutListener;
@@ -20,6 +20,7 @@ public class LogoutInteractor implements LogoutContract.Interactor {
     @Override
     public void performFirebaseLogout() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             databaseReference.child("users").child(mUid).child("loggedIn").setValue(false);
             FirebaseAuth.getInstance().signOut();
             mOnLogoutListener.onSuccess("Successfully logged out!");
