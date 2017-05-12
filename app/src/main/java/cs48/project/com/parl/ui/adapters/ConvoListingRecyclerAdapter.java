@@ -38,6 +38,7 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
         return new ViewHolder(view);
     }
     private String userName;
+    private String correctMessage;
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Conversation conversation = mConversation.get(position);
@@ -47,9 +48,11 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
         System.out.println(conversation.receiverUid);
          if(currentUserUid.equals(conversation.receiverUid)){
              userName = conversation.senderUserName;
+             correctMessage = conversation.translatedLastMessage;
         }
         else{
              userName = conversation.receiverUserName;
+             correctMessage = conversation.unTranslatedLastMessage;
         }
 
         System.out.printf("Conversation Print: %s\n", userName);
@@ -58,7 +61,7 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
 
 
         holder.txtUserAlphabet.setText(alphabet);
-        holder.textLastMessage.setText(conversation.lastMessage);
+        holder.textLastMessage.setText(correctMessage);
 
         Date dateObject= new Date(conversation.time);
         String formattedDate=formatDate(dateObject);

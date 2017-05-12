@@ -183,7 +183,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         mChatPresenter.sendMessage(getActivity().getApplicationContext(),
                 chat,
                 receiverFirebaseToken);
-        Conversation conversation = new Conversation(senderUid, receiverUid, message, System.currentTimeMillis(),
+        Conversation conversation = new Conversation(senderUid, receiverUid, message, translatedMessage, System.currentTimeMillis(),
                                                     myUserName.userName, receiver);
 
         mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
