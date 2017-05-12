@@ -58,18 +58,18 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/FloatingActionButton"
-        app:rippleColor="@color/buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         android:background="@color/white"
         android:backgroundTint="@color/buttons"
-        app:layout_anchor="@id/FAB_recycler_view"
-        app:layout_anchorGravity="bottom|right|end"
+        android:src="@drawable/ic_add_black_24dp"
+        android:tint="@color/white"
+        app:borderWidth="0dp"
+        app:layout_anchor="@+id/FAB_recycler_view"
         app:layout_behavior=".ui.ScrollAwareFABBehavior"
-        />
-
+        app:rippleColor="@color/buttons"
+        app:layout_anchorGravity="bottom|right|end"/>
 
 
 </android.support.design.widget.CoordinatorLayout>
