@@ -118,7 +118,6 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
 
         switch (viewId) {
             case R.id.FloatingActionButton:
-//               ContactAddActivity.startIntent(ConvoListingActivity.this);
                 startActivity(new Intent(this, ContactAddActivity.class));
                 break;
         }
