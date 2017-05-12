@@ -2,6 +2,7 @@ package cs48.project.com.parl;
 
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.*;
 
 /**
