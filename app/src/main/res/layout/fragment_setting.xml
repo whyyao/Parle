@@ -39,14 +39,14 @@
 
         <Button
             android:id="@+id/setting_logout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="true"
             android:background="@color/buttons"
             android:text="Logout"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white"/>
+
 
 
     </RelativeLayout>
