@@ -20,7 +20,7 @@ import cs48.project.com.parl.utils.SharedPrefUtil;
 /**
  * Created by yaoyuan on 4/22/17.
  */
-
+//123
 public class ChatInteractor implements ChatContract.Interactor {
     private static final String TAG = "ChatInteractor";
 
