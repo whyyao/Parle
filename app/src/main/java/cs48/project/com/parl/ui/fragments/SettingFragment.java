@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
@@ -41,8 +42,9 @@ import static cs48.project.com.parl.utils.Constants.convertFromAcronym;
  * create an instance of this fragment.
  */
 public class SettingFragment extends Fragment implements View.OnClickListener, LogoutContract.View{
-    private TextView usernameTextView;
+    private EditText usernameTextView;
     private TextView languageTextView;
+    private TextView emailTextView;
     private String mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private LogoutPresenter mLogoutPresenter;
@@ -64,7 +66,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
             public void onAuthStateChanged(FirebaseAuth firebaseAuth){
                 setUsernameTextView();
                 setLanguageTextView();
-
+                setEmailTextView();
             }
         };
     }
@@ -86,9 +88,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     }
 
     private void bindViews(View view) {
-        usernameTextView = (TextView) view.findViewById(R.id.setting_username);
-        languageTextView = (TextView) view.findViewById(R.id.setting_language);
-
+        usernameTextView = (EditText) view.findViewById(R.id.User_Name);
+        languageTextView = (TextView) view.findViewById(R.id.User_Language);
+        emailTextView = (TextView) view.findViewById(R.id.User_Email);
         mBtnLogout = (Button) view.findViewById(R.id.setting_logout);
     }
 
@@ -101,7 +103,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     private void init(){
         setUsernameTextView();
         setLanguageTextView();
-
+        setEmailTextView();
         mLogoutPresenter = new LogoutPresenter(this);
         mBtnLogout.setOnClickListener(this);
     }
@@ -152,6 +154,31 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
 
                 }
             });
+        }
+    }
+
+    private void setEmailTextView() {
+        FirebaseUser curUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (curUser != null) {
+            mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    String email = user.email;
+                    System.out.println("EMAIL IS " + email);
+                    emailTextView.setText(email);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
         }
     }
 

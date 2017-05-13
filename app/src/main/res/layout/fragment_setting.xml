@@ -1,42 +1,118 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context="cs48.project.com.parl.ui.fragments.SettingFragment">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello,"
-        android:textSize="16dp"/>
+        android:gravity="center">
 
-    <TextView
-        android:id="@+id/setting_username"
+        <ImageButton
+            android:id="@+id/userImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:elevation="3dp"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_light_normal_background" />
+
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sam"
-        android:textSize="32dp"/>
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal"
+        android:paddingTop="24dp">
 
-    <TextView
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="Name"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/User_Name"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="Temp Name"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_avg"
-        android:text="Your Language Selection"
-        android:textSize="16dp"/>
+        android:layout_marginBottom="25dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/setting_language"
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="Email"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/User_Email"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:gravity="right"
+            android:text="Temp Email"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="English"
-        android:textSize="32dp"/>
+        android:layout_marginBottom="25dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="Language"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/User_Language"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="Temp Lang"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <Button
             android:id="@+id/setting_logout"
             android:layout_width="wrap_content"
@@ -45,9 +121,7 @@
             android:layout_alignParentLeft="true"
             android:background="@color/buttons"
             android:text="Logout"
-            android:textColor="@color/white"/>
-
-
-
+            android:textColor="@color/white" />
     </RelativeLayout>
+
 </LinearLayout>
