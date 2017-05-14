@@ -73,7 +73,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                   String receiverUid,
                                   String firebaseToken) {
         Intent intent = new Intent(this, ChatActivity.class);
-        intent.putExtra(Constants.ARG_RECEIVER, receiver);
+        intent.putExtra(Constants.ARG_RECEIVER_USERNAME, receiver);
         intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
         intent.putExtra(Constants.ARG_FIREBASE_TOKEN, firebaseToken);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

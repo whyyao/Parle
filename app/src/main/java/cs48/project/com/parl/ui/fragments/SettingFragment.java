@@ -28,6 +28,7 @@ import cs48.project.com.parl.core.logout.LogoutPresenter;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.activities.ConvoListingActivity;
 import cs48.project.com.parl.ui.activities.LoginActivity;
+import cs48.project.com.parl.utils.Constants;
 
 import static cs48.project.com.parl.R.string.username;
 import static cs48.project.com.parl.utils.Constants.convertFromAcronym;
@@ -115,7 +116,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
         if (curUser != null) {
             mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference.child(Constants.ARG_USERS).child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,7 +139,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
         if (curUser != null) {
             mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            databaseReference.child("users").child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference.child(Constants.ARG_USERS).child(mUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

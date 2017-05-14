@@ -22,7 +22,7 @@ public class ChatActivity extends AppCompatActivity {
                                      String firebaseToken,
                                      String language) {
         Intent intent = new Intent(context, ChatActivity.class);
-        intent.putExtra(Constants.ARG_RECEIVER, receiver);
+        intent.putExtra(Constants.ARG_RECEIVER_USERNAME, receiver);
         intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
         intent.putExtra(Constants.ARG_FIREBASE_TOKEN, firebaseToken);
         intent.putExtra(Constants.ARG_RECEIVER_LANGUAGE, language);
@@ -46,12 +46,12 @@ public class ChatActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         // set toolbar title
-        mToolbar.setTitle(getIntent().getExtras().getString(Constants.ARG_RECEIVER));
+        mToolbar.setTitle(getIntent().getExtras().getString(Constants.ARG_RECEIVER_USERNAME));
 
         // set the register screen fragment
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout_content_chat,
-                ChatFragment.newInstance(getIntent().getExtras().getString(Constants.ARG_RECEIVER),
+                ChatFragment.newInstance(getIntent().getExtras().getString(Constants.ARG_RECEIVER_USERNAME),
                         getIntent().getExtras().getString(Constants.ARG_RECEIVER_UID),
                         getIntent().getExtras().getString(Constants.ARG_FIREBASE_TOKEN),
                         getIntent().getExtras().getString(Constants.ARG_RECEIVER_LANGUAGE)),

@@ -71,7 +71,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                                            String firebaseToken,
                                            String language) {
         Bundle args = new Bundle();
-        args.putString(Constants.ARG_RECEIVER, receiver);
+        args.putString(Constants.ARG_RECEIVER_USERNAME, receiver);
         args.putString(Constants.ARG_RECEIVER_UID, receiverUid);
         args.putString(Constants.ARG_FIREBASE_TOKEN, firebaseToken);
         args.putString(Constants.ARG_RECEIVER_LANGUAGE, language);
@@ -168,7 +168,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         }
 
         System.out.println(translatedMessage + " This is the translated message");
-        String receiver = getArguments().getString(Constants.ARG_RECEIVER);
+        String receiver = getArguments().getString(Constants.ARG_RECEIVER_USERNAME);
         String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
         String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();

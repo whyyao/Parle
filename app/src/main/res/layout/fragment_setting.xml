@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello,"
+        android:text="@string/hello"
         android:textSize="16dp"/>
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_avg"
-        android:text="Your Language Selection"
+        android:text="@string/language_selection"
         android:textSize="16dp"/>
 
     <TextView
