@@ -18,6 +18,8 @@ import java.util.List;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.contacts.add.AddContactContract;
 import cs48.project.com.parl.core.contacts.add.AddContactPresenter;
+import cs48.project.com.parl.core.contacts.getAll.GetContactsContract;
+import cs48.project.com.parl.core.contacts.getAll.GetContactsPresenter;
 import cs48.project.com.parl.core.users.getall.GetUsersContract;
 import cs48.project.com.parl.core.users.getall.GetUsersPresenter;
 import cs48.project.com.parl.models.User;
@@ -36,7 +38,7 @@ import cs48.project.com.parl.utils.ItemClickSupport;
  */
 
 
-public class ContactsFragment extends Fragment implements AddContactContract.View, GetUsersContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
+public class ContactsFragment extends Fragment implements AddContactContract.View, GetUsersContract.View, GetContactsContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
     public static final String ARG_TYPE = "type";
     public static final String TYPE_CHATS = "type_chats";
     public static final String TYPE_ALL = "type_all";
@@ -47,6 +49,7 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
     private ContactListingRecyclerAdapter mUserListingRecyclerAdapter;
 
     private GetUsersPresenter mGetUsersPresenter;
+    private GetContactsPresenter mGetContactsPresenter;
 
     public static ContactsFragment newInstance(String type) {
         Bundle args = new Bundle();
@@ -81,6 +84,7 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
 
     private void init() {
         mGetUsersPresenter = new GetUsersPresenter(this);
+        mGetContactsPresenter = new GetContactsPresenter(this);
         getUsers();
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
@@ -105,7 +109,8 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
         if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
 
         } else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
-            mGetUsersPresenter.getAllUsers();
+            //mGetUsersPresenter.getAllUsers();
+            mGetContactsPresenter.getContactsUsers();
         }
     }
 
@@ -150,15 +155,10 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
     @Override
     public void onGetChatUsersFailure(String message) {
 
-    }
+}
 
     private AddContactPresenter mAddContactPresenter;
 
-
-    private String newContactId = "newone23";
-    private void onAddContact(View view){
-        mAddContactPresenter.addContact(getActivity(), newContactId);
-    }
 
     @Override
     public void onAddContactSuccess(String message) {
@@ -170,6 +170,16 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
 
     @Override
     public void onAddContactFailure(String message) {
+
+    }
+
+    @Override
+    public void onGetContactsUsersSuccess(List<String> uid){
+
+    }
+
+    @Override
+    public void onGetContactsUsersFailure(String message){
 
     }
 }

@@ -2,7 +2,7 @@ package cs48.project.com.parl.core.contacts.add;
 
 import android.content.Context;
 
-import com.google.firebase.auth.FirebaseUser;
+import cs48.project.com.parl.models.User;
 
 /**
  * Created by jakebliss on 5/7/17.
@@ -16,11 +16,11 @@ public interface AddContactContract {
     }
 
     interface Presenter {
-        void addContact(Context context, FirebaseUser firebaseUser);
+        void addContact(Context context, User user);
     }
 
     interface Interactor {
-        void addContactToDatabase(Context context, FirebaseUser firebaseUser);
+        void addContactToDatabase(Context context, User user);
     }
 
     interface OnContactDatabaseListener {
