@@ -19,7 +19,7 @@ import cs48.project.com.parl.ParleMainApp;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.ui.fragments.ChatFragment;
 import cs48.project.com.parl.utils.Constants;
-//.
+//...
 public class ChatActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
