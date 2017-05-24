@@ -8,6 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import cs48.project.com.parl.ParleMainApp;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.ui.fragments.ChatFragment;
@@ -15,6 +22,7 @@ import cs48.project.com.parl.utils.Constants;
 //.
 public class ChatActivity extends AppCompatActivity {
     private Toolbar mToolbar;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     public static void startActivity(Context context,
                                      String receiver,
@@ -32,10 +40,27 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         setContentView(R.layout.activity_chat);
         bindViews();
         init();
+
+        databaseReference.child(Constants.ARG_USERS).child(getIntent().getExtras().getString(Constants.ARG_RECEIVER_UID)).child("userName").getRef().addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String userName = dataSnapshot.getValue(String.class);
+                mToolbar.setTitle(userName);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
     }
+
 
     private void bindViews() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);

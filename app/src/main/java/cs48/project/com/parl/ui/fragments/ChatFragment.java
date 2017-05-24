@@ -57,14 +57,13 @@ import cs48.project.com.parl.utils.Constants;
 public class ChatFragment extends Fragment implements ChatContract.View, ConversationContract.View, TextView.OnEditorActionListener {
     private RecyclerView mRecyclerViewChat;
     private EditText mETxtMessage;
-
     private ProgressDialog mProgressDialog;
-
     private ChatRecyclerAdapter mChatRecyclerAdapter;
-
     private ChatPresenter mChatPresenter;
     private ConversationPresenter mConversationPresenter;
     GetMyUserName myUserName;
+
+
 
     public static ChatFragment newInstance(String receiver,
                                            String receiverUid,
@@ -85,6 +84,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         super.onStart();
         EventBus.getDefault().register(this);
     }
+
 
     @Override
     public void onStop() {
