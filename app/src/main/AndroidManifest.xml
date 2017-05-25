@@ -3,7 +3,6 @@
     package="cs48.project.com.parl">
    <uses-sdk android:minSdkVersion="9" />
     <application
-        
         android:name="cs48.project.com.parl.ParleMainApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,6 +10,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.nearby.messages.API_KEY"
+            android:value="AIzaSyBDa6pLmuIK-JyVIPtEVao_x25hOztGUKs" />
+
         <activity
             android:name=".ui.activities.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -51,6 +55,8 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+
     </application>
 
 </manifest>

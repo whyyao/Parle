@@ -3,9 +3,26 @@ package cs48.project.com.parl.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ArrayAdapter;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.Connections;
+import com.google.android.gms.nearby.messages.Message;
+import com.google.android.gms.nearby.messages.MessageListener;
+import com.google.android.gms.nearby.messages.Messages;
+import com.google.android.gms.nearby.messages.PublishCallback;
+import com.google.android.gms.nearby.messages.PublishOptions;
+import com.google.android.gms.nearby.messages.Strategy;
+import com.google.android.gms.nearby.messages.SubscribeCallback;
+import com.google.android.gms.nearby.messages.SubscribeOptions;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.ui.fragments.AddContactFragment;
@@ -16,6 +33,7 @@ import cs48.project.com.parl.ui.fragments.AddContactFragment;
 
 public class ContactAddActivity extends AppCompatActivity{
     private Toolbar mToolbar;
+
 
     public static void startIntent(Context context) {
         Intent intent = new Intent(context, ContactAddActivity.class);
@@ -34,6 +52,7 @@ public class ContactAddActivity extends AppCompatActivity{
         setContentView(R.layout.activity_add_contact);
         bindViews();
         init();
+
     }
 
     private void bindViews() {

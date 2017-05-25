@@ -45,20 +45,20 @@ public class ChatActivity extends AppCompatActivity {
         bindViews();
         init();
 
-        databaseReference.child(Constants.ARG_USERS).child(getIntent().getExtras().getString(Constants.ARG_RECEIVER_UID)).child("userName").getRef().addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String userName = dataSnapshot.getValue(String.class);
-                mToolbar.setTitle(userName);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
+//        databaseReference.child(Constants.ARG_USERS).child(getIntent().getExtras().getString(Constants.ARG_RECEIVER_UID)).child("userName").getRef().addValueEventListener(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String userName = dataSnapshot.getValue(String.class);
+//                mToolbar.setTitle(userName);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//
+//        });
     }
 
 

@@ -57,6 +57,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.google.api-client:google-api-client:1.22.0'
     compile 'com.google.apis:google-api-services-translate:v2-rev49-1.22.0'
+    compile 'com.google.android.gms:play-services-nearby:9.0.0'
     compile 'com.google.cloud:google-cloud:0.13.0-alpha'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

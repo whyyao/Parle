@@ -3,11 +3,13 @@ package cs48.project.com.parl.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,15 +21,36 @@ import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
 import cs48.project.com.parl.models.User;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.Connections;
+import com.google.android.gms.nearby.messages.Message;
+import com.google.android.gms.nearby.messages.MessageListener;
+import com.google.android.gms.nearby.messages.Messages;
+import com.google.android.gms.nearby.messages.PublishCallback;
+import com.google.android.gms.nearby.messages.PublishOptions;
+import com.google.android.gms.nearby.messages.Strategy;
+import com.google.android.gms.nearby.messages.SubscribeCallback;
+import com.google.android.gms.nearby.messages.SubscribeOptions;
+import com.google.firebase.auth.FirebaseAuth;
+
 /**
  * Created by jakebliss on 5/8/17.
  */
 
-public class AddContactFragment extends Fragment implements View.OnClickListener, AddContactContract.View, GetOneUserContract.View{
+public class AddContactFragment extends Fragment implements View.OnClickListener, AddContactContract.View, GetOneUserContract.View, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private AddContactPresenter mAddContactPresenter;
     private EditText mETxtUsername;
     private Button mBtnSearch;
     private ProgressDialog mProgressDialog;
+    GoogleApiClient mGoogleApiClient;
+    private Message mPubMessage;
+    private MessageListener mMessageListener;
+    private ArrayAdapter<String> mNearbyDevicesArrayAdapter;
+    private FirebaseAuth mAuth;
 
     private GetOneUserPresenter mGetOneUserPresenter;
 
@@ -36,6 +59,57 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
         AddContactFragment fragment = new AddContactFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        mMessageListener = new MessageListener() {
+            String messageAsString;
+
+            @Override
+            public void onFound(Message message) {
+                messageAsString = new String(message.getContent());
+            }
+
+            @Override
+            public void onLost(Message message) {
+                messageAsString = null;
+            }
+        };
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint){
+        //public the current users uID
+        String curUser = mAuth.getInstance().getCurrentUser().toString();
+        byte [] newMessage = curUser.getBytes();
+        mPubMessage = new Message(newMessage);
+        Nearby.Messages.publish(mGoogleApiClient, mPubMessage);
+
+        //subscribe to messages
+        Nearby.Messages.subscribe(mGoogleApiClient, mMessageListener).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onStop() {
+        Nearby.Messages.unpublish(mGoogleApiClient, mPubMessage);
+        Nearby.Messages.unsubscribe(mGoogleApiClient, mMessageListener);
+        super.onStop();
     }
 
     @Nullable
@@ -58,6 +132,12 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
     }
 
     private void init() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Nearby.MESSAGES_API)
+                .addConnectionCallbacks(this)
+                .enableAutoManage(this, this)
+                .build();
+
         mAddContactPresenter = new AddContactPresenter(this);
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setTitle(getString(R.string.loading));
@@ -66,6 +146,7 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
         mBtnSearch.setOnClickListener(this);
 
         mGetOneUserPresenter = new GetOneUserPresenter(this);
+
     }
 
     @Override
