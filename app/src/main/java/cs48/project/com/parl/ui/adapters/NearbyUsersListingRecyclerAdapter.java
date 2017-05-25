@@ -17,7 +17,7 @@ import cs48.project.com.parl.models.User;
  * Created by jakebliss on 5/24/17.
  */
 
-public class NearbyUsersListingRecyclerAdapter extends RecyclerView.Adapter<ContactListingRecyclerAdapter.ViewHolder>{
+public class NearbyUsersListingRecyclerAdapter extends RecyclerView.Adapter<NearbyUsersListingRecyclerAdapter.ViewHolder>{
     private List<User> mUsers;
 
     public NearbyUsersListingRecyclerAdapter(List<User> users) {
@@ -32,11 +32,12 @@ public class NearbyUsersListingRecyclerAdapter extends RecyclerView.Adapter<Cont
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_contact_listing, parent, false);
+
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(NearbyUsersListingRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         User user = mUsers.get(position);
 
         String alphabet = user.userName.substring(0, 1);
