@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +22,12 @@ import cs48.project.com.parl.core.contacts.add.AddContactContract;
 import cs48.project.com.parl.core.contacts.add.AddContactPresenter;
 import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
+import cs48.project.com.parl.core.users.getall.GetUsersContract;
+import cs48.project.com.parl.core.users.getall.GetUsersPresenter;
 import cs48.project.com.parl.models.User;
+import cs48.project.com.parl.ui.activities.ChatActivity;
 import cs48.project.com.parl.ui.adapters.ContactListingRecyclerAdapter;
+import cs48.project.com.parl.ui.adapters.NearbyUsersListingRecyclerAdapter;
 import cs48.project.com.parl.utils.ItemClickSupport;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -40,11 +46,18 @@ import com.google.android.gms.nearby.messages.SubscribeCallback;
 import com.google.android.gms.nearby.messages.SubscribeOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.List;
+
 /**
  * Created by jakebliss on 5/8/17.
  */
 
-public class AddContactFragment extends Fragment implements View.OnClickListener, AddContactContract.View, GetOneUserContract.View, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class AddContactFragment extends Fragment implements AddContactContract.View, GetUsersContract.View,
+        View.OnClickListener, ItemClickSupport.OnItemClickListener, GetOneUserContract.View,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SwipeRefreshLayout.OnRefreshListener{
+    public static final String ARG_TYPE = "type";
+    public static final String TYPE_CHATS = "type_chats";
+    public static final String TYPE_ALL = "type_all";
     private AddContactPresenter mAddContactPresenter;
     private EditText mETxtUsername;
     private Button mBtnSearch;
@@ -52,11 +65,12 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
     GoogleApiClient mGoogleApiClient;
     private Message mPubMessage;
     private MessageListener mMessageListener;
-    private ArrayAdapter<String> mNearbyDevicesArrayAdapter;
+    private List<String> mNearbyDevicesArrayAdapter;
     private FirebaseAuth mAuth;
     private RecyclerView mRecyclerViewAllUserListing;
-
-    private ContactListingRecyclerAdapter mUserListingRecyclerAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private GetUsersPresenter mGetUsersPresenter;
+    private NearbyUsersListingRecyclerAdapter mUserListingRecyclerAdapter;
 
     private GetOneUserPresenter mGetOneUserPresenter;
 
@@ -75,12 +89,12 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onFound(Message message) {
-                messageAsString = new String(message.getContent());
+                mNearbyDevicesArrayAdapter.add(message.getContent().toString());
             }
 
             @Override
             public void onLost(Message message) {
-                messageAsString = null;
+                mNearbyDevicesArrayAdapter.remove(message.getContent().toString());
             }
         };
 
@@ -143,6 +157,7 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
     private void bindViews(View view) {
         mETxtUsername = (EditText) view.findViewById(R.id.edit_text_new_contact_username);
         mBtnSearch = (Button) view.findViewById(R.id.button_search);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         mRecyclerViewAllUserListing = (RecyclerView) view.findViewById(R.id.recycler_view_nearby);
     }
 
@@ -153,6 +168,13 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
     }
 
     private void init() {
+        mGetUsersPresenter = new GetUsersPresenter(this);
+        mAddContactPresenter = new AddContactPresenter(this);
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setTitle(getString(R.string.loading));
+        mProgressDialog.setMessage(getString(R.string.please_wait));
+        mProgressDialog.setIndeterminate(true);
+        mBtnSearch.setOnClickListener(this);
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(Nearby.MESSAGES_API)
                 .addConnectionCallbacks(this)
@@ -160,18 +182,61 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
                 .enableAutoManage(getActivity(), this)
                 .build();
 
-        mAddContactPresenter = new AddContactPresenter(this);
-        mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setTitle(getString(R.string.loading));
-        mProgressDialog.setMessage(getString(R.string.please_wait));
-        mProgressDialog.setIndeterminate(true);
-        mBtnSearch.setOnClickListener(this);
+        getUsers();
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
 
         ItemClickSupport.addTo(mRecyclerViewAllUserListing)
-                .setOnItemClickListener();
+                .setOnItemClickListener(this);
 
         mGetOneUserPresenter = new GetOneUserPresenter(this);
 
+    }
+
+    @Override
+    public void onRefresh() {
+        getUsers();
+    }
+
+    private void getUsers() {
+        System.out.println("In get get Users");
+        mGetUsersPresenter.getAllUsers();
+        if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
+
+        } else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
+            mGetUsersPresenter.getAllUsers();
+        }
+    }
+
+    @Override
+    public void onGetAllUsersSuccess(List<User> users) {
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        mUserListingRecyclerAdapter = new NearbyUsersListingRecyclerAdapter(users);
+        mRecyclerViewAllUserListing.setAdapter(mUserListingRecyclerAdapter);
+        mUserListingRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onGetAllUsersFailure(String message) {
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -185,9 +250,13 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
                 onAddContact(view);
                 //onSearch(view);
                 break;
-            case R.id.recycler_view_nearby:
-                onAddContact(view);
         }
+    }
+
+    @Override
+    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+        String newContactUid = mUserListingRecyclerAdapter.getUser(position).uid;
+        onAddNearbyContact(newContactUid);
     }
 
     private void onAddContact(View view){
@@ -195,6 +264,10 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
         mGetOneUserPresenter.getOneUser(target);
       //  mAddContactPresenter.addContact(getActivity(), target);
 
+    }
+
+    private void onAddNearbyContact(String newContactUid){
+        mGetOneUserPresenter.getOneUser(newContactUid);
     }
 
     @Override
@@ -207,6 +280,16 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onAddContactFailure(String message) {
+    }
+
+    @Override
+    public void onGetChatUsersSuccess(List<User> users) {
+
+    }
+
+    @Override
+    public void onGetChatUsersFailure(String message) {
+
     }
 
     @Override
