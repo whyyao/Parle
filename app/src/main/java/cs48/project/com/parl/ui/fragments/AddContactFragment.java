@@ -2,60 +2,40 @@ package cs48.project.com.parl.ui.fragments;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ListAdapter;
+import android.app.SearchManager;
+
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.contacts.add.AddContactContract;
 import cs48.project.com.parl.core.contacts.add.AddContactPresenter;
 import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
-import cs48.project.com.parl.core.users.getNearby.GetNearbyUsersPresenter;
-import cs48.project.com.parl.core.users.getall.GetNearbyUsersContract;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.activities.ChatActivity;
-import cs48.project.com.parl.ui.adapters.ContactListingRecyclerAdapter;
-import cs48.project.com.parl.ui.adapters.NearbyUsersListingRecyclerAdapter;
-import cs48.project.com.parl.utils.ItemClickSupport;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.connection.Connections;
-import com.google.android.gms.nearby.messages.Message;
-import com.google.android.gms.nearby.messages.MessageListener;
-import com.google.android.gms.nearby.messages.Messages;
-import com.google.android.gms.nearby.messages.PublishCallback;
-import com.google.android.gms.nearby.messages.PublishOptions;
-import com.google.android.gms.nearby.messages.Strategy;
-import com.google.android.gms.nearby.messages.SubscribeCallback;
-import com.google.android.gms.nearby.messages.SubscribeOptions;
-import com.google.firebase.auth.FirebaseAuth;
+import cs48.project.com.parl.ui.activities.ContactAddActivity;
+import cs48.project.com.parl.ui.activities.AddNearbyActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by jakebliss on 5/8/17.
  */
 
-public class AddContactFragment extends Fragment implements AddContactContract.View, GetNearbyUsersContract.View,
-        View.OnClickListener, ItemClickSupport.OnItemClickListener, GetOneUserContract.View,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SwipeRefreshLayout.OnRefreshListener{
+public class AddContactFragment extends Fragment implements AddContactContract.View, View.OnClickListener, GetOneUserContract.View{
     public static final String ARG_TYPE = "type";
     public static final String TYPE_CHATS = "type_chats";
     public static final String TYPE_ALL = "type_all";
@@ -63,17 +43,12 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
     private EditText mETxtUsername;
     private Button mBtnSearch;
     private ProgressDialog mProgressDialog;
-    GoogleApiClient mGoogleApiClient;
-    private Message mPubMessage;
-    private MessageListener mMessageListener;
-    private List<String> mNearbyDevicesList = new ArrayList<>();
-    private FirebaseAuth mAuth;
-    private RecyclerView mRecyclerViewAllUserListing;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private GetNearbyUsersPresenter mGetNearbyUsersPresenter;
-    private NearbyUsersListingRecyclerAdapter mUserListingRecyclerAdapter;
-
+    private SearchView mUserSearchViews;
     private GetOneUserPresenter mGetOneUserPresenter;
+
+    ListAdapter adapter;
+    final List<String> userList = new ArrayList<>();
+
 
     public static AddContactFragment newInstance() {
         Bundle args = new Bundle();
@@ -82,70 +57,31 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        String test = "QQ0B62oIS3Vt73d37xNWgB33iQa2";
-        mNearbyDevicesList.add(test);
-        mMessageListener = new MessageListener() {
+        userList.add("January");
+        userList.add("February");
+        userList.add("March");
+        userList.add("April");
+        userList.add("May");
+        userList.add("June");
+        userList.add("July");
+        userList.add("August");
+        userList.add("September");
+        userList.add("October");
+        userList.add("November");
+        userList.add("December");
 
-            @Override
-            public void onFound(Message message) {
-                mNearbyDevicesList.add(message.getContent().toString());
-            }
-
-            @Override
-            public void onLost(Message message) {
-                mNearbyDevicesList.remove(message.getContent().toString());
-            }
-        };
-
-
-    }
+    adapter = new ListAdapter(userList);
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (!mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.connect();
+    public onCreate()
+    {
+        super.onCreate();
+
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
         }
-    }
-
-    @Override
-    public void onConnectionFailed(final ConnectionResult results)
-    {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int results)
-    {
-
-    }
-
-    @Override
-    public void onConnected(Bundle connectionHint){
-        //public the current users uID
-        String curUser = mAuth.getInstance().getCurrentUser().toString();
-        byte [] newMessage = curUser.getBytes();
-        mPubMessage = new Message(newMessage);
-        Nearby.Messages.publish(mGoogleApiClient, mPubMessage);
-
-        //subscribe to messages
-        Nearby.Messages.subscribe(mGoogleApiClient, mMessageListener).setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(@NonNull Status status) {
-
-            }
-        });
-    }
-
-
-    @Override
-    public void onStop() {
-        Nearby.Messages.unpublish(mGoogleApiClient, mPubMessage);
-        Nearby.Messages.unsubscribe(mGoogleApiClient, mMessageListener);
-        super.onStop();
     }
 
     @Nullable
@@ -157,10 +93,9 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
     }
 
     private void bindViews(View view) {
+        mUserSearchViews = (SearchView) view.findViewById(R.id.find_user_search_view);
         mETxtUsername = (EditText) view.findViewById(R.id.edit_text_new_contact_username);
         mBtnSearch = (Button) view.findViewById(R.id.button_search);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        mRecyclerViewAllUserListing = (RecyclerView) view.findViewById(R.id.recycler_view_nearby);
     }
 
     @Override
@@ -170,77 +105,27 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
     }
 
     private void init() {
-        mGetNearbyUsersPresenter = new GetNearbyUsersPresenter(this);
         mAddContactPresenter = new AddContactPresenter(this);
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setTitle(getString(R.string.loading));
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setIndeterminate(true);
         mBtnSearch.setOnClickListener(this);
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addApi(Nearby.MESSAGES_API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .enableAutoManage(getActivity(), this)
-                .build();
-
-        getUsers();
-            mSwipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    if(mNearbyDevicesList != null)
-                    {
-                        mSwipeRefreshLayout.setRefreshing(true);
-                    }
-                }
-            });
-
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-
-
-        ItemClickSupport.addTo(mRecyclerViewAllUserListing)
-                .setOnItemClickListener(this);
-
         mGetOneUserPresenter = new GetOneUserPresenter(this);
-    }
 
-    @Override
-    public void onRefresh() {
-        getUsers();
-    }
-
-    private void getUsers() {
-        mGetNearbyUsersPresenter.getNearbyUsers(mNearbyDevicesList);
-//        if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
-//
-//        }
-//        else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
-//            mGetNearbyUsersPresenter.getNearbyUsers(mNearbyDevicesList);
-//        }
-    }
-
-    @Override
-    public void onGetNearbyUsersSuccess(List<User> users) {
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            public boolean onQueryTextChange(String newText) {
+                // this is your adapter that will be filtered
+                return true;
             }
-        });
-        mUserListingRecyclerAdapter = new NearbyUsersListingRecyclerAdapter(users);
-        mRecyclerViewAllUserListing.setAdapter(mUserListingRecyclerAdapter);
-        mUserListingRecyclerAdapter.notifyDataSetChanged();
-    }
 
-    @Override
-    public void onGetNearbyUsersFailure(String message) {
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
+            public boolean onQueryTextSubmit(String query) {
+                //Here u can get the value "query" which is entered in the search box.
+
             }
-        });
-        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
+        };
+
+        mUserSearchViews.setOnQueryTextListener(queryTextListener);
     }
 
     @Override
@@ -249,27 +134,17 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
 
         switch (viewId) {
             case R.id.button_search:
-                System.out.println("clicked");
+                startActivity(new Intent(getActivity(), AddNearbyActivity.class));
 
-                onAddContact(view);
+                //onAddContact(view);
                 //onSearch(view);
                 break;
         }
     }
 
-    @Override
-    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-        String newContactUid = mUserListingRecyclerAdapter.getUser(position).uid;
-        onAddNearbyContact(newContactUid);
-    }
-
     private void onAddContact(View view){
         String target = mETxtUsername.getText().toString();
         mGetOneUserPresenter.getOneUser(target);
-    }
-
-    private void onAddNearbyContact(String newContactUid){
-        mGetOneUserPresenter.getOneUser(newContactUid);
     }
 
     @Override
