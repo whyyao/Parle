@@ -2,13 +2,15 @@ package cs48.project.com.parl.core.contacts.getAll;
 
 import java.util.List;
 
+import cs48.project.com.parl.models.User;
+
 /**
  * Created by jakebliss on 5/7/17.
  */
 
 public interface GetContactsContract {
     interface View {
-        void onGetContactsUsersSuccess(List<String> uids);
+        void onGetContactsUsersSuccess(List<User> uids);
 
         void onGetContactsUsersFailure(String message);
     }
@@ -24,7 +26,7 @@ public interface GetContactsContract {
     }
 
     interface OnGetContactsUsersListener {
-        void onGetContactsUsersSuccess(List<String> uids);
+        void onGetContactsUsersSuccess(List<User> uids);
         void onGetContactsUsersFailure(String message);
     }
 }

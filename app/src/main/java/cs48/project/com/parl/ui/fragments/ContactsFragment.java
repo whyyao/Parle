@@ -106,12 +106,13 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
     }
 
     private void getUsers() {
-        if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
+        //if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
 
-        } else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
+        //} else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
             //mGetUsersPresenter.getAllUsers();
+            System.out.println("getting contacts");
             mGetContactsPresenter.getContactsUsers();
-        }
+        //}
     }
 
     @Override
@@ -174,12 +175,27 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
     }
 
     @Override
-    public void onGetContactsUsersSuccess(List<String> uid){
+    public void onGetContactsUsersSuccess(List<User> users){
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        mUserListingRecyclerAdapter = new ContactListingRecyclerAdapter(users);
+        mRecyclerViewAllUserListing.setAdapter(mUserListingRecyclerAdapter);
+        mUserListingRecyclerAdapter.notifyDataSetChanged();
 
     }
 
     @Override
     public void onGetContactsUsersFailure(String message){
-
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
     }
 }

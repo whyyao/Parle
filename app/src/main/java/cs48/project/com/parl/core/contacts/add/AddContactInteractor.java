@@ -32,11 +32,11 @@ public class AddContactInteractor implements AddContactContract {
         Log.d("Adding contact for: ", curUserUid);
         database.child(Constants.ARG_CONTACTS)
                 .child(user.uid)
-                .child(Constants.ARG_FRIENDS)
+                .child(curUserUid)
                 .setValue(curUserUid);
         database.child(Constants.ARG_CONTACTS)
                 .child(curUserUid)
-                .child(Constants.ARG_FRIENDS)
+                .child(user.uid)
                 .setValue(user.uid)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

@@ -2,6 +2,8 @@ package cs48.project.com.parl.core.contacts.getAll;
 
 import java.util.List;
 
+import cs48.project.com.parl.models.User;
+
 /**
  * Created by jakebliss on 5/7/17.
  */
@@ -22,7 +24,7 @@ public class GetContactsPresenter implements GetContactsContract.Presenter, GetC
 
 
     @Override
-    public void onGetContactsUsersSuccess(List<String> uids) {
+    public void onGetContactsUsersSuccess(List<User> uids) {
         mView.onGetContactsUsersSuccess(uids);
     }
 
