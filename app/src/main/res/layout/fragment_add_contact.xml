@@ -59,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="110dp"
             android:gravity="center"
+            android:textColor="@color/black"
             android:text="Nearby Users"
             android:textSize="24dp"/>
 
