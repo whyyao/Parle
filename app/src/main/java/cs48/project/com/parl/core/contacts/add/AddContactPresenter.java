@@ -2,10 +2,7 @@ package cs48.project.com.parl.core.contacts.add;
 
 import android.content.Context;
 
-import com.google.firebase.auth.FirebaseUser;
-
-import cs48.project.com.parl.core.users.add.AddUserContract;
-import cs48.project.com.parl.core.users.add.AddUserInteractor;
+import cs48.project.com.parl.models.User;
 
 /**
  * Created by jakebliss on 5/7/17.
@@ -20,8 +17,8 @@ public class AddContactPresenter implements AddContactContract, AddContactContra
         mAddUserInteractor = new AddContactInteractor(this);
     }
 
-    public void addContact(Context context, String newContactUid) {
-        mAddUserInteractor.addContactToDatabase(context, newContactUid);
+    public void addContact(Context context, User user) {
+        mAddUserInteractor.addContactToDatabase(context, user);
     }
 
     @Override
