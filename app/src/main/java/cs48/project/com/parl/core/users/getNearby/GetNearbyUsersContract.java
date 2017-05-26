@@ -7,7 +7,7 @@ import cs48.project.com.parl.models.User;
 /**
  * Created by jakebliss on 5/25/17.
  */
-
+//**
 public interface GetNearbyUsersContract {
     interface View {
         void onGetNearbyUsersSuccess(List<User> nearbyUsers);
