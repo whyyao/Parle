@@ -10,7 +10,7 @@ import cs48.project.com.parl.models.User;
 
 public interface GetNearbyUsersContract {
     interface View {
-        void onGetNearbyUsersSuccess(List<String> nearbyUsers);
+        void onGetNearbyUsersSuccess(List<User> nearbyUsers);
 
         void onGetNearbyUsersFailure(String message);
 

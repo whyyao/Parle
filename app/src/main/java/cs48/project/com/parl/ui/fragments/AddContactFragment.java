@@ -22,8 +22,8 @@ import cs48.project.com.parl.core.contacts.add.AddContactContract;
 import cs48.project.com.parl.core.contacts.add.AddContactPresenter;
 import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
-import cs48.project.com.parl.core.users.getall.GetUsersContract;
-import cs48.project.com.parl.core.users.getall.GetUsersPresenter;
+import cs48.project.com.parl.core.users.getNearby.GetNearbyUsersPresenter;
+import cs48.project.com.parl.core.users.getall.GetNearbyUsersContract;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.activities.ChatActivity;
 import cs48.project.com.parl.ui.adapters.ContactListingRecyclerAdapter;
@@ -46,13 +46,14 @@ import com.google.android.gms.nearby.messages.SubscribeCallback;
 import com.google.android.gms.nearby.messages.SubscribeOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by jakebliss on 5/8/17.
  */
 
-public class AddContactFragment extends Fragment implements AddContactContract.View, GetUsersContract.View,
+public class AddContactFragment extends Fragment implements AddContactContract.View, GetNearbyUsersContract.View,
         View.OnClickListener, ItemClickSupport.OnItemClickListener, GetOneUserContract.View,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SwipeRefreshLayout.OnRefreshListener{
     public static final String ARG_TYPE = "type";
@@ -65,11 +66,11 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
     GoogleApiClient mGoogleApiClient;
     private Message mPubMessage;
     private MessageListener mMessageListener;
-    private List<String> mNearbyDevicesArrayAdapter;
+    private List<String> mNearbyDevicesList = new ArrayList<>();
     private FirebaseAuth mAuth;
     private RecyclerView mRecyclerViewAllUserListing;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private GetUsersPresenter mGetUsersPresenter;
+    private GetNearbyUsersPresenter mGetNearbyUsersPresenter;
     private NearbyUsersListingRecyclerAdapter mUserListingRecyclerAdapter;
 
     private GetOneUserPresenter mGetOneUserPresenter;
@@ -84,17 +85,18 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        String test = "QQ0B62oIS3Vt73d37xNWgB33iQa2";
+        mNearbyDevicesList.add(test);
         mMessageListener = new MessageListener() {
-            String messageAsString;
 
             @Override
             public void onFound(Message message) {
-                mNearbyDevicesArrayAdapter.add(message.getContent().toString());
+                mNearbyDevicesList.add(message.getContent().toString());
             }
 
             @Override
             public void onLost(Message message) {
-                mNearbyDevicesArrayAdapter.remove(message.getContent().toString());
+                mNearbyDevicesList.remove(message.getContent().toString());
             }
         };
 
@@ -168,7 +170,7 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
     }
 
     private void init() {
-        mGetUsersPresenter = new GetUsersPresenter(this);
+        mGetNearbyUsersPresenter = new GetNearbyUsersPresenter(this);
         mAddContactPresenter = new AddContactPresenter(this);
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setTitle(getString(R.string.loading));
@@ -183,12 +185,15 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
                 .build();
 
         getUsers();
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(true);
-            }
-        });
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(mNearbyDevicesList != null)
+                    {
+                        mSwipeRefreshLayout.setRefreshing(true);
+                    }
+                }
+            });
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -197,7 +202,6 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
                 .setOnItemClickListener(this);
 
         mGetOneUserPresenter = new GetOneUserPresenter(this);
-
     }
 
     @Override
@@ -206,17 +210,17 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
     }
 
     private void getUsers() {
-        System.out.println("In get get Users");
-        mGetUsersPresenter.getAllUsers();
-        if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
-
-        } else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
-            mGetUsersPresenter.getAllUsers();
-        }
+        mGetNearbyUsersPresenter.getNearbyUsers(mNearbyDevicesList);
+//        if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_CHATS)) {
+//
+//        }
+//        else if (TextUtils.equals(getArguments().getString(ARG_TYPE), TYPE_ALL)) {
+//            mGetNearbyUsersPresenter.getNearbyUsers(mNearbyDevicesList);
+//        }
     }
 
     @Override
-    public void onGetAllUsersSuccess(List<User> users) {
+    public void onGetNearbyUsersSuccess(List<User> users) {
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -229,7 +233,7 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
     }
 
     @Override
-    public void onGetAllUsersFailure(String message) {
+    public void onGetNearbyUsersFailure(String message) {
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -280,16 +284,6 @@ public class AddContactFragment extends Fragment implements AddContactContract.V
 
     @Override
     public void onAddContactFailure(String message) {
-    }
-
-    @Override
-    public void onGetChatUsersSuccess(List<User> users) {
-
-    }
-
-    @Override
-    public void onGetChatUsersFailure(String message) {
-
     }
 
     @Override

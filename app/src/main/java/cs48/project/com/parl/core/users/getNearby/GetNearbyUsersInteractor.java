@@ -21,7 +21,7 @@ import cs48.project.com.parl.utils.Constants;
  * Created by jakebliss on 5/25/17.
  */
 
-public class GetNearbyUsersInteractor {
+public class GetNearbyUsersInteractor implements GetNearbyUsersContract.Interactor{
     private static final String TAG = "GetNearbyUsersInteractor";
 
     private GetNearbyUsersContract.OnGetNearbyUsersListener mOnGetNearbyUsersListener;
@@ -32,7 +32,7 @@ public class GetNearbyUsersInteractor {
 
 
     @Override
-    public void getAllUsersFromFirebase(List<String> nearbyUsers) {
+    public void getNearbyUsersFromFirebase(List<String> nearbyUsers) {
         final List<User> users = new ArrayList<>();
         for(String user: nearbyUsers)
         {
