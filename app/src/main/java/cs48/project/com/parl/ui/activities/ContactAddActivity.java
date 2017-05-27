@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.app.ProgressDialog;
-import android.support.v7.widget.SearchView;
+import android.widget.SearchView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -90,7 +90,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
     private void bindViews() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mUserSearchViews = (SearchView) findViewById(R.id.find_user_search_view);
-        mRecyclerViewAllUserListing = (RecyclerView) findViewById(R.id.recycler_view_nearby);
+        mRecyclerViewAllUserListing = (RecyclerView) findViewById(R.id.recycler_view_add_contact);
     }
 
     private void init() {
@@ -102,8 +102,10 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
         mProgressDialog.setTitle(getString(R.string.loading));
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setIndeterminate(true);
-        mBtnSearch.setOnClickListener(this);
         mGetOneUserPresenter = new GetOneUserPresenter(this);
+
+        ItemClickSupport.addTo(mRecyclerViewAllUserListing)
+                .setOnItemClickListener(this);
 
         getSearchUsers();
 //        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
@@ -118,8 +120,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 //            }
 //        };
 
-        ItemClickSupport.addTo(mRecyclerViewAllUserListing)
-                .setOnItemClickListener(this);
+
 
 //        mUserSearchViews.setOnQueryTextListener(queryTextListener);
     }
