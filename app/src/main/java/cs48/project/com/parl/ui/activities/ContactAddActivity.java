@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.view.View;
 import android.widget.Button;
@@ -30,10 +32,12 @@ import java.util.List;
 
 
 import cs48.project.com.parl.ui.adapters.NearbyUsersListingRecyclerAdapter;
+import cs48.project.com.parl.ui.adapters.SearchListAdapter;
 import cs48.project.com.parl.utils.ItemClickSupport;
 
 /**
  * Created by jakebliss on 5/8/17.
+ * Some Code adapted From http://www.journaldev.com/12478/android-searchview-example-tutorial
  */
 
 public class ContactAddActivity extends AppCompatActivity implements AddContactContract.View, View.OnClickListener, GetOneUserContract.View,
@@ -51,7 +55,9 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
     private RecyclerView mRecyclerViewAllUserListing;
     private NearbyUsersListingRecyclerAdapter mUserListingRecyclerAdapter;
     private GetSearchUsersPresenter mGetSearchUsersPresenter;
+    private ListView mListView;
     List<String> userList = new ArrayList<>();
+    ListAdapter mAdapter;
 
     public void initializeList(){
         userList.add("2AqbusnnkFdWjWOes0O1q74CWmf1");
@@ -91,6 +97,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mUserSearchViews = (SearchView) findViewById(R.id.find_user_search_view);
         mRecyclerViewAllUserListing = (RecyclerView) findViewById(R.id.recycler_view_add_contact);
+        mListView = (ListView) findViewById(R.id.list_view_search);
     }
 
     private void init() {
@@ -108,21 +115,21 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
                 .setOnItemClickListener(this);
 
         getSearchUsers();
-//        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-//            public boolean onQueryTextChange(String newText) {
-//                // this is your adapter that will be filtered
-//                return true;
-//            }
-//
-//            public boolean onQueryTextSubmit(String query) {
-//                //Here u can get the value "query" which is entered in the search box.
-//
-//            }
-//        };
 
+        mAdapter = new SearchListAdapter(userList);
+        mListView.setAdapter(mAdapter);
+        mUserSearchViews.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-
-//        mUserSearchViews.setOnQueryTextListener(queryTextListener);
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     @Override
