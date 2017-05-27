@@ -35,9 +35,4 @@ public interface GetNearbyUsersContract {
         void onGetNearbyUsersFailure(String message);
     }
 
-//    interface OnGetChatUsersListener {
-//        void onGetChatUsersSuccess(List<User> users);
-//
-//        void onGetChatUsersFailure(String message);
-//    }
 }

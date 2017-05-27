@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import cs48.project.com.parl.R;
-import cs48.project.com.parl.ui.fragments.AddContactFragment;
 import cs48.project.com.parl.ui.fragments.NearbyFragment;
 /**
  * Created by jakebliss on 5/26/17.
