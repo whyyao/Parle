@@ -2,6 +2,7 @@ package cs48.project.com.parl.ui.fragments;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
+import android.net.URI;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +26,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.logout.LogoutContract;
@@ -51,8 +58,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     private Button mBtnLogout;
     FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
-
-
+    private ImageButton pictureButton;
+    private static final int RC_PHOTO_PICKER = 2;
+    // ALT ENTER TO LINK ;)
+    private FirebaseStorage mFirebaseStorage;
+    private StorageReference mChatPhotoStorageReference;
 
     public SettingFragment () {
     }
@@ -69,6 +79,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
                 setEmailTextView();
             }
         };
+
     }
 
     @Override
@@ -92,7 +103,17 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
         languageTextView = (TextView) view.findViewById(R.id.User_Language);
         emailTextView = (TextView) view.findViewById(R.id.User_Email);
         mBtnLogout = (Button) view.findViewById(R.id.setting_logout);
-    }
+        pictureButton = (ImageButton) view.findViewById(R.id.userImage);
+        pictureButton.setOnClickListener(new View.OnClickListener()  {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(intent, "Complete actions using"), RC_PHOTO_PICKER);
+            }
+        });
+     }
 
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -100,12 +121,29 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
         init();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == RC_PHOTO_PICKER) {
+            Uri selectedImageUri = data.getData();
+            StorageReference photoRef = mChatPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
+            photoRef.putFile(selectedImageUri).addOnSuccessListener
+                    (this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Uri downloadUrl taskSnapshot.getDownloadUrl();
+                            FriendlyMessage.
+                        }
+                    });
+    }
     private void init(){
         setUsernameTextView();
         setLanguageTextView();
         setEmailTextView();
         mLogoutPresenter = new LogoutPresenter(this);
         mBtnLogout.setOnClickListener(this);
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        mChatPhotoStorageReference = mFirebaseStorage.getReference().child("chat_photos");
     }
 
 

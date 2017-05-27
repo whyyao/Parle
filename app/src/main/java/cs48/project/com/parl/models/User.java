@@ -13,7 +13,7 @@ public class User {
     public String userName;
     public String language;
     public boolean loggedIn;
-
+    public String photoURL;
     public User() {
 
     }
@@ -25,5 +25,15 @@ public class User {
         this.userName = userName;
         this.language = language;
         this.loggedIn = loggedIn;
+    }
+
+    public User(String uid, String email, String firebaseToken, String userName, String language, boolean loggedIn, String photoURL) {
+        this.uid = uid;
+        this.email = email;
+        this.firebaseToken = firebaseToken;
+        this.userName = userName;
+        this.language = language;
+        this.loggedIn = loggedIn;
+        this.photoURL = photoURL;
     }
 }
