@@ -39,13 +39,13 @@
             android:text="Name"
             android:textSize="18sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/User_Name"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:layout_centerVertical="true"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:gravity="right"
             android:text="Temp Name"
             android:textSize="18sp" />
