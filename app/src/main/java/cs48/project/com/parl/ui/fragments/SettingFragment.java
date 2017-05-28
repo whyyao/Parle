@@ -16,7 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
-import android.net.URI;
+//import android.net.URI;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -121,21 +121,21 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
         init();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
-        if (requestCode == RC_PHOTO_PICKER) {
-            Uri selectedImageUri = data.getData();
-            StorageReference photoRef = mChatPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
-            photoRef.putFile(selectedImageUri).addOnSuccessListener
-                    (this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Uri downloadUrl taskSnapshot.getDownloadUrl();
-                            FriendlyMessage.
-                        }
-                    });
-    }
+   // @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode,resultCode,data);
+//        if (requestCode == RC_PHOTO_PICKER) {
+//            Uri selectedImageUri = data.getData();
+//            StorageReference photoRef = mChatPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
+//            photoRef.putFile(selectedImageUri).addOnSuccessListener
+//                    (this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            Uri downloadUrl taskSnapshot.getDownloadUrl();
+//                            FriendlyMessage.
+//                        }
+//                    });
+//    }
     private void init(){
         setUsernameTextView();
         setLanguageTextView();
