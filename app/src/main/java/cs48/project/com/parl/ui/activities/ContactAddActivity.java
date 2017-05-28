@@ -25,6 +25,8 @@ import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
 import cs48.project.com.parl.core.users.getSearch.GetSearchUsersContract;
 import cs48.project.com.parl.core.users.getSearch.GetSearchUsersPresenter;
+import cs48.project.com.parl.core.users.getall.GetUsersContract;
+import cs48.project.com.parl.core.users.getall.GetUsersPresenter;
 import cs48.project.com.parl.models.User;
 
 
@@ -42,31 +44,20 @@ import cs48.project.com.parl.utils.ItemClickSupport;
  */
 
 public class ContactAddActivity extends AppCompatActivity implements AddContactContract.View, View.OnClickListener, GetOneUserContract.View,
-                                        ItemClickSupport.OnItemClickListener, GetSearchUsersContract.View{
+                                        ItemClickSupport.OnItemClickListener, GetUsersContract.OnGetAllUsersListener, GetSearchUsersContract.Presenter{
     private Toolbar mToolbar;
     public static final String ARG_TYPE = "type";
     public static final String TYPE_CHATS = "type_chats";
     public static final String TYPE_ALL = "type_all";
     private AddContactPresenter mAddContactPresenter;
-    private EditText mETxtUsername;
-    private Button mBtnSearch;
     private ProgressDialog mProgressDialog;
     private SearchView mUserSearchViews;
     private GetOneUserPresenter mGetOneUserPresenter;
-    private RecyclerView mRecyclerViewAllUserListing;
-    private NearbyUsersListingRecyclerAdapter mUserListingRecyclerAdapter;
-    private GetSearchUsersPresenter mGetSearchUsersPresenter;
+    private GetUsersPresenter mGetUsersPresenter;
     private ListView mListView;
-    List<String> userList = new ArrayList<>();
     ListAdapter mAdapter;
+    private List<User> mSearchUsers = new ArrayList<>();
 
-    public void initializeList(){
-        userList.add("2AqbusnnkFdWjWOes0O1q74CWmf1");
-        userList.add("81H8KFqGGjZZs2O4aJbk7bj0J4C3");
-        userList.add("BhRrwOZavdekUZtitixp6n9IShe2");
-        userList.add("D6jme1Sh6EOXVKgiiUGqfDNJMjw1");
-        userList.add("GUqk9EOSxef2XD1IIWQGbK9rAj92");
-    }
 
     public static void startIntent(Context context) {
         Intent intent = new Intent(context, ContactAddActivity.class);
@@ -85,11 +76,6 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
         setContentView(R.layout.activity_add_contact);
         bindViews();
         Intent intent = getIntent();
-//        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-//            String query = intent.getStringExtra(SearchManager.QUERY);
-//            doMySearch(query);
-//        }
-        initializeList();
         init();
     }
 
@@ -97,27 +83,27 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
     private void bindViews() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mUserSearchViews = (SearchView) findViewById(R.id.find_user_search_view);
-//        mRecyclerViewAllUserListing = (RecyclerView) findViewById(R.id.recycler_view_add_contact);
         mListView = (ListView) findViewById(R.id.list_view_search);
     }
 
     private void init() {
         // set the toolbar
         setSupportActionBar(mToolbar);
-        mGetSearchUsersPresenter = new GetSearchUsersPresenter(this);
         mAddContactPresenter = new AddContactPresenter(this);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle(getString(R.string.loading));
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setIndeterminate(true);
         mGetOneUserPresenter = new GetOneUserPresenter(this);
+        mGetUsersPresenter = new GetUsersPresenter(this);
+        mGetUsersPresenter.getAllUsers();
 
 //        ItemClickSupport.addTo(mRecyclerViewAllUserListing)
 //                .setOnItemClickListener(this);
 //
 //        getSearchUsers();
 
-        mAdapter = new ListAdapter(userList);
+        mAdapter = new ListAdapter(mSearchUsers);
         mListView.setAdapter(mAdapter);
         mUserSearchViews.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
@@ -147,23 +133,6 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 //        }
     }
 
-    public void getSearchUsers()
-    {
-        mGetSearchUsersPresenter.getSearchUsers(userList);
-    }
-    @Override
-    public void onGetSearchUsersSuccess(List<User> users) {
-        mUserListingRecyclerAdapter = new NearbyUsersListingRecyclerAdapter(users);
-        mRecyclerViewAllUserListing.setAdapter(mUserListingRecyclerAdapter);
-        mUserListingRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onGetSearchUsersFailure(String message) {
-        Toast.makeText(this, "Error: " + message, Toast.LENGTH_SHORT).show();
-    }
-
-
 
     @Override
     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
@@ -186,6 +155,18 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 
     private void onAddSearchContact(String newContactUid){
         mGetOneUserPresenter.getOneUser(newContactUid);
+    }
+
+    @Override
+    public void onGetAllUsersSuccess(List<User> users)
+    {
+        mSearchUsers = users;
+    }
+
+    @Override
+    public void onGetAllUsersFailure(String message)
+    {
+
     }
 
     @Override

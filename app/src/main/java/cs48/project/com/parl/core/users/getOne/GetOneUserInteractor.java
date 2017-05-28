@@ -34,13 +34,13 @@ public class GetOneUserInteractor implements GetOneUserContract.Interactor {
                     DataSnapshot dataSnapshotChild = dataSnapshots.next();
                     User user = dataSnapshotChild.getValue(User.class);
                     //System.out.println(user.userName);
-                    if (user.email.equals(target)) {
+                    if (user.email.contains(target)) {
                         mOnGetOneUserListener.onGetOneUserSuccess(user);
                     }
-                    if (user.uid.equals(target)) {
+                    if (user.uid.contains(target)) {
                         mOnGetOneUserListener.onGetOneUserSuccess(user);
                     }
-                    if (user.userName.equals(target)) {
+                    if (user.userName.contains(target)) {
                         mOnGetOneUserListener.onGetOneUserSuccess(user);
                     }
                 }

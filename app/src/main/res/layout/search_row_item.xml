@@ -1,8 +1,15 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-
-<RelativeLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/padding_small"
+    android:paddingEnd="@dimen/padding_avg"
+    android:paddingStart="@dimen/padding_avg"
+    android:paddingTop="@dimen/padding_small">
 
     <TextView
         android:id="@+id/search_item"
@@ -16,6 +23,4 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text=""/>
 
-</RelativeLayout>
-
-</layout>
+</LinearLayout>
