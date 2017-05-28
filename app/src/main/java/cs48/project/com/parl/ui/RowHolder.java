@@ -12,4 +12,9 @@ import android.widget.TextView;
 
 public class RowHolder {
     public TextView textView;
+
+    public RowHolder ()
+    {
+        textView = null;
+    }
 }

@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.app.Activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +21,15 @@ import cs48.project.com.parl.R;
  */
 
 public class ListAdapter extends BaseAdapter implements Filterable{
-    List mData;
+    private List mData;
     List mStringFilterList;
     ValueFilter valueFilter;
     private LayoutInflater inflater;
 
     public ListAdapter(List cancel_type) {
-        mData=cancel_type;
+        mData = cancel_type;
         mStringFilterList = cancel_type;
+
     }
 
     @Override
@@ -47,21 +49,18 @@ public class ListAdapter extends BaseAdapter implements Filterable{
 
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
-
         RowHolder holder = null;
-
         if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_contact_listing, parent, false);
+            convertView = inflater.inflate(R.layout.search_row_item, parent);
             holder = new RowHolder();
-            holder.textView = (TextView) convertView.findViewById(R.id.text);
+            holder.textView = (TextView)convertView.findViewById(R.id.text);
             convertView.setTag(holder);
+        } else {
+            holder = (RowHolder)convertView.getTag();
         }
-        else {
-            holder = (RowHolder) convertView.getTag();
-        }
-
         holder.textView.setText(mData.get(position).toString());
         return convertView;
+
     }
 
     @Override
