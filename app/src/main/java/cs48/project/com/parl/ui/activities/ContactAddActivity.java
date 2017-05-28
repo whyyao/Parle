@@ -8,13 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.app.ProgressDialog;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 
 import cs48.project.com.parl.R;
@@ -32,7 +33,7 @@ import java.util.List;
 
 
 import cs48.project.com.parl.ui.adapters.NearbyUsersListingRecyclerAdapter;
-import cs48.project.com.parl.ui.adapters.SearchListAdapter;
+import cs48.project.com.parl.ui.adapters.ListAdapter;
 import cs48.project.com.parl.utils.ItemClickSupport;
 
 /**
@@ -96,7 +97,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
     private void bindViews() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mUserSearchViews = (SearchView) findViewById(R.id.find_user_search_view);
-        mRecyclerViewAllUserListing = (RecyclerView) findViewById(R.id.recycler_view_add_contact);
+//        mRecyclerViewAllUserListing = (RecyclerView) findViewById(R.id.recycler_view_add_contact);
         mListView = (ListView) findViewById(R.id.list_view_search);
     }
 
@@ -111,12 +112,12 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
         mProgressDialog.setIndeterminate(true);
         mGetOneUserPresenter = new GetOneUserPresenter(this);
 
-        ItemClickSupport.addTo(mRecyclerViewAllUserListing)
-                .setOnItemClickListener(this);
+//        ItemClickSupport.addTo(mRecyclerViewAllUserListing)
+//                .setOnItemClickListener(this);
+//
+//        getSearchUsers();
 
-        getSearchUsers();
-
-        mAdapter = new SearchListAdapter(userList);
+        mAdapter = new ListAdapter(userList);
         mListView.setAdapter(mAdapter);
         mUserSearchViews.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
@@ -166,8 +167,8 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 
     @Override
     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-        String newContactUid = mUserListingRecyclerAdapter.getUser(position).uid;
-        onAddSearchContact(newContactUid);
+
+       // onAddSearchContact(newContactUid);
     }
 
 

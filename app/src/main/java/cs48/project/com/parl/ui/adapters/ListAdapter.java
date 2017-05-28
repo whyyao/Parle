@@ -1,9 +1,6 @@
 package cs48.project.com.parl.ui.adapters;
 
-/**
- * Created by jakebliss on 5/27/17.
- */
-
+import cs48.project.com.parl.ui.RowHolder;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,21 +9,24 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.ListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cs48.project.com.parl.R;
 
-public class SearchListAdapter extends BaseAdapter implements Filterable{
-    List<String> mData;
+/**
+ * Created by jakebliss on 5/27/17.
+ */
+
+public class ListAdapter extends BaseAdapter implements Filterable{
+    List mData;
     List mStringFilterList;
     ValueFilter valueFilter;
     private LayoutInflater inflater;
 
-    public SearchListAdapter(List cancel_type){
-        mData = cancel_type;
+    public ListAdapter(List cancel_type) {
+        mData=cancel_type;
         mStringFilterList = cancel_type;
     }
 
@@ -37,12 +37,31 @@ public class SearchListAdapter extends BaseAdapter implements Filterable{
 
     @Override
     public String getItem(int position) {
-        return mData.get(position);
+        return mData.get(position).toString();
     }
 
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, final ViewGroup parent) {
+
+        RowHolder holder = null;
+
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_contact_listing, parent, false);
+            holder = new RowHolder();
+            holder.textView = (TextView) convertView.findViewById(R.id.text);
+            convertView.setTag(holder);
+        }
+        else {
+            holder = (RowHolder) convertView.getTag();
+        }
+
+        holder.textView.setText(mData.get(position).toString());
+        return convertView;
     }
 
     @Override
@@ -52,21 +71,6 @@ public class SearchListAdapter extends BaseAdapter implements Filterable{
         }
         return valueFilter;
     }
-
-
-    @Override
-    public TextView getView(int position, View convertView, final ViewGroup parent) {
-
-        if (inflater == null) {
-            inflater = (LayoutInflater) parent.getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-        TextView view = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.search_row_item, parent, false);
-        view.setText(mData.get(position));
-
-        return view;
-    }
-
 
     private class ValueFilter extends Filter {
         @Override
@@ -98,5 +102,4 @@ public class SearchListAdapter extends BaseAdapter implements Filterable{
         }
 
     }
-
 }
