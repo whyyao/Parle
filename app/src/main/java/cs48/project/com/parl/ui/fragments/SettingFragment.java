@@ -49,7 +49,7 @@ import static cs48.project.com.parl.utils.Constants.convertFromAcronym;
  * create an instance of this fragment.
  */
 public class SettingFragment extends Fragment implements View.OnClickListener, LogoutContract.View{
-    private EditText usernameTextView;
+    private TextView usernameTextView;
     private TextView languageTextView;
     private TextView emailTextView;
     private String mUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -99,7 +99,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     }
 
     private void bindViews(View view) {
-        usernameTextView = (EditText) view.findViewById(R.id.User_Name);
+        usernameTextView = (TextView) view.findViewById(R.id.User_Name);
         languageTextView = (TextView) view.findViewById(R.id.User_Language);
         emailTextView = (TextView) view.findViewById(R.id.User_Email);
         mBtnLogout = (Button) view.findViewById(R.id.setting_logout);
