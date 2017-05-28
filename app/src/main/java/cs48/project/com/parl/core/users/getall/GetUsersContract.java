@@ -14,9 +14,6 @@ public interface GetUsersContract {
 
         void onGetAllUsersFailure(String message);
 
-        void onGetChatUsersSuccess(List<User> users);
-
-        void onGetChatUsersFailure(String message);
     }
 
     interface Presenter {
@@ -35,9 +32,4 @@ public interface GetUsersContract {
         void onGetAllUsersFailure(String message);
     }
 
-    interface OnGetChatUsersListener {
-        void onGetChatUsersSuccess(List<User> users);
-
-        void onGetChatUsersFailure(String message);
-    }
 }

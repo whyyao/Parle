@@ -32,9 +32,10 @@ public class ListAdapter extends BaseAdapter implements Filterable{
     private GetOneUserPresenter mGetOneUserPresenter;
     private List<String> searchUsers = new ArrayList<>();
 
-    public ListAdapter(List cancel_type) {
-        mData = cancel_type;
-        mStringFilterList = cancel_type;
+    public ListAdapter(List<User> allUsers) {
+        mData = allUsers;
+        mStringFilterList = allUsers;
+        System.out.println(mStringFilterList);
     }
 
     @Override
@@ -85,16 +86,16 @@ public class ListAdapter extends BaseAdapter implements Filterable{
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
-
             if (constraint != null && constraint.length() > 0) {
                 List filterList = new ArrayList();
                 for (int i = 0; i < mStringFilterList.size(); i++) {
                     if ((mStringFilterList.get(i).userName.toString().toUpperCase()).contains(constraint.toString().toUpperCase()) ||
-                            (mStringFilterList.get(i).email.toString().toUpperCase()).contains(constraint.toString().toUpperCase())) {
+                            (mStringFilterList.get(i).email.toString().toUpperCase()).contains(constraint.toString().toUpperCase()))
+                    {
+                        System.out.println("adding");
                         filterList.add(mStringFilterList.get(i).userName.toString());
                     }
                 }
-                mGetOneUserPresenter.getOneUser(constraint.toString());
                 results.count = filterList.size();
                 results.values = filterList;
             } else {

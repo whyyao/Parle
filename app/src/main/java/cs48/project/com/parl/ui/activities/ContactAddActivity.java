@@ -44,7 +44,7 @@ import cs48.project.com.parl.utils.ItemClickSupport;
  */
 
 public class ContactAddActivity extends AppCompatActivity implements AddContactContract.View, View.OnClickListener, GetOneUserContract.View,
-                                        ItemClickSupport.OnItemClickListener, GetUsersContract.OnGetAllUsersListener, GetSearchUsersContract.Presenter{
+                                        ItemClickSupport.OnItemClickListener, GetUsersContract.View, GetUsersContract.Presenter{
     private Toolbar mToolbar;
     public static final String ARG_TYPE = "type";
     public static final String TYPE_CHATS = "type_chats";
@@ -96,13 +96,10 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
         mProgressDialog.setIndeterminate(true);
         mGetOneUserPresenter = new GetOneUserPresenter(this);
         mGetUsersPresenter = new GetUsersPresenter(this);
-        mGetUsersPresenter.getAllUsers();
+        getAllUsers();
 
-//        ItemClickSupport.addTo(mRecyclerViewAllUserListing)
-//                .setOnItemClickListener(this);
-//
-//        getSearchUsers();
 
+        System.out.println(mSearchUsers);
         mAdapter = new ListAdapter(mSearchUsers);
         mListView.setAdapter(mAdapter);
         mUserSearchViews.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
@@ -113,6 +110,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                System.out.println(mSearchUsers);
                 mAdapter.getFilter().filter(newText);
                 return false;
             }
@@ -153,8 +151,10 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
     public void onAddContactFailure(String message) {
     }
 
-    private void onAddSearchContact(String newContactUid){
-        mGetOneUserPresenter.getOneUser(newContactUid);
+    @Override
+    public void getAllUsers()
+    {
+        mGetUsersPresenter.getAllUsers();
     }
 
     @Override

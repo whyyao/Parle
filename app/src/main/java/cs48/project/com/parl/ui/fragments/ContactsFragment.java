@@ -148,16 +148,6 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
         Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onGetChatUsersSuccess(List<User> users) {
-
-    }
-
-    @Override
-    public void onGetChatUsersFailure(String message) {
-
-}
-
     private AddContactPresenter mAddContactPresenter;
 
 
