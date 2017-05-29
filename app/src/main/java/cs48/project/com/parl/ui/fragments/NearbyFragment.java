@@ -19,8 +19,11 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
+import com.google.android.gms.nearby.messages.Strategy;
+import com.google.api.client.util.Charsets;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +34,9 @@ import cs48.project.com.parl.core.users.getNearby.GetNearbyUsersPresenter;
 import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
 import cs48.project.com.parl.core.users.getall.GetNearbyUsersContract;
+import cs48.project.com.parl.core.users.getall.GetUsersContract;
 import cs48.project.com.parl.models.User;
+import cs48.project.com.parl.ui.ChatMessage;
 import cs48.project.com.parl.ui.adapters.NearbyUsersListingRecyclerAdapter;
 import cs48.project.com.parl.utils.ItemClickSupport;
 
@@ -57,6 +62,12 @@ public class NearbyFragment extends Fragment implements AddContactContract.View,
     private GetNearbyUsersPresenter mGetNearbyUsersPresenter;
     private NearbyUsersListingRecyclerAdapter mUserListingRecyclerAdapter;
     private GetOneUserPresenter mGetOneUserPresenter;
+    private static final String ENCODE = "UTF-8";
+    private Strategy mStrategy = new Strategy.Builder()
+            .setDiscoveryMode(Strategy.DISCOVERY_MODE_DEFAULT)
+            .setDistanceType(Strategy.DISTANCE_TYPE_DEFAULT)
+            .setTtlSeconds(Strategy.TTL_SECONDS_DEFAULT)
+            .build();
 
     public static NearbyFragment newInstance() {
         Bundle args = new Bundle();
@@ -68,13 +79,30 @@ public class NearbyFragment extends Fragment implements AddContactContract.View,
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        String test = "QQ0B62oIS3Vt73d37xNWgB33iQa2";
-        mNearbyDevicesList.add(test);
+//        String test = "QQ0B62oIS3Vt73d37xNWgB33iQa2";
+      //  mNearbyDevicesList.add(test);
         mMessageListener = new MessageListener() {
 
             @Override
             public void onFound(Message message) {
-                mNearbyDevicesList.add(message.getContent().toString());
+
+//                System.out.println("Inside on found");
+//                System.out.println(message.getContent());
+                String decodedMessage;
+                try {
+                    decodedMessage = new String(message.getContent(), ENCODE);
+                    System.out.println(ChatMessage.fromJson(decodedMessage));
+                    if(!mNearbyDevicesList.contains(ChatMessage.fromJson(decodedMessage).getText())) {
+                        mNearbyDevicesList.add(ChatMessage.fromJson(decodedMessage).getText());
+                    }
+                    getUsers();
+                    System.out.println(mNearbyDevicesList);
+
+                } catch (UnsupportedEncodingException e) {
+
+                }
+
+
             }
 
             @Override
@@ -85,6 +113,7 @@ public class NearbyFragment extends Fragment implements AddContactContract.View,
 
 
     }
+
 
     @Override
     public void onStart() {
@@ -108,12 +137,16 @@ public class NearbyFragment extends Fragment implements AddContactContract.View,
 
     @Override
     public void onConnected(Bundle connectionHint){
-        //public the current users uID
-        String curUser = mAuth.getInstance().getCurrentUser().toString();
-        byte [] newMessage = curUser.getBytes();
-        mPubMessage = new Message(newMessage);
+        String curUser = mAuth.getInstance().getCurrentUser().getUid();
+        final ChatMessage chatMessage = new ChatMessage(curUser, System.currentTimeMillis());
+        byte [] content;
+        try {
+            content = chatMessage.toString().getBytes(ENCODE);
+        } catch (UnsupportedEncodingException e) {
+            return;
+        }
+        mPubMessage = new Message(content, ChatMessage.TYPE_USER_CHAT);
         Nearby.Messages.publish(mGoogleApiClient, mPubMessage);
-
         //subscribe to messages
         Nearby.Messages.subscribe(mGoogleApiClient, mMessageListener).setResultCallback(new ResultCallback<Status>() {
             @Override

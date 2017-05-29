@@ -31,7 +31,7 @@ public class NearbyUsersListingRecyclerAdapter extends RecyclerView.Adapter<Near
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_contact_listing, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_row_item, parent, false);
 
         return new ViewHolder(view);
     }
@@ -40,10 +40,9 @@ public class NearbyUsersListingRecyclerAdapter extends RecyclerView.Adapter<Near
     public void onBindViewHolder(ViewHolder holder, int position) {
         User user = mUsers.get(position);
 
-        String alphabet = user.userName.substring(0, 1);
-
-        holder.username.setText(user.userName);
-        holder.userAlphabet.setText(alphabet);
+        holder.txtUserAlphabet.setText(user.userName.substring(0,1).toString());
+        holder.txtUsername.setText(user.userName.toString());
+        holder.txtUserEmail.setText(user.email.toString());
     }
 
     @Override
@@ -59,12 +58,13 @@ public class NearbyUsersListingRecyclerAdapter extends RecyclerView.Adapter<Near
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView userAlphabet, username;
+        private TextView txtUserAlphabet, txtUsername, txtUserEmail;
 
         ViewHolder(View itemView) {
             super(itemView);
-            userAlphabet = (TextView) itemView.findViewById(R.id.text_view_user_alphabet);
-            username = (TextView) itemView.findViewById(R.id.text_view_username);
+            txtUserAlphabet = (TextView) itemView.findViewById(R.id.search_user_pic);
+            txtUsername = (TextView) itemView.findViewById(R.id.search_username);
+            txtUserEmail = (TextView) itemView.findViewById(R.id.search_email);
         }
     }
 }
