@@ -1,7 +1,5 @@
 package cs48.project.com.parl.models;
 
-import java.util.ArrayList;
-
 /**
  * Created by yaoyuan on 4/22/17.
  */
@@ -25,6 +23,7 @@ public class User {
         this.userName = userName;
         this.language = language;
         this.loggedIn = loggedIn;
+        this.photoURL=null;
     }
 
     public User(String uid, String email, String firebaseToken, String userName, String language, boolean loggedIn, String photoURL) {

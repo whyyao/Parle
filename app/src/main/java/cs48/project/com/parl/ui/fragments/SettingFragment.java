@@ -2,21 +2,24 @@ package cs48.project.com.parl.ui.fragments;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
-//import android.net.URI;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,15 +33,20 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.InputStream;
+import java.net.URL;
+
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.logout.LogoutContract;
 import cs48.project.com.parl.core.logout.LogoutPresenter;
 import cs48.project.com.parl.models.User;
-import cs48.project.com.parl.ui.activities.ConvoListingActivity;
 import cs48.project.com.parl.ui.activities.LoginActivity;
+import cs48.project.com.parl.utils.Constants;
 
-import static cs48.project.com.parl.R.string.username;
+import static android.app.Activity.RESULT_OK;
 import static cs48.project.com.parl.utils.Constants.convertFromAcronym;
+
+//import android.net.URI;
 //123
 /**
  * A simple {@link Fragment} subclass.
@@ -62,7 +70,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     private static final int RC_PHOTO_PICKER = 2;
     // ALT ENTER TO LINK ;)
     private FirebaseStorage mFirebaseStorage;
-    private StorageReference mChatPhotoStorageReference;
+    private StorageReference mUserPhotoStorageReference;
 
     public SettingFragment () {
     }
@@ -79,13 +87,15 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
                 setEmailTextView();
             }
         };
-
+        DownloadProfilePic();
+        //pictureButton.setImageBitmap(profilePic);
     }
 
     @Override
     public void onStart(){
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+        pictureButton.setImageBitmap(profilePic);
     }
 
 
@@ -98,6 +108,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
         return fragmentView;
     }
 
+//    @Override
+//    public void onRefresh() {
+//        pictureButton.setImageBitmap(profilePic);
+//    }
+
     private void bindViews(View view) {
         usernameTextView = (TextView) view.findViewById(R.id.User_Name);
         languageTextView = (TextView) view.findViewById(R.id.User_Language);
@@ -108,7 +123,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/jpg");
+                intent.setType("image/jpeg");
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
                 startActivityForResult(Intent.createChooser(intent, "Complete actions using"), RC_PHOTO_PICKER);
             }
@@ -121,29 +136,87 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
         init();
     }
 
-   // @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode,resultCode,data);
-//        if (requestCode == RC_PHOTO_PICKER) {
-//            Uri selectedImageUri = data.getData();
-//            StorageReference photoRef = mChatPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
-//            photoRef.putFile(selectedImageUri).addOnSuccessListener
-//                    (this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            Uri downloadUrl taskSnapshot.getDownloadUrl();
-//                            FriendlyMessage.
-//                        }
-//                    });
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            Log.d("the data is ",data.getData().toString());
+            StorageReference photoRef = mUserPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
+            photoRef.putFile(selectedImageUri).addOnSuccessListener
+                    (this.getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                            String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(Uid).child("photoURL").setValue(downloadUrl.toString());
+                            DownloadProfilePic();
+                            pictureButton.setImageBitmap(profilePic);
+                        }
+
+                    });
+        }
+    }
+
+//
+//
+//    public void onClick(View v) {
+//        startActivity(new Intent(this, IndexActivity.class));
+//        finish();
+//
 //    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+//        Bitmap bmImage;
+
+//        public DownloadImageTask(Bitmap bmImage) {
+//            this.bmImage = bmImage;
+//        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            profilePic = result;
+        }
+    }
+    private Bitmap profilePic;
+
+
+    private void DownloadProfilePic(){
+        FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("photoURL").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String URL = dataSnapshot.getValue(String.class);
+                Log.d("find the URL", URL);
+                new DownloadImageTask().execute(URL);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     private void init(){
+        pictureButton.setImageBitmap(profilePic);
         setUsernameTextView();
         setLanguageTextView();
         setEmailTextView();
         mLogoutPresenter = new LogoutPresenter(this);
         mBtnLogout.setOnClickListener(this);
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mChatPhotoStorageReference = mFirebaseStorage.getReference().child("chat_photos");
+        mUserPhotoStorageReference = mFirebaseStorage.getReference().child("users_photos");
     }
 
 
