@@ -95,7 +95,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     public void onStart(){
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-        pictureButton.setImageBitmap(profilePic);
+        if(profilePic != null) {
+            pictureButton.setImageBitmap(profilePic);
+        }
     }
 
 
@@ -151,7 +153,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
                             String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(Uid).child("photoURL").setValue(downloadUrl.toString());
                             DownloadProfilePic();
-                            pictureButton.setImageBitmap(profilePic);
+                            if(profilePic != null) {
+                                pictureButton.setImageBitmap(profilePic);
+                            }
                         }
 
                     });
@@ -209,7 +213,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
         });
     }
     private void init(){
-        pictureButton.setImageBitmap(profilePic);
+        if(profilePic != null) {
+            pictureButton.setImageBitmap(profilePic);
+        }
         setUsernameTextView();
         setLanguageTextView();
         setEmailTextView();
