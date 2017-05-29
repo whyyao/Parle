@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="55dp"
     android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
@@ -12,8 +12,8 @@
 
     <TextView
         android:id="@+id/search_user_pic"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="center_vertical"
         android:background="@drawable/contact_circle"
         android:fontFamily="sans-serif-medium"
@@ -41,7 +41,7 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
             android:maxLines="1"
-            android:textSize="20sp"
+            android:textSize="16sp"
             tools:text="" />
 
         <TextView
@@ -50,15 +50,15 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textSize="12sp"
+            android:textSize="8sp"
             tools:text="" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:background="@drawable/add_contact"
         android:backgroundTint="@color/grey_500"
         android:textColor="@color/grey_500" />

@@ -14,6 +14,7 @@ import android.widget.SearchView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -55,6 +56,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
     private GetOneUserPresenter mGetOneUserPresenter;
     private GetUsersPresenter mGetUsersPresenter;
     private ListView mListView;
+    private TextView mNearbyButton;
     ListAdapter mAdapter;
     private List<User> mSearchUsers = new ArrayList<>();
 
@@ -85,6 +87,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mUserSearchViews = (SearchView) findViewById(R.id.find_user_search_view);
         mListView = (ListView) findViewById(R.id.list_view_search);
+        mNearbyButton = (TextView) findViewById(R.id.nearby_button);
     }
 
     private void init() {
@@ -116,6 +119,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
                 return false;
             }
         });
+        mNearbyButton.setOnClickListener(this);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -128,16 +132,13 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 
     @Override
     public void onClick(View view) {
-        //int viewId = view.getId();
+        int viewId = view.getId();
 
-//        switch (viewId) {
-//            case R.id.button_search:
-//                //startActivity(new Intent(this, AddNearbyActivity.class));
-//
-//                //onAddContact(view);
-//                //onSearch(view);
-//                break;
-//        }
+        switch (viewId) {
+            case R.id.nearby_button:
+                startActivity(new Intent(this, AddNearbyActivity.class));
+                break;
+        }
     }
 
     public void AddSearchContact(String newContactId)

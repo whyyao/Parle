@@ -24,34 +24,48 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
-        <SearchView
-            android:id="@+id/find_user_search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below = "@id/toolbar"
-            android:layout_marginTop="55dp"/>
-
-    <ListView
-        android:id="@+id/list_view_search"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="105dp"
-        ></ListView>
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/recycler_view_add_contact"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_marginTop="105dp"-->
-
-        <!--app:layoutManager="LinearLayoutManager" />-->
-
-
-    <FrameLayout
-        android:id="@+id/frame_layout_content_nearby"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="55dp"
+            >
+
+            <SearchView
+             android:id="@+id/find_user_search_view"
+             android:layout_width="match_parent"
+             android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/nearby_button" />
+
+            <TextView
+                android:id="@+id/nearby_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_wifi_black_24dp"
+                android:backgroundTint="@color/grey_600"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"/>
+
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/list_view_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+
+
+    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

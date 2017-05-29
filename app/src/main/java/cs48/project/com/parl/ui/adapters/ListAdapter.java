@@ -16,6 +16,8 @@ import android.app.Activity;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cs48.project.com.parl.R;
@@ -93,7 +95,7 @@ public class ListAdapter extends BaseAdapter implements Filterable{
 
     private class ValueFilter extends Filter {
         @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
+        protected FilterResults performFiltering(final CharSequence constraint) {
             FilterResults results = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
                 List filterList = new ArrayList();
@@ -122,6 +124,7 @@ public class ListAdapter extends BaseAdapter implements Filterable{
         }
 
     }
+
     public User getUser(int position) {
         return mStringFilterList.get(position);
     }
