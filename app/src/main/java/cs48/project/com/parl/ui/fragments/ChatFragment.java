@@ -212,7 +212,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                    String receiver = getArguments().getString(Constants.ARG_RECEIVER);
+                                    String receiver = getArguments().getString(Constants.ARG_RECEIVER_USERNAME);
                                     String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
                                     String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
                                     String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
