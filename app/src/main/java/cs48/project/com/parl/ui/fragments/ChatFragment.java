@@ -2,6 +2,7 @@ package cs48.project.com.parl.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs48.project.com.parl.Manifest;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.chat.ChatContract;
 import cs48.project.com.parl.core.chat.ChatPresenter;
@@ -146,6 +148,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 // TODO: Fire an intent to show an image picker
             }
         });
