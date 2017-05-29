@@ -20,7 +20,8 @@
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textAllCaps="true"
-        tools:text="S" />
+        tools:text="S"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/contact_picture"
@@ -35,6 +36,7 @@
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textAllCaps="true"
+
         />
 
 

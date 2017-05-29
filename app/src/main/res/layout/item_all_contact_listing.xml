@@ -23,7 +23,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/grey_100"
         android:textStyle="bold"
-        tools:text="a" />
+        tools:text="a"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/contact_prof_pic"
