@@ -73,24 +73,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
         mBtnLogin.setOnClickListener(this);
         mBtnRegister.setOnClickListener(this);
 
-        mETxtEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.toString().trim().length() > 0 && mETxtPassword.getText().toString().length() > 0 ) {
-                    mBtnLogin.setEnabled(true);
-                } else {
-                    mBtnLogin.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
+//        mETxtEmail.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if (charSequence.toString().trim().length() > 0 && mETxtPassword.getText().toString().length() > 0 ) {
+//                    mBtnLogin.setEnabled(true);
+//                } else {
+//                    mBtnLogin.setEnabled(false);
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//            }
+//        });
 //        mETxtPassword.addTextChangedListener(new TextWatcher() {
 //            @Override
 //            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
