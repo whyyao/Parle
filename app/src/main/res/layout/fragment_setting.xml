@@ -15,8 +15,8 @@
 
         <ImageButton
             android:id="@+id/userImage"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_alignParentTop="true"
             android:elevation="3dp"
             app:srcCompat="@drawable/common_google_signin_btn_icon_light_normal_background" />
@@ -115,11 +115,12 @@
         android:layout_height="match_parent">
         <Button
             android:id="@+id/setting_logout"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:background="@color/buttons"
+            android:layout_marginBottom="24dp"
+            android:background="@color/red_900"
             android:text="Logout"
             android:textColor="@color/white" />
     </RelativeLayout>

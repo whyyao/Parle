@@ -14,12 +14,12 @@
     <!--<color name="chatReceiver">#AC92A6</color>-->
 
 
-    <color name="colorPrimary">#AC4941</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#313851</color>
-    <color name="buttons">#F99947</color>
-    <color name="chatSender">#313851</color>
-    <color name="chatReceiver">#9E9E9E</color>
+    <color name="colorPrimary">#bbdefb</color>
+    <color name="colorPrimaryDark">#8aacc8</color>
+    <color name="colorAccent">#aaaaaa</color>
+    <color name="buttons">#90caf9</color>
+    <color name="chatSender">#5d99c6</color>
+    <color name="chatReceiver">#89abc6</color>
 
 
     <color name="red_50">#FFEBEE</color>
@@ -155,7 +155,7 @@
 
     <color name="cyan_50">#E0F7FA</color>
     <color name="cyan_100">#B2EBF2</color>
-    <color name="cyan_200">#80DEEA</color>
+    <color name="cyan_200">#bbdefb</color>
     <color name="cyan_300">#4DD0E1</color>
     <color name="cyan_400">#26C6DA</color>
     <color name="cyan_500">#00BCD4</color>
@@ -185,7 +185,7 @@
 
     <color name="amber_50">#FFF8E1</color>
     <color name="amber_100">#FFECB3</color>
-    <color name="amber_200">#FFE082</color>
+    <color name="amber_200">#bbdefb</color>
     <color name="amber_300">#FFD54F</color>
     <color name="amber_400">#FFCA28</color>
     <color name="amber_500">#FFC107</color>
@@ -227,7 +227,7 @@
     <color name="blue_50">#E3F2FD</color>
     <color name="blue_100">#BBDEFB</color>
     <color name="blue_200">#90CAF9</color>
-    <color name="blue_300">#64B5F6</color>
+    <color name="blue_300">#64b5f6</color>
     <color name="blue_400">#42A5F5</color>
     <color name="blue_500">#2196F3</color>
     <color name="blue_600">#1E88E5</color>

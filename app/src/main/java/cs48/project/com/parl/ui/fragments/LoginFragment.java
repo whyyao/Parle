@@ -12,27 +12,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.content.Intent;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import android.app.Activity;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.login.LoginContract;
 import cs48.project.com.parl.core.login.LoginPresenter;
 import cs48.project.com.parl.ui.activities.ConvoListingActivity;
+import cs48.project.com.parl.ui.activities.LoginActivity;
 import cs48.project.com.parl.ui.activities.RegisterActivity;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
+ https://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/
  */
+
 public class LoginFragment extends Fragment implements View.OnClickListener, LoginContract.View {
     private LoginPresenter mLoginPresenter;
     private EditText mETxtEmail, mETxtPassword;
     private Button mBtnLogin, mBtnRegister;
     private ProgressDialog mProgressDialog;
+
+    public static final String TAG = "Login Fragment";
+    private static final int REQUEST_SIGNUP = 0;
+
     public static LoginFragment newInstance() {
         Bundle args = new Bundle();
         LoginFragment fragment = new LoginFragment();

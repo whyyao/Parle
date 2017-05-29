@@ -1,38 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/padding_avg">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/amber_200"
+    android:fitsSystemWindows="true"
+    android:theme="@android:style/Theme.NoTitleBar">
 
-    <EditText
-        android:id="@+id/edit_text_email_id"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress" />
+        android:background="@color/cyan_200"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="56dp">
 
-    <EditText
-        android:id="@+id/edit_text_username"
+    <!-- Logo -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="92dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/black_banner" />
+
+    <!-- E-mail -->
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/username"
-        android:inputType="text" />
+        android:layout_marginBottom="18dp"
+        android:layout_marginTop="18dp"
+        android:textColor="@color/black">
 
-    <EditText
-        android:id="@+id/edit_text_password"
+        <EditText
+            android:id="@+id/edit_text_email_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:inputType="textEmailAddress"
+            android:background="@color/colorPrimary" />
+    </android.support.design.widget.TextInputLayout>
+
+   <!-- Username -->
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
+        android:layout_marginBottom="18dp"
+        android:layout_marginTop="18dp"
+        android:textColor="@color/black" >
+        <EditText
+            android:id="@+id/edit_text_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:hint="Username"
+            android:inputType="text"
+            android:background="@color/colorPrimary" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/edit_text_verify"
+    <!-- Password -->
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/verify"
-        android:inputType="textPassword" />
+        android:layout_marginBottom="18dp"
+        android:layout_marginTop="18dp"
+        android:textColor="@color/black" >
+        <EditText
+            android:id="@+id/edit_text_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:background="@color/colorPrimary"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <!-- Password Verify -->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:layout_marginTop="18dp"
+        android:textColor="@color/black" >
+        <EditText
+            android:id="@+id/edit_text_verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:hint="Verify"
+            android:inputType="textPassword"
+            android:background="@color/colorPrimary" />
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -44,8 +107,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"/>
+        android:spinnerMode="dropdown"
+       />
 
+    <!-- Register -->
+    <Button
+        android:id="@+id/button_register"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:text="REGISTER"
+        android:textSize = "16dip"
+        android:background="@color/white"
+        android:textColor="@color/chatReceiver"/>
+    <!--
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/space_avg" />
@@ -78,7 +155,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="visible"
-        tools:visibility="gone" />
+        tools:visibility="gone" /> -->
 
-    </RelativeLayout>
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
