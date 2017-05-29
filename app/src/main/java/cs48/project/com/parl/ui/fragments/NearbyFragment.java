@@ -68,8 +68,10 @@ public class NearbyFragment extends Fragment implements AddContactContract.View,
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        String test = "QQ0B62oIS3Vt73d37xNWgB33iQa2";
+        String test = "xnr6GxI7RraRDoq96uJGfiwXwWB2";
+        String test2 = "k5GINgBZgxYPqb4PwAiyo8avA2u1";
         mNearbyDevicesList.add(test);
+        mNearbyDevicesList.add(test2);
         mMessageListener = new MessageListener() {
 
             @Override
