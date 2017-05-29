@@ -42,6 +42,7 @@ import cs48.project.com.parl.utils.ItemClickSupport;
 /**
  * Created by jakebliss on 5/8/17.
  * Some Code adapted From http://www.journaldev.com/12478/android-searchview-example-tutorial
+ * ***
  */
 
 public class ContactAddActivity extends AppCompatActivity implements AddContactContract.View, View.OnClickListener, GetOneUserContract.View,
