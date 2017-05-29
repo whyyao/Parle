@@ -1,11 +1,17 @@
 package cs48.project.com.parl.ui.adapters;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.util.List;
 
 import cs48.project.com.parl.R;
@@ -36,11 +42,23 @@ public class ContactListingRecyclerAdapter extends RecyclerView.Adapter<ContactL
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         User user = mUsers.get(position);
+        String pictureURL = user.photoURL;
+        boolean isPhoto = pictureURL != null;
+        if (isPhoto) {
+            holder.txtUserAlphabet.setVisibility(View.GONE);
+            holder.contactpic.setVisibility(View.VISIBLE);
+            new DownloadImageTask(holder.contactpic).execute(pictureURL);
+        } else {
+            holder.txtUserAlphabet.setVisibility(View.VISIBLE);
+            holder.contactpic.setVisibility(View.GONE);
+            String alphabet = user.userName.substring(0, 1);
+            holder.txtUserAlphabet.setText(alphabet);
+        }
 
-        String alphabet = user.userName.substring(0, 1);
+       // String alphabet = user.userName.substring(0, 1);
 
         holder.txtUsername.setText(user.userName);
-        holder.txtUserAlphabet.setText(alphabet);
+        //holder.txtUserAlphabet.setText(alphabet);
     }
 
     @Override
@@ -57,11 +75,38 @@ public class ContactListingRecyclerAdapter extends RecyclerView.Adapter<ContactL
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView txtUserAlphabet, txtUsername;
+        private ImageView contactpic;
 
         ViewHolder(View itemView) {
             super(itemView);
             txtUserAlphabet = (TextView) itemView.findViewById(R.id.text_view_user_alphabet);
             txtUsername = (TextView) itemView.findViewById(R.id.text_view_username);
+            contactpic = (ImageView) itemView.findViewById(R.id.contact_prof_pic);
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 }
