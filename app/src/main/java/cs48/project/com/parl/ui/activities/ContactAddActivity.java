@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.view.View;
@@ -23,8 +24,6 @@ import cs48.project.com.parl.core.contacts.add.AddContactContract;
 import cs48.project.com.parl.core.contacts.add.AddContactPresenter;
 import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
-import cs48.project.com.parl.core.users.getSearch.GetSearchUsersContract;
-import cs48.project.com.parl.core.users.getSearch.GetSearchUsersPresenter;
 import cs48.project.com.parl.core.users.getall.GetUsersContract;
 import cs48.project.com.parl.core.users.getall.GetUsersPresenter;
 import cs48.project.com.parl.models.User;
@@ -32,6 +31,7 @@ import cs48.project.com.parl.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 import cs48.project.com.parl.ui.adapters.NearbyUsersListingRecyclerAdapter;
@@ -44,7 +44,7 @@ import cs48.project.com.parl.utils.ItemClickSupport;
  */
 
 public class ContactAddActivity extends AppCompatActivity implements AddContactContract.View, View.OnClickListener, GetOneUserContract.View,
-                                        ItemClickSupport.OnItemClickListener, GetUsersContract.View, GetUsersContract.Presenter{
+                                        GetUsersContract.View, GetUsersContract.Presenter{
     private Toolbar mToolbar;
     public static final String ARG_TYPE = "type";
     public static final String TYPE_CHATS = "type_chats";
@@ -57,6 +57,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
     private ListView mListView;
     ListAdapter mAdapter;
     private List<User> mSearchUsers = new ArrayList<>();
+
 
 
     public static void startIntent(Context context) {
@@ -96,10 +97,10 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
         mProgressDialog.setIndeterminate(true);
         mGetOneUserPresenter = new GetOneUserPresenter(this);
         mGetUsersPresenter = new GetUsersPresenter(this);
+
         getAllUsers();
 
 
-        System.out.println(mSearchUsers);
         mAdapter = new ListAdapter(mSearchUsers);
         mListView.setAdapter(mAdapter);
         mUserSearchViews.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
@@ -110,16 +111,24 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                System.out.println(mSearchUsers);
+                mAdapter.setFilterList(mSearchUsers);
                 mAdapter.getFilter().filter(newText);
                 return false;
+            }
+        });
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object newContact = parent.getItemAtPosition(position);
+                AddSearchContact(newContact.toString());
             }
         });
     }
 
     @Override
     public void onClick(View view) {
-        int viewId = view.getId();
+        //int viewId = view.getId();
 
 //        switch (viewId) {
 //            case R.id.button_search:
@@ -131,13 +140,10 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 //        }
     }
 
-
-    @Override
-    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-
-       // onAddSearchContact(newContactUid);
+    public void AddSearchContact(String newContactId)
+    {
+        mGetOneUserPresenter.getOneUser(newContactId);
     }
-
 
     @Override
     public void onAddContactSuccess(String message) {
@@ -171,9 +177,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 
     @Override
     public void onGetOneUserSuccess(User user){
-        Toast.makeText(this, user.userName, Toast.LENGTH_SHORT).show();
         mAddContactPresenter.addContact(this,user);
-
     }
 
     @Override

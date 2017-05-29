@@ -261,10 +261,5 @@ public class NearbyFragment extends Fragment implements AddContactContract.View,
         Toast.makeText(getActivity(), "search failed", Toast.LENGTH_SHORT).show();
 
     }
-//    public void onSearch(View view){
-//        String searchUsername = mETxtUsername.getText().toString();
-//
-//        mProgressDialog.show();
-//    }
 
 }

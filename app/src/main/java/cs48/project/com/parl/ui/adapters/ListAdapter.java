@@ -25,7 +25,7 @@ import cs48.project.com.parl.R;
  */
 
 public class ListAdapter extends BaseAdapter implements Filterable{
-    private List mData;
+    private List <User> mData;
     List<User> mStringFilterList;
     ValueFilter valueFilter;
     private LayoutInflater inflater;
@@ -34,8 +34,13 @@ public class ListAdapter extends BaseAdapter implements Filterable{
 
     public ListAdapter(List<User> allUsers) {
         mData = allUsers;
-        mStringFilterList = allUsers;
-        System.out.println(mStringFilterList);
+        mStringFilterList = new ArrayList<User>(allUsers);
+    }
+
+    public void setFilterList(List<User> allUsers){
+        System.out.println("inside set");
+        mData = allUsers;
+        mStringFilterList = new ArrayList<User>(allUsers);
     }
 
     @Override
@@ -64,12 +69,16 @@ public class ListAdapter extends BaseAdapter implements Filterable{
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.search_row_item, null);
             holder = new RowHolder();
-            holder.textView = (TextView)convertView.findViewById(R.id.search_item);
+            holder.txtUserAlphabet = (TextView)convertView.findViewById(R.id.search_user_pic);
+            holder.txtUsername = (TextView) convertView.findViewById(R.id.search_username);
+            holder.txtUserEmail = (TextView) convertView.findViewById(R.id.search_email);
             convertView.setTag(holder);
         } else {
             holder = (RowHolder)convertView.getTag();
         }
-        holder.textView.setText(mData.get(position).toString());
+        holder.txtUserAlphabet.setText(mData.get(position).userName.substring(0,1).toString());
+        holder.txtUsername.setText(mData.get(position).userName.toString());
+        holder.txtUserEmail.setText(mData.get(position).email.toString());
         return convertView;
 
     }
@@ -92,13 +101,13 @@ public class ListAdapter extends BaseAdapter implements Filterable{
                     if ((mStringFilterList.get(i).userName.toString().toUpperCase()).contains(constraint.toString().toUpperCase()) ||
                             (mStringFilterList.get(i).email.toString().toUpperCase()).contains(constraint.toString().toUpperCase()))
                     {
-                        System.out.println("adding");
-                        filterList.add(mStringFilterList.get(i).userName.toString());
+                        filterList.add(mStringFilterList.get(i));
                     }
                 }
                 results.count = filterList.size();
                 results.values = filterList;
             } else {
+                mStringFilterList.clear();
                 results.count =  mStringFilterList.size();
                 results.values = mStringFilterList;
             }
@@ -108,9 +117,12 @@ public class ListAdapter extends BaseAdapter implements Filterable{
         @Override
         protected void publishResults(CharSequence constraint,
                                       FilterResults results) {
-            mData = (List) results.values;
+            mData = (List<User>) results.values;
             notifyDataSetChanged();
         }
 
+    }
+    public User getUser(int position) {
+        return mStringFilterList.get(position);
     }
 }

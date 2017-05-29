@@ -11,10 +11,12 @@ import android.widget.TextView;
  */
 
 public class RowHolder {
-    public TextView textView;
+    public  TextView txtUserAlphabet, txtUsername, txtUserEmail;
 
     public RowHolder ()
     {
-        textView = null;
+        txtUserAlphabet = null;
+        txtUsername = null;
+        txtUserEmail = null;
     }
 }
