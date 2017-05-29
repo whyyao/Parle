@@ -11,6 +11,15 @@
     android:paddingEnd="@dimen/padding_avg"
     android:paddingStart="@dimen/padding_avg"
     android:paddingTop="@dimen/padding_small">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="136dp">
 
     <TextView
         android:id="@+id/text_view_chat_message"
@@ -23,6 +32,13 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/grey_100"
         tools:text="Hey Michael" />
+
+        <ImageView
+            android:id="@+id/photoImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/text_view_user_alphabet"

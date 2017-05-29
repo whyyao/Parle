@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
@@ -25,22 +24,33 @@
         android:textStyle="bold"
         tools:text="a" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_view_chat_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_huge"
+            android:background="@color/chatReceiver"
+            android:padding="@dimen/padding_small"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey_100"
+            tools:text="Hello mate ! \ntest" />
+
+        <ImageView
+            android:id="@+id/photoImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true" />
+    </LinearLayout>
+
     <android.support.v4.widget.Space
         android:layout_width="@dimen/space_avg"
         android:layout_height="wrap_content" />
-
-
-
-    <TextView
-        android:id="@+id/text_view_chat_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_huge"
-        android:background="@color/chatReceiver"
-        android:radius = "50dp"
-        android:padding="@dimen/padding_small"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/grey_100"
-        tools:text="Hello mate ! \ntest" />
 
 </LinearLayout>

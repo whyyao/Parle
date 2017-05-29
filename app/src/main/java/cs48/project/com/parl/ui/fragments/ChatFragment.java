@@ -1,30 +1,33 @@
 package cs48.project.com.parl.ui.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
-/*
-import com.google.api.services.translate.Translate;
-import com.google.api.services.translate.model.TranslationsListResponse;
-import com.google.api.services.translate.model.TranslationsResource;*/
-
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,6 +49,13 @@ import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.adapters.ChatRecyclerAdapter;
 import cs48.project.com.parl.utils.Constants;
 
+import static android.app.Activity.RESULT_OK;
+
+/*
+import com.google.api.services.translate.Translate;
+import com.google.api.services.translate.model.TranslationsListResponse;
+import com.google.api.services.translate.model.TranslationsResource;*/
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -54,16 +64,22 @@ import cs48.project.com.parl.utils.Constants;
  * Use the {@link ChatFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatFragment extends Fragment implements ChatContract.View, ConversationContract.View, TextView.OnEditorActionListener {
+public class ChatFragment extends Fragment implements ChatContract.View, ConversationContract.View {
     private RecyclerView mRecyclerViewChat;
     private EditText mETxtMessage;
     private ProgressDialog mProgressDialog;
+    public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
     private ChatRecyclerAdapter mChatRecyclerAdapter;
+    private static final int RC_PHOTO_PICKER = 2;
+
     private ChatPresenter mChatPresenter;
     private ConversationPresenter mConversationPresenter;
     GetMyUserName myUserName;
+    private Button mSendButton;
+    private ImageButton mPhotoPickerButton;
 
-
+    private FirebaseStorage mFirebaseStorage;
+    private StorageReference mPhotoStorageReference;
 
     public static ChatFragment newInstance(String receiver,
                                            String receiverUid,
@@ -85,7 +101,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         EventBus.getDefault().register(this);
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
@@ -103,6 +118,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
     private void bindViews(View view) {
         mRecyclerViewChat = (RecyclerView) view.findViewById(R.id.recycler_view_chat);
         mETxtMessage = (EditText) view.findViewById(R.id.edit_text_message);
+        mSendButton = (Button) view.findViewById(R.id.sendButton);
+        mPhotoPickerButton = (ImageButton) view.findViewById(R.id.photoPickerButton);
     }
 
     @Override
@@ -112,12 +129,13 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
     }
 
     private void init() {
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        mPhotoStorageReference = mFirebaseStorage.getReference().child("chat_photos");
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setTitle(getString(R.string.loading));
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setIndeterminate(true);
 
-        mETxtMessage.setOnEditorActionListener(this);
 
         mChatPresenter = new ChatPresenter(this);
         mConversationPresenter = new ConversationPresenter(this);
@@ -125,17 +143,100 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         mChatPresenter.getMessage(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                 getArguments().getString(Constants.ARG_RECEIVER_UID));
         myUserName = new GetMyUserName();
-    }
+        mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Fire an intent to show an image picker
+            }
+        });
+
+        // Enable Send button when there's text to send
+        mETxtMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().trim().length() > 0) {
+                    mSendButton.setEnabled(true);
+                } else {
+                    mSendButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+        mETxtMessage.setFilters(new InputFilter[]{new InputFilter.LengthFilter(DEFAULT_MSG_LENGTH_LIMIT)});
+
+        // Send button sends a message and clears the EditText
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMessage();
+
+            }
+        });
+
+        mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+            }
+        });
+        }
+
+//    @Override
+//    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//        if (actionId == EditorInfo.IME_ACTION_SEND) {
+//            sendMessage();
+//            return true;
+//        }
+//        return false;
+//    }
+    private String senderLang;
 
     @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_SEND) {
-            sendMessage();
-            return true;
+    public void onActivityResult(int requestCode, int resultCode, Intent data ){
+        super.onActivityResult(requestCode, resultCode,data);
+        if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK){
+            Uri selectedImageUri = data.getData();
+            StorageReference photoRef = mPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
+            photoRef.putFile(selectedImageUri).addOnSuccessListener
+                    (this.getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                    String receiver = getArguments().getString(Constants.ARG_RECEIVER);
+                                    String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
+                                    String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                                    String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                    String receiverFirebaseToken = getArguments().getString(Constants.ARG_FIREBASE_TOKEN);
+                                    Chat chat = new Chat(myUserName.userName,
+                                            receiver,
+                                            senderUid,
+                                            receiverUid,
+                                            "photo",
+                                            "photo",
+                                            System.currentTimeMillis(),
+                                            downloadUrl.toString());
+                                    mChatPresenter.sendMessage(getActivity().getApplicationContext(),
+                                            chat,
+                                            receiverFirebaseToken);
+                                    Conversation conversation = new Conversation(senderUid, receiverUid, "photo", "photo", System.currentTimeMillis(),
+                                            myUserName.userName, receiver);
+
+                                    mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
+                                }
+                            }
+                    );
         }
-        return false;
     }
-    private String senderLang;
     //private String myUsername;
     private void sendMessage() {
 
