@@ -9,7 +9,7 @@
     android:paddingStart="16dp"
     >
 
-    <ImageView
+    <TextView
         android:id="@+id/contact_pic"
         android:layout_width="42dp"
         android:layout_height="42dp"
