@@ -26,12 +26,31 @@
         android:textStyle="bold"
         tools:text="a" />
 
+    <ImageView
+        android:id="@+id/prof_pic"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="@dimen/margin_avg"
+        android:layout_toLeftOf="@+id/text_view_user_alphabet"
+        android:background="@drawable/contact_circle"
+        android:gravity="center"
+        android:maxEms="1"
+        android:textAllCaps="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/grey_100"
+        android:textStyle="bold"
+        tools:text="a" />
+
     <TextView
         android:id="@+id/text_view_chat_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_huge"
-        android:layout_toLeftOf="@+id/text_view_user_alphabet"
+        android:layout_toLeftOf="@+id/prof_pic"
+
         android:background="@color/chatSender"
         android:padding="@dimen/padding_small"
         android:textAppearance="?android:attr/textAppearanceMedium"

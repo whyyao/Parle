@@ -1,19 +1,32 @@
 package cs48.project.com.parl.ui.adapters;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.models.Conversation;
+import cs48.project.com.parl.models.User;
+import cs48.project.com.parl.utils.Constants;
 
 /**
  * Created by yaoyuan on 4/24/17.
@@ -39,8 +52,10 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
     }
     private String userName;
     private String correctMessage;
+    private String correctUid;
+    private String pictureURL;
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Conversation conversation = mConversation.get(position);
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -49,18 +64,52 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
          if(currentUserUid.equals(conversation.receiverUid)){
              userName = conversation.senderUserName;
              correctMessage = conversation.translatedLastMessage;
+             correctUid = conversation.senderUid;
         }
         else{
              userName = conversation.receiverUserName;
              correctMessage = conversation.unTranslatedLastMessage;
+             correctUid = conversation.receiverUid;
         }
+        FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren().iterator();
+                while (dataSnapshots.hasNext()) {
+                    DataSnapshot dataSnapshotChild = dataSnapshots.next();
+                    User user = dataSnapshotChild.getValue(User.class);
+                    //System.out.println(user.userName);
+                    if (user.uid.equals(correctUid)) {
+                        Log.d("getting user", user.userName);
+                        pictureURL = user.photoURL;
+                        Log.d("picture URL: ", user.photoURL);
+                        if(pictureURL != null) {
+                            Log.d("picture URL is ", pictureURL);
+                        }else{Log.d("URL","is null");}
+                        boolean isPhoto = pictureURL != null;
+                        if (isPhoto) {
+                            holder.txtUserAlphabet.setVisibility(View.GONE);
+                            holder.imagePhoto.setVisibility(View.VISIBLE);
+                            new DownloadImageTask(holder.imagePhoto).execute(pictureURL);
+                        } else {
+                            holder.txtUserAlphabet.setVisibility(View.VISIBLE);
+                            holder.imagePhoto.setVisibility(View.GONE);
+                            String alphabet = userName.substring(0, 1);
+                            holder.txtUserAlphabet.setText(alphabet);
+                        }
+                    }
+                }
+            }
 
-        System.out.printf("Conversation Print: %s\n", userName);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+       // System.out.printf("Conversation Print: %s\n", userName);
+
+
         holder.txtUsername.setText(userName);
-        String alphabet = userName.substring(0, 1);
 
-
-        holder.txtUserAlphabet.setText(alphabet);
         holder.textLastMessage.setText(correctMessage);
 
         Date dateObject= new Date(conversation.time);
@@ -94,7 +143,7 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView txtUserAlphabet, txtUsername, textLastMessage, textDate, textTime;
-
+        private ImageView imagePhoto;
         ViewHolder(View itemView) {
             super(itemView);
             txtUserAlphabet = (TextView) itemView.findViewById(R.id.contact_pic);
@@ -102,6 +151,31 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
             textLastMessage = (TextView) itemView.findViewById(R.id.message_preview);
             textDate = (TextView) itemView.findViewById(R.id.date);
             textTime = (TextView) itemView.findViewById(R.id.time);
+            imagePhoto = (ImageView) itemView.findViewById(R.id.contact_picture);
+        }
+    }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 }
