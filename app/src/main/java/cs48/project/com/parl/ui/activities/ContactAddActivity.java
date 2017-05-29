@@ -106,6 +106,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 
         mAdapter = new ListAdapter(mSearchUsers);
         mListView.setAdapter(mAdapter);
+        mUserSearchViews.setQueryHint("Search");
         mUserSearchViews.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
             public boolean onQueryTextSubmit(String query) {
