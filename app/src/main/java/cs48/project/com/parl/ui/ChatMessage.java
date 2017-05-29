@@ -1,3 +1,4 @@
+//from: https://github.com/akkm/NearbySample
 package cs48.project.com.parl.ui;
 
 import android.os.Build;
