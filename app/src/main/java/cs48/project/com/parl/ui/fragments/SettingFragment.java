@@ -202,7 +202,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String URL = dataSnapshot.getValue(String.class);
-                Log.d("find the URL", URL);
+               // Log.d("find the URL", URL);
                 new DownloadImageTask().execute(URL);
             }
 

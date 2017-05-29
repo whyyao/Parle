@@ -147,6 +147,7 @@ public class NearbyFragment extends Fragment implements AddContactContract.View,
         }
         mPubMessage = new Message(content, ChatMessage.TYPE_USER_CHAT);
         Nearby.Messages.publish(mGoogleApiClient, mPubMessage);
+
         //subscribe to messages
         Nearby.Messages.subscribe(mGoogleApiClient, mMessageListener).setResultCallback(new ResultCallback<Status>() {
             @Override
