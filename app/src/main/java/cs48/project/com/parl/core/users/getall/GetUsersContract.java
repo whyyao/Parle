@@ -22,7 +22,7 @@ public interface GetUsersContract {
     }
 
     interface Interactor {
-        void getAllUsersFromFirebase();
+        void getAllUsersFromFirebase(List<String> contacts);
 
     }
 
