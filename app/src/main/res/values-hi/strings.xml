@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parlé</string>
+    <string name="action_settings">सेटिंग्स</string>
+    <string name="action_logout">लोग आउट</string>
+    <string name="are_you_sure">क्या आपको यकीन है?</string>
+    <string name="cancel">रद्द करना</string>
+    <string name="email">ईमेल</string>
+    <string name="language">भाषा</string>
+    <string name="loading">लोड हो रहा है</string>
+    <string name="login">लॉग इन करें</string>
+    <string name="login_register">खाता नहीं है?</string>
+    <string name="logout">लोग आउट</string>
+    <string name="name">नाम</string>
+    <string name="password">पासवर्ड</string>
+    <string name="please_wait">कृपया प्रतीक्षा करें...</string>
+    <string name="send_button_label">भेजना</string>
+    <string name="username">उपयोगकर्ता नाम</string>
+    <string name="verify">पासवर्ड को सत्यापित करें</string>
+</resources>

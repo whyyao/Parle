@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Name"
+            android:text="@string/name"
             android:textSize="18sp" />
 
         <TextView
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Email"
+            android:text="@string/email"
             android:textSize="18sp" />
 
         <TextView
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Language"
+            android:text="@string/language"
             android:textSize="18sp" />
 
         <TextView
@@ -123,7 +123,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="24dp"
             android:background="@color/red_900"
-            android:text="Logout"
+            android:text="@string/logout"
             android:textColor="@color/white" />
     </RelativeLayout>
 

@@ -225,14 +225,14 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                                             receiver,
                                             senderUid,
                                             receiverUid,
-                                            "photo",
-                                            "photo",
+                                            Constants.ARG_PHOTO,
+                                            Constants.ARG_PHOTO,
                                             System.currentTimeMillis(),
                                             downloadUrl.toString());
                                     mChatPresenter.sendMessage(getActivity().getApplicationContext(),
                                             chat,
                                             receiverFirebaseToken);
-                                    Conversation conversation = new Conversation(senderUid, receiverUid, "photo", "photo", System.currentTimeMillis(),
+                                    Conversation conversation = new Conversation(senderUid, receiverUid, Constants.ARG_PHOTO, Constants.ARG_PHOTO, System.currentTimeMillis(),
                                             myUserName.userName, receiver);
 
                                     mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
