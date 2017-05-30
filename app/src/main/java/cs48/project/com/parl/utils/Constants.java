@@ -27,18 +27,18 @@ public class Constants {
     private static Map<String, String> languageDic;
     static {
         Map<String, String> languageDic = new HashMap<String, String>();
-        languageDic.put("ar", "Arabic");
-        languageDic.put("bn", "Bengali");
-        languageDic.put("zh-CN", "Chinese (Simplified)");
-        languageDic.put("zh-TW", "Chinese (Traditional)");
+        languageDic.put("ar", "عربى");
+        languageDic.put("bn", "বাঙালি");
+        languageDic.put("zh-CN", "简体中文");
+        languageDic.put("zh-TW", "繁体中文");
         languageDic.put("en", "English");
-        languageDic.put("fr", "French");
-        languageDic.put("hi", "Hindi");
-        languageDic.put("it", "Italian");
-        languageDic.put("ja", "Japanese");
-        languageDic.put("pt", "Portuguese");
-        languageDic.put("ru", "Russian");
-        languageDic.put("es", "Spanish");
+        languageDic.put("fr", "Français");
+        languageDic.put("hi", "हिंदी");
+        languageDic.put("it", "Italiano");
+        languageDic.put("ja", "日本語");
+        languageDic.put("pt", "Português");
+        languageDic.put("ru", "русский");
+        languageDic.put("es", "Español");
 
         languageDict = Collections.unmodifiableMap(languageDic);
     }
