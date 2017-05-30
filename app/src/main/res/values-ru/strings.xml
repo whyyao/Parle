@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Parlé</string>
+    <string name="action_logout">Выйти</string>
+    <string name="logout">Выйти</string>
+    <string name="action_settings">настройки</string>
+    <string name="are_you_sure">Ты уверен?</string>
+    <string name="cancel">Отмена</string>
+    <string name="email">Эл. адрес</string>
+    <string name="language">язык</string>
+    <string name="loading">загрузка</string>
+    <string name="login">Авторизоваться</string>
+    <string name="login_register">У вас нет учетной записи?</string>
+    <string name="name">имя</string>
+    <string name="password">пароль</string>
+    <string name="please_wait">Пожалуйста, подождите...</string>
+    <string name="send_button_label">Отправить</string>
+    <string name="username">Имя пользователя</string>
+    <string name="verify">подтвердите пароль</string>
 </resources>
