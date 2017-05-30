@@ -25,7 +25,7 @@ public interface GetNearbyUsersContract {
     }
 
     interface Interactor {
-        void getNearbyUsersFromFirebase(List<String> nearbyUsers);
+        void getNearbyUsersFromFirebase(List<String> nearbyUsers, List<String> contacts);
 
     }
 
