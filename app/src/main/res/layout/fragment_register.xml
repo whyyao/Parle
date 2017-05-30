@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
-            android:hint="Verify"
+            android:hint="Verify password"
             android:inputType="textPassword"
             android:background="@color/colorPrimary" />
     </android.support.design.widget.TextInputLayout>

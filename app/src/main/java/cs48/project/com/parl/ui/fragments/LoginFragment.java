@@ -40,9 +40,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     private Button mBtnLogin, mBtnRegister;
     private ProgressDialog mProgressDialog;
 
-    public static final String TAG = "Login Fragment";
-    private static final int REQUEST_SIGNUP = 0;
-
     public static LoginFragment newInstance() {
         Bundle args = new Bundle();
         LoginFragment fragment = new LoginFragment();
@@ -70,11 +67,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
         super.onActivityCreated(savedInstanceState);
         init();
     }
-    private boolean emailTrue;
-    private boolean passwordTrue;
+
+
     private void init() {
-        emailTrue = false;
-        passwordTrue = false;
         mLoginPresenter = new LoginPresenter(this);
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setTitle(getString(R.string.loading));
@@ -83,55 +78,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
         mBtnLogin.setOnClickListener(this);
         mBtnRegister.setOnClickListener(this);
 
-//        mETxtEmail.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                if (charSequence.toString().trim().length() > 0 && mETxtPassword.getText().toString().length() > 0 ) {
-//                    mBtnLogin.setEnabled(true);
-//                } else {
-//                    mBtnLogin.setEnabled(false);
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//            }
-//        });
-//        mETxtPassword.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                if (charSequence.toString().trim().length() > 0) {
-//                    passwordTrue = true;
-//                } else {
-//                    passwordTrue = false;
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//            }
-//        });
-
-//        if(emailTrue && passwordTrue){
-//            mBtnLogin.setEnabled(true);
-//        }
-//        else{
-//            mBtnLogin.setEnabled(false);
-//        }
     }
 
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
-
         switch (viewId) {
             case R.id.button_login:
                 onLogin(view);
@@ -144,10 +95,25 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
 
     private void onLogin(View view) {
         String emailId = mETxtEmail.getText().toString();
+
         String password = mETxtPassword.getText().toString();
 
-        mLoginPresenter.login(getActivity(), emailId, password);
-        mProgressDialog.show();
+        // Super shitty fix but it works. Ideally would want to
+        // blank out the login button until both fields are filled
+        // but we're leaving it like this for now...
+
+        if (!emailId.contains(".") || !emailId.contains("@")) {
+            Toast.makeText(getActivity(), "Please enter a valid e-mail", Toast.LENGTH_LONG).show();
+        }
+
+        else if (password.equals("")) {
+            Toast.makeText(getActivity(), "Please enter a password", Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            mLoginPresenter.login(getActivity(), emailId, password);
+            mProgressDialog.show();
+        }
     }
 
     private void onRegister(View view) {
@@ -168,4 +134,3 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
         Toast.makeText(getActivity(), "Error: Incorrect email or password", Toast.LENGTH_SHORT).show();
     }
 }
-//upload
