@@ -202,14 +202,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         });
         }
 
-//    @Override
-//    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//        if (actionId == EditorInfo.IME_ACTION_SEND) {
-//            sendMessage();
-//            return true;
-//        }
-//        return false;
-//    }
+
     private String senderLang;
 
     @Override
@@ -219,36 +212,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
             Bitmap bmp = ImagePicker.getImageFromResult(this.getContext(), resultCode, data);//your compressed bitmap here
             startPosting(bmp, data);
 
-//            Uri selectedImageUri = data.getData();
-//            StorageReference photoRef = mPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
-//            photoRef.putFile(selectedImageUri).addOnSuccessListener
-//                    (this.getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                                @Override
-//                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                                    @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                                    String receiver = getArguments().getString(Constants.ARG_RECEIVER_USERNAME);
-//                                    String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
-//                                    String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-//                                    String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//                                    String receiverFirebaseToken = getArguments().getString(Constants.ARG_FIREBASE_TOKEN);
-//                                    Chat chat = new Chat(myUserName.userName,
-//                                            receiver,
-//                                            senderUid,
-//                                            receiverUid,
-//                                            "photo",
-//                                            "photo",
-//                                            System.currentTimeMillis(),
-//                                            downloadUrl.toString());
-//                                    mChatPresenter.sendMessage(getActivity().getApplicationContext(),
-//                                            chat,
-//                                            receiverFirebaseToken);
-//                                    Conversation conversation = new Conversation(senderUid, receiverUid, "photo", "photo", System.currentTimeMillis(),
-//                                            myUserName.userName, receiver);
-//
-//                                    mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
-//                                }
-//                            }
-//                    );
         }
     }
     //private String myUsername;
@@ -256,21 +219,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
 
     private void startPosting(Bitmap bitmap, Intent data) {
 
-        //mProgress.setMessage(getString(R.string.downloading_route));
-
-        //final String titleVal  = mRouteTitle.getText().toString().trim();
-        //final String descVal  = mRouteDesc.getText().toString().trim();
-
-        //if (!TextUtils.isEmpty(titleVal) && !TextUtils.isEmpty(descVal) && mImageUri != null) {
-
-         //   mProgress.show();
             Uri selectedImageUri = data.getData();
             StorageReference filepath = mPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
-
-            //compress image
-           // mSelectImage.setDrawingCacheEnabled(true);
-            //mSelectImage.buildDrawingCache();
-            //Bitmap bitmap = mSelectImage.getDrawingCache();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
             byte[] dataArray = byteArrayOutputStream.toByteArray();
@@ -304,7 +254,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                             mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
                 }
             });
-
         }
 
     private void sendMessage() {

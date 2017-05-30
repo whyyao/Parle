@@ -34,8 +34,6 @@
         android:gravity="center"
         android:maxEms="1"
         android:scaleType="centerCrop"
-        android:textAllCaps="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/grey_100"
         android:textStyle="bold" />
 

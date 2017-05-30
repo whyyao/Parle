@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,15 +31,18 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.net.URL;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.logout.LogoutContract;
 import cs48.project.com.parl.core.logout.LogoutPresenter;
+import cs48.project.com.parl.models.Chat;
+import cs48.project.com.parl.models.Conversation;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.activities.LoginActivity;
 import cs48.project.com.parl.utils.Constants;
+import cs48.project.com.parl.utils.ImagePicker;
 
 import static android.app.Activity.RESULT_OK;
 import static cs48.project.com.parl.utils.Constants.convertFromAcronym;
@@ -142,26 +143,35 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
-            Uri selectedImageUri = data.getData();
-            Log.d("the data is ",data.getData().toString());
-            StorageReference photoRef = mUserPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
-            photoRef.putFile(selectedImageUri).addOnSuccessListener
-                    (this.getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(Uid).child("photoURL").setValue(downloadUrl.toString());
-                            DownloadProfilePic();
-                            if(profilePic != null) {
-                                pictureButton.setImageBitmap(profilePic);
-                            }
-                        }
-
-                    });
+            Bitmap bmp = ImagePicker.getImageFromResult(this.getContext(), resultCode, data);//your compressed bitmap here
+            startPosting(bmp, data);
         }
     }
+    private void startPosting(Bitmap bitmap, Intent data) {
 
+        Uri selectedImageUri = data.getData();
+        StorageReference filepath = mUserPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        byte[] dataArray = byteArrayOutputStream.toByteArray();
+
+        UploadTask uploadTask = filepath.putBytes(dataArray);
+
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                @SuppressWarnings("VisibleForTests")
+                final Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(Uid).child("photoURL").setValue(downloadUrl.toString());
+                DownloadProfilePic();
+                if(profilePic != null) {
+                    pictureButton.setImageBitmap(profilePic);
+                }
+            }
+        });
+    }
 //
 //
 //    public void onClick(View v) {
