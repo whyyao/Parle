@@ -165,8 +165,12 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         String emailId = mETxtEmail.getText().toString();
         String password = mETxtPassword.getText().toString();
         String verify = mETxtVerify.getText().toString();
+        String username = mETxtUsername.getText().toString();
         if (!emailId.contains("@") || !emailId.contains(".")) {
             Toast.makeText(getActivity(), "Please enter a valid e-mail", Toast.LENGTH_LONG).show();
+        }
+        else if (username.length() < 1) {
+            Toast.makeText(getActivity(), "You must enter a username", Toast.LENGTH_LONG).show();
         }
         else if (password.length() < 6) {
             Toast.makeText(getActivity(), "Password must be at least six characters", Toast.LENGTH_LONG).show();
@@ -185,8 +189,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onRegistrationSuccess(FirebaseUser firebaseUser) {
-        // mProgressDialog.setMessage(getString(R.string.adding_user_to_db));
+        mProgressDialog.setMessage(getString(R.string.adding_user_to_db));
         Toast.makeText(getActivity(), "Registration Successful!", Toast.LENGTH_SHORT).show();
+        String username = mETxtUsername.getText().toString();
+        mAddUserPresenter.addUser(getActivity().getApplicationContext(), firebaseUser, username, language, true);
     }
 
     @Override
