@@ -32,7 +32,7 @@ public class GetNearbyUsersInteractor implements GetNearbyUsersContract.Interact
 
 
     @Override
-    public void getNearbyUsersFromFirebase(List<String> nearbyUsers) {
+    public void getNearbyUsersFromFirebase(List<String> nearbyUsers, final List<String> contacts) {
         final List<User> users = new ArrayList<>();
         for(String user: nearbyUsers)
         {
@@ -42,6 +42,7 @@ public class GetNearbyUsersInteractor implements GetNearbyUsersContract.Interact
                     DataSnapshot data = dataSnapshot;
                     User user = data.getValue(User.class);
                     if (!TextUtils.equals(user.uid, FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        if(!contacts.contains(user.uid.toString()))
                         users.add(user);
                     }
 

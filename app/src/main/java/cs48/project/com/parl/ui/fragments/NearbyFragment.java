@@ -30,6 +30,8 @@ import java.util.List;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.contacts.add.AddContactContract;
 import cs48.project.com.parl.core.contacts.add.AddContactPresenter;
+import cs48.project.com.parl.core.contacts.getAll.GetContactsContract;
+import cs48.project.com.parl.core.contacts.getAll.GetContactsPresenter;
 import cs48.project.com.parl.core.users.getNearby.GetNearbyUsersPresenter;
 import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
@@ -68,6 +70,8 @@ public class NearbyFragment extends Fragment implements AddContactContract.View,
             .setDistanceType(Strategy.DISTANCE_TYPE_DEFAULT)
             .setTtlSeconds(Strategy.TTL_SECONDS_DEFAULT)
             .build();
+    private GetContactsPresenter mContactsInteractor;
+    private List<String> contacts = new ArrayList<>();
 
     public static NearbyFragment newInstance() {
         Bundle args = new Bundle();
