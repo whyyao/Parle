@@ -8,6 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.telecom.Call;
+import android.text.TextUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -20,6 +23,12 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.contacts.add.AddContactContract;
 import cs48.project.com.parl.core.contacts.add.AddContactPresenter;
@@ -31,12 +40,14 @@ import cs48.project.com.parl.models.User;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
 
 import cs48.project.com.parl.ui.adapters.NearbyUsersListingRecyclerAdapter;
 import cs48.project.com.parl.ui.adapters.ListAdapter;
+import cs48.project.com.parl.utils.Constants;
 import cs48.project.com.parl.utils.ItemClickSupport;
 
 /**
@@ -59,11 +70,12 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
     private ListView mListView;
     private TextView mNearbyButton;
     ListAdapter mAdapter;
+    private TextView mTxtSuggested;
     private List<User> mSearchUsers = new ArrayList<>();
+    private boolean searchListenerFlag = false;
 
 
-
-    public static void startIntent(Context context) {
+    public static void startIntent(Context context, List<User> suggestedUsers) {
         Intent intent = new Intent(context, ContactAddActivity.class);
         context.startActivity(intent);
     }
@@ -89,6 +101,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
         mUserSearchViews = (SearchView) findViewById(R.id.find_user_search_view);
         mListView = (ListView) findViewById(R.id.list_view_search);
         mNearbyButton = (TextView) findViewById(R.id.nearby_button);
+        mTxtSuggested = (TextView) findViewById(R.id.suggested_text_view);
     }
 
     private void init() {
@@ -101,10 +114,22 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
         mProgressDialog.setIndeterminate(true);
         mGetOneUserPresenter = new GetOneUserPresenter(this);
         mGetUsersPresenter = new GetUsersPresenter(this);
-
         getAllUsers();
 
+        mNearbyButton.setOnClickListener(this);
 
+        mListView.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                User newContact = (User) parent.getItemAtPosition(position);
+                String newContactUid = newContact.uid.toString();
+              AddSearchContact(newContactUid);
+            }
+        });
+    }
+
+    public void initializeSearchListener(final List<User> mSearchUsers)
+    {
         mAdapter = new ListAdapter(mSearchUsers);
         mListView.setAdapter(mAdapter);
         mUserSearchViews.setQueryHint("Search");
@@ -116,18 +141,10 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                mTxtSuggested.setVisibility(View.GONE);
                 mAdapter.setFilterList(mSearchUsers);
                 mAdapter.getFilter().filter(newText);
                 return false;
-            }
-        });
-        mNearbyButton.setOnClickListener(this);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object newContact = parent.getItemAtPosition(position);
-                AddSearchContact(newContact.toString());
             }
         });
     }
@@ -145,6 +162,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 
     public void AddSearchContact(String newContactId)
     {
+        System.out.println(newContactId);
         mGetOneUserPresenter.getOneUser(newContactId);
     }
 
@@ -170,6 +188,10 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
     public void onGetAllUsersSuccess(List<User> users)
     {
         mSearchUsers = users;
+        if(searchListenerFlag == false) {
+            initializeSearchListener(mSearchUsers);
+            searchListenerFlag = true;
+        }
     }
 
     @Override
@@ -188,4 +210,6 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
         Toast.makeText(this, "search failed", Toast.LENGTH_SHORT).show();
 
     }
+
+
 }

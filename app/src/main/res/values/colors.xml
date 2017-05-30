@@ -16,8 +16,8 @@
 
     <color name="colorPrimary">#bbdefb</color>
     <color name="colorPrimaryDark">#8aacc8</color>
-    <color name="colorAccent">#aaaaaa</color>
-    <color name="buttons">#90caf9</color>
+    <color name="colorAccent">#aaaa</color>
+    <color name="buttons">#2966B8</color>
     <color name="chatSender">#5d99c6</color>
     <color name="chatReceiver">#89abc6</color>
 

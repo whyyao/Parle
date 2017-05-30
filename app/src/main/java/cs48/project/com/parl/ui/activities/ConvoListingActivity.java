@@ -9,13 +9,19 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.logout.LogoutPresenter;
@@ -24,12 +30,14 @@ import cs48.project.com.parl.ui.adapters.ConvoListingPagerAdapter;
 import cs48.project.com.parl.ui.fragments.ContactsFragment;
 import cs48.project.com.parl.ui.fragments.ConvoFragment;
 import cs48.project.com.parl.ui.fragments.SettingFragment;
+import cs48.project.com.parl.utils.Constants;
 
 public class ConvoListingActivity extends AppCompatActivity implements View.OnClickListener{
     private Toolbar mToolbar;
     private TabLayout mTabLayoutUserListing;
     private ViewPager mViewPagerUserListing;
     private FloatingActionButton mFloatingActionButton;
+    private List<User> mSuggestedUsers;
     ConvoListingPagerAdapter adapter = new ConvoListingPagerAdapter(getSupportFragmentManager());
 
     private LogoutPresenter mLogoutPresenter;
@@ -122,6 +130,7 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
                 break;
         }
     }
+
 
 
 

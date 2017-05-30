@@ -36,9 +36,14 @@ public class ConvoListingPagerAdapter extends FragmentPagerAdapter{
     }
 
     public void addFrag(Fragment fragment, String title){
-        if(this.getCount() <3){
+        if(this.getCount() < 3){
             sFragments.add(fragment);
             sTitles.add(title);}
+
+        if(this.getCount() == 2)
+        {
+
+        }
     }
 
 
