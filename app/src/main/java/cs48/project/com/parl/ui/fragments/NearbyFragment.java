@@ -43,7 +43,7 @@ import cs48.project.com.parl.ui.adapters.NearbyUsersListingRecyclerAdapter;
 import cs48.project.com.parl.utils.ItemClickSupport;
 
 /**
- * Created by jakebliss on 5/26/17.
+ * Created by jakebliss on 5/26/17.**
  */
 
 public class NearbyFragment extends Fragment implements AddContactContract.View, GetNearbyUsersContract.View,
