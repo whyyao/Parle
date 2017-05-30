@@ -48,7 +48,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     private ProgressDialog mProgressDialog;
 
     private Spinner spinner;
-    private static final String[] paths = {"Arabic", "Bengali", "Chinese (Simplified)", "Chinese (Traditional)", "English", "French", "Hindi", "Italian", "Japanese", "Portuguese", "Russian", "Spanish"};
+    private static final String[] paths = {"عربى", "বাঙালি", "简体中文", "繁体中文", "English", "Español", "Français", "हिंदी", "Italiano", "日本語", "Português", "русский"};
     private String language;
 
     public static RegisterFragment newInstance() {
@@ -119,25 +119,25 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
                 language = "en";
                 break;
             case 5:
-                language = "fr";
+                language = "es";
                 break;
             case 6:
-                language = "hi";
+                language = "fr";
                 break;
             case 7:
-                language = "it";
+                language = "hi";
                 break;
             case 8:
-                language = "ja";
+                language = "it";
                 break;
             case 9:
-                language = "pt";
+                language = "ja";
                 break;
             case 10:
-                language = "ru";
+                language = "pt";
                 break;
             case 11:
-                language = "es";
+                language = "ru";
                 break;
         }
     }
