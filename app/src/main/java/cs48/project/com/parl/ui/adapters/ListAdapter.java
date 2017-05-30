@@ -5,16 +5,22 @@ import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.RowHolder;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Activity;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -71,16 +77,28 @@ public class ListAdapter extends BaseAdapter implements Filterable{
 
 
         RowHolder holder;
+
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.search_row_item, null);
             holder = new RowHolder();
-            holder.txtUserAlphabet = (TextView)convertView.findViewById(R.id.search_user_pic);
             holder.txtUsername = (TextView) convertView.findViewById(R.id.search_username);
+            holder.txtUserAlphabet = (TextView) convertView.findViewById(R.id.search_user_pic);
             holder.txtUserEmail = (TextView) convertView.findViewById(R.id.search_email);
-            convertView.setTag(holder);
-            if(mData.get(position).userName.toString().length() > 0) {
-                holder.txtUserAlphabet.setText(mData.get(position).userName.substring(0, 1).toString());
+            holder.contactpic = (ImageView) convertView.findViewById(R.id.contact_prof_pic);
+
+            String pictureURL = mData.get(position).photoURL;
+            boolean isPhoto = pictureURL != null;
+            if (isPhoto) {
+                holder.txtUserAlphabet.setVisibility(View.GONE);
+                holder.contactpic.setVisibility(View.VISIBLE);
+                new DownloadImageTask(holder.contactpic).execute(pictureURL);
+            } else {
+                holder.txtUserAlphabet.setVisibility(View.VISIBLE);
+                holder.contactpic.setVisibility(View.GONE);
+                String alphabet = mData.get(position).userName.substring(0, 1);
+                holder.txtUserAlphabet.setText(alphabet);
             }
+
             holder.txtUsername.setText(mData.get(position).userName.toString());
             holder.txtUserEmail.setText(mData.get(position).email.toString());
         } else {
@@ -139,5 +157,30 @@ public class ListAdapter extends BaseAdapter implements Filterable{
 
     public User getUser(int position) {
         return mStringFilterList.get(position);
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

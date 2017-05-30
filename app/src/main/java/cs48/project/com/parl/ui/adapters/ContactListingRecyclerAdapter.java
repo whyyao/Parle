@@ -35,7 +35,7 @@ public class ContactListingRecyclerAdapter extends RecyclerView.Adapter<ContactL
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_contact_listing, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_row_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -43,6 +43,7 @@ public class ContactListingRecyclerAdapter extends RecyclerView.Adapter<ContactL
     public void onBindViewHolder(ViewHolder holder, int position) {
         User user = mUsers.get(position);
         String pictureURL = user.photoURL;
+//        holder.txtUserAlphabet.setText(user.userName.substring(0,1).toString());
         boolean isPhoto = pictureURL != null;
         if (isPhoto) {
             holder.txtUserAlphabet.setVisibility(View.GONE);
@@ -55,10 +56,9 @@ public class ContactListingRecyclerAdapter extends RecyclerView.Adapter<ContactL
             holder.txtUserAlphabet.setText(alphabet);
         }
 
-       // String alphabet = user.userName.substring(0, 1);
+        holder.txtUsername.setText(user.userName.toString());
+        holder.txtEmail.setText(user.email.toString());
 
-        holder.txtUsername.setText(user.userName);
-        //holder.txtUserAlphabet.setText(alphabet);
     }
 
     @Override
@@ -74,13 +74,14 @@ public class ContactListingRecyclerAdapter extends RecyclerView.Adapter<ContactL
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtUserAlphabet, txtUsername;
+        private TextView txtUserAlphabet, txtUsername, txtEmail;
         private ImageView contactpic;
 
         ViewHolder(View itemView) {
             super(itemView);
-            txtUserAlphabet = (TextView) itemView.findViewById(R.id.text_view_user_alphabet);
-            txtUsername = (TextView) itemView.findViewById(R.id.text_view_username);
+            txtUserAlphabet = (TextView) itemView.findViewById(R.id.search_user_pic);
+            txtUsername = (TextView) itemView.findViewById(R.id.search_username);
+            txtEmail = (TextView) itemView.findViewById(R.id.search_email);
             contactpic = (ImageView) itemView.findViewById(R.id.contact_prof_pic);
         }
     }
