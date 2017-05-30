@@ -17,6 +17,6 @@
     <string name="send_button_label">enviar</string>
     <string name="username">Nombre de Usuario</string>
     <string name="verify">Verificar Contraseña</string>
-    <string name="search_contact">Añadir contactos</string>
+    <string name="search_contact">Añadir Contactos</string>
     <string name="suggested">SUGIRIÓ</string>
 </resources>
