@@ -12,11 +12,12 @@ import android.widget.TextView;
  */
 
 public class RowHolder {
-    public  TextView txtUserAlphabet, txtUsername, txtUserEmail;
+    public  TextView txtUserAlphabet, txtUsername, txtUserEmail, txtViewPlus;;
     public ImageView contactpic;
 
     public RowHolder ()
     {
+        txtViewPlus = null;
         txtUserAlphabet = null;
         txtUsername = null;
         txtUserEmail = null;

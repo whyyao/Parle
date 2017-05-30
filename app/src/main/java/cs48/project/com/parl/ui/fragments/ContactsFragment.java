@@ -10,9 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cs48.project.com.parl.R;
@@ -26,6 +31,7 @@ import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.activities.ChatActivity;
 import cs48.project.com.parl.ui.adapters.ContactListingRecyclerAdapter;
 import cs48.project.com.parl.ui.adapters.ContactListingRecyclerAdapter;
+import cs48.project.com.parl.ui.adapters.ListAdapter;
 import cs48.project.com.parl.utils.ItemClickSupport;
 
 /**
@@ -38,13 +44,17 @@ import cs48.project.com.parl.utils.ItemClickSupport;
  */
 
 
-public class ContactsFragment extends Fragment implements AddContactContract.View, GetUsersContract.View, GetContactsContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
+public class ContactsFragment extends Fragment implements GetContactsContract.View, SwipeRefreshLayout.OnRefreshListener{
     public static final String ARG_TYPE = "type";
     public static final String TYPE_CHATS = "type_chats";
     public static final String TYPE_ALL = "type_all";
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView mRecyclerViewAllUserListing;
+    private SearchView mUserSearchViews;
+    private ListView mListView;
+    ListAdapter mAdapter;
+    private List<User> mContactList = new ArrayList<>();
+    private boolean contactListenerFlag = false;
 
     private ContactListingRecyclerAdapter mUserListingRecyclerAdapter;
 
@@ -73,7 +83,9 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
 
     private void bindViews(View view) {
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-        mRecyclerViewAllUserListing = (RecyclerView) view.findViewById(R.id.recycler_view_all_user_listing);
+        mUserSearchViews = (SearchView) view.findViewById(R.id.find_contact_search_view);
+        mListView = (ListView) view.findViewById(R.id.list_view_contacts);
+        //txtViewPlus.setVisibility(view.GONE);
     }
 
     @Override
@@ -83,7 +95,6 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
     }
 
     private void init() {
-        mGetUsersPresenter = new GetUsersPresenter(this);
         mGetContactsPresenter = new GetContactsPresenter(this);
         getUsers();
         mSwipeRefreshLayout.post(new Runnable() {
@@ -92,12 +103,41 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
                 mSwipeRefreshLayout.setRefreshing(true);
             }
         });
-        mAddContactPresenter = new AddContactPresenter(this);
 
-        ItemClickSupport.addTo(mRecyclerViewAllUserListing)
-                .setOnItemClickListener(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mListView.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                User selectedUser = (User) parent.getItemAtPosition(position);
+                ChatActivity.startActivity(getActivity(),
+                        selectedUser.userName,
+                        selectedUser.uid,
+                        selectedUser.firebaseToken,
+                        selectedUser.language);
+
+            }
+        });
+    }
+
+    public void initializeSearchListener(final List<User> mSearchUsers)
+    {
+        mAdapter = new ListAdapter(mSearchUsers, false);
+        mListView.setAdapter(mAdapter);
+        mUserSearchViews.setQueryHint("Search");
+        mUserSearchViews.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.setFilterList(mSearchUsers);
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -115,54 +155,6 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
         //}
     }
 
-    @Override
-    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-        ChatActivity.startActivity(getActivity(),
-                mUserListingRecyclerAdapter.getUser(position).userName,
-                mUserListingRecyclerAdapter.getUser(position).uid,
-                mUserListingRecyclerAdapter.getUser(position).firebaseToken,
-                mUserListingRecyclerAdapter.getUser(position).language);
-    }
-
-    @Override
-    public void onGetAllUsersSuccess(List<User> users) {
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
-        mUserListingRecyclerAdapter = new ContactListingRecyclerAdapter(users);
-        mRecyclerViewAllUserListing.setAdapter(mUserListingRecyclerAdapter);
-        mUserListingRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onGetAllUsersFailure(String message) {
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
-        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
-    }
-
-    private AddContactPresenter mAddContactPresenter;
-
-
-    @Override
-    public void onAddContactSuccess(String message) {
-//        mProgressDialog.dismiss();
-//        ContactListingActivity.startActivity(getActivity(),
-//                Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        Toast.makeText(getActivity(), "Added Contact", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onAddContactFailure(String message) {
-
-    }
 
     @Override
     public void onGetContactsUsersSuccess(List<User> users){
@@ -172,10 +164,11 @@ public class ContactsFragment extends Fragment implements AddContactContract.Vie
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-        mUserListingRecyclerAdapter = new ContactListingRecyclerAdapter(users);
-        mRecyclerViewAllUserListing.setAdapter(mUserListingRecyclerAdapter);
-        mUserListingRecyclerAdapter.notifyDataSetChanged();
-
+        mContactList = users;
+        if(contactListenerFlag == false) {
+            initializeSearchListener(mContactList);
+            contactListenerFlag = true;
+        }
     }
 
     @Override
