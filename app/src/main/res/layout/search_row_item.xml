@@ -23,20 +23,21 @@
         android:textSize="20sp"
         tools:text="S" />
 
+
     <ImageView
         android:id="@+id/contact_prof_pic"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:layout_width="42dp"
+        android:layout_width="wrap_content"
         android:layout_height="42dp"
         android:layout_gravity="center_vertical"
-        android:background="@drawable/contact_circle"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textAllCaps="true"
         android:visibility="gone"
+
         />
 
     <LinearLayout
