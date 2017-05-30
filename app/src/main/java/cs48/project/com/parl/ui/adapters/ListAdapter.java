@@ -34,9 +34,11 @@ public class ListAdapter extends BaseAdapter implements Filterable{
     private GetOneUserPresenter mGetOneUserPresenter;
     private List<String> searchUsers = new ArrayList<>();
 
+
     public ListAdapter(List<User> allUsers) {
         mData = allUsers;
         mStringFilterList = new ArrayList<User>(allUsers);
+        notifyDataSetChanged();
     }
 
     public void setFilterList(List<User> allUsers){
@@ -51,8 +53,8 @@ public class ListAdapter extends BaseAdapter implements Filterable{
     }
 
     @Override
-    public String getItem(int position) {
-        return mData.get(position).toString();
+    public User getItem(int position) {
+        return mData.get(position);
     }
 
     @Override
@@ -67,6 +69,7 @@ public class ListAdapter extends BaseAdapter implements Filterable{
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
+
         RowHolder holder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.search_row_item, null);
@@ -75,12 +78,16 @@ public class ListAdapter extends BaseAdapter implements Filterable{
             holder.txtUsername = (TextView) convertView.findViewById(R.id.search_username);
             holder.txtUserEmail = (TextView) convertView.findViewById(R.id.search_email);
             convertView.setTag(holder);
+            if(mData.get(position).userName.toString().length() > 0) {
+                holder.txtUserAlphabet.setText(mData.get(position).userName.substring(0, 1).toString());
+            }
+            holder.txtUsername.setText(mData.get(position).userName.toString());
+            holder.txtUserEmail.setText(mData.get(position).email.toString());
         } else {
             holder = (RowHolder)convertView.getTag();
         }
-        holder.txtUserAlphabet.setText(mData.get(position).userName.substring(0,1).toString());
-        holder.txtUsername.setText(mData.get(position).userName.toString());
-        holder.txtUserEmail.setText(mData.get(position).email.toString());
+
+
         return convertView;
 
     }
@@ -109,9 +116,14 @@ public class ListAdapter extends BaseAdapter implements Filterable{
                 results.count = filterList.size();
                 results.values = filterList;
             } else {
-                mStringFilterList.clear();
-                results.count =  mStringFilterList.size();
-                results.values = mStringFilterList;
+                List suggestedUsers = new ArrayList();
+                for(User user : mStringFilterList)
+                {
+                    suggestedUsers.add(user);
+                }
+//                mStringFilterList.clear();
+                results.count =  suggestedUsers.size();
+                results.values = suggestedUsers;
             }
             return results;
         }
