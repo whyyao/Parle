@@ -256,7 +256,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                 }
             });
         }
-    }
+
     //private String myUsername;
     private void sendMessage() {
 
