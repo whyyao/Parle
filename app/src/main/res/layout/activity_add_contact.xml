@@ -20,7 +20,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name"/>
+            app:title="@string/search_contact"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -61,7 +61,7 @@
             android:id="@+id/suggested_text_view"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text = "SUGGESTED"
+            android:text = "@string/suggested"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"/>
         <ListView
