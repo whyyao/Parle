@@ -18,4 +18,6 @@
     <string name="title_activity_chat"></string>
     <string name="username">اسم المستخدم</string>
     <string name="verify">اكد كلمة المرور</string>
+    <string name="search_contact">اضف جهات اتصال</string>
+    <string name="suggested">اقترحت</string>
 </resources>

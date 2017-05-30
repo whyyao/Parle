@@ -17,4 +17,6 @@
     <string name="send_button_label">送信</string>
     <string name="username">ユーザー名</string>
     <string name="verify">パスワードの確認</string>
+    <string name="search_contact">連絡先を追加</string>
+    <string name="suggested">疑わしい</string>
 </resources>

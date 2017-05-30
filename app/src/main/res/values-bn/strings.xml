@@ -17,4 +17,6 @@
     <string name="send_button_label">পাঠান</string>
     <string name="username">ব্যবহারকারীর নাম</string>
     <string name="verify">গোপন শব্দ যাচাই</string>
+    <string name="search_contact">পরিচিতি যোগ করুন</string>
+    <string name="suggested">প্রস্তাবিত</string>
 </resources>

@@ -17,4 +17,6 @@
     <string name="send_button_label">भेजना</string>
     <string name="username">उपयोगकर्ता नाम</string>
     <string name="verify">पासवर्ड को सत्यापित करें</string>
+    <string name="search_contact">संपर्क जोड़ें</string>
+    <string name="suggested">सुझाव दिया</string>
 </resources>

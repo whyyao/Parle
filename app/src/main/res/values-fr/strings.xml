@@ -17,4 +17,6 @@
     <string name="cancel">Annuler</string>
     <string name="are_you_sure">Êtes-vous sûr?</string>
     <string name="action_settings">Paramètres</string>
+    <string name="search_contact">Ajouter des contacts</string>
+    <string name="suggested">SUGGÉRÉ</string>
 </resources>
