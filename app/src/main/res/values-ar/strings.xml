@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parlé</string>
+    <string name="action_logout">الخروج</string>
+    <string name="action_settings">إعدادات</string>
+    <string name="are_you_sure">هل أنت واثق؟</string>
+    <string name="cancel">إلغاء</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="language">لغة</string>
+    <string name="loading">جار التحميل</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="login_register">ليس لديك حساب؟</string>
+    <string name="logout">الخروج</string>
+    <string name="name">اسم</string>
+    <string name="password">كلمه السر</string>
+    <string name="please_wait">أرجو الإنتظار...</string>
+    <string name="send_button_label">إرسال</string>
+    <string name="title_activity_chat"></string>
+    <string name="username">اسم المستخدم</string>
+    <string name="verify">اكد كلمة المرور</string>
+</resources>

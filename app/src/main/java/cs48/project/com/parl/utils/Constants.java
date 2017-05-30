@@ -18,6 +18,7 @@ public class Constants {
     public static final String ARG_RECEIVER_USERNAME = "receiver_userName";
     public static final String ARG_FIREBASE_TOKEN = "firebaseToken";
     public static final String ARG_LAST = "last_message";
+    public static final String ARG_PHOTO = "[photo]";
   //  public static final String
     public static final String ARG_FRIENDS = "friends";
     public static final String ARG_UID = "uid";
@@ -38,6 +39,7 @@ public class Constants {
         languageDic.put("pt", "Portuguese");
         languageDic.put("ru", "Russian");
         languageDic.put("es", "Spanish");
+
         languageDict = Collections.unmodifiableMap(languageDic);
     }
 
