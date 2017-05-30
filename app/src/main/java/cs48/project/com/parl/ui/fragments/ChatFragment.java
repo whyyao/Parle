@@ -2,14 +2,16 @@ package cs48.project.com.parl.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,10 +37,10 @@ import com.google.firebase.storage.UploadTask;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs48.project.com.parl.Manifest;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.chat.ChatContract;
 import cs48.project.com.parl.core.chat.ChatPresenter;
@@ -50,7 +54,10 @@ import cs48.project.com.parl.models.Conversation;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.adapters.ChatRecyclerAdapter;
 import cs48.project.com.parl.utils.Constants;
+import cs48.project.com.parl.utils.ImagePicker;
 
+import static android.R.attr.bitmap;
+import static android.R.attr.data;
 import static android.app.Activity.RESULT_OK;
 
 /*
@@ -209,39 +216,97 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
     public void onActivityResult(int requestCode, int resultCode, Intent data ){
         super.onActivityResult(requestCode, resultCode,data);
         if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK){
-            Uri selectedImageUri = data.getData();
-            StorageReference photoRef = mPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
-            photoRef.putFile(selectedImageUri).addOnSuccessListener
-                    (this.getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                    String receiver = getArguments().getString(Constants.ARG_RECEIVER_USERNAME);
-                                    String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
-                                    String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                                    String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                    String receiverFirebaseToken = getArguments().getString(Constants.ARG_FIREBASE_TOKEN);
-                                    Chat chat = new Chat(myUserName.userName,
-                                            receiver,
-                                            senderUid,
-                                            receiverUid,
-                                            "photo",
-                                            "photo",
-                                            System.currentTimeMillis(),
-                                            downloadUrl.toString());
-                                    mChatPresenter.sendMessage(getActivity().getApplicationContext(),
-                                            chat,
-                                            receiverFirebaseToken);
-                                    Conversation conversation = new Conversation(senderUid, receiverUid, "photo", "photo", System.currentTimeMillis(),
-                                            myUserName.userName, receiver);
+            Bitmap bmp = ImagePicker.getImageFromResult(this.getContext(), resultCode, data);//your compressed bitmap here
+            startPosting(bmp, data);
 
-                                    mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
-                                }
-                            }
-                    );
+//            Uri selectedImageUri = data.getData();
+//            StorageReference photoRef = mPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
+//            photoRef.putFile(selectedImageUri).addOnSuccessListener
+//                    (this.getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                                @Override
+//                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                                    @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                                    String receiver = getArguments().getString(Constants.ARG_RECEIVER_USERNAME);
+//                                    String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
+//                                    String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+//                                    String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//                                    String receiverFirebaseToken = getArguments().getString(Constants.ARG_FIREBASE_TOKEN);
+//                                    Chat chat = new Chat(myUserName.userName,
+//                                            receiver,
+//                                            senderUid,
+//                                            receiverUid,
+//                                            "photo",
+//                                            "photo",
+//                                            System.currentTimeMillis(),
+//                                            downloadUrl.toString());
+//                                    mChatPresenter.sendMessage(getActivity().getApplicationContext(),
+//                                            chat,
+//                                            receiverFirebaseToken);
+//                                    Conversation conversation = new Conversation(senderUid, receiverUid, "photo", "photo", System.currentTimeMillis(),
+//                                            myUserName.userName, receiver);
+//
+//                                    mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
+//                                }
+//                            }
+//                    );
         }
     }
     //private String myUsername;
+
+
+    private void startPosting(Bitmap bitmap, Intent data) {
+
+        //mProgress.setMessage(getString(R.string.downloading_route));
+
+        //final String titleVal  = mRouteTitle.getText().toString().trim();
+        //final String descVal  = mRouteDesc.getText().toString().trim();
+
+        //if (!TextUtils.isEmpty(titleVal) && !TextUtils.isEmpty(descVal) && mImageUri != null) {
+
+         //   mProgress.show();
+            Uri selectedImageUri = data.getData();
+            StorageReference filepath = mPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
+
+            //compress image
+           // mSelectImage.setDrawingCacheEnabled(true);
+            //mSelectImage.buildDrawingCache();
+            //Bitmap bitmap = mSelectImage.getDrawingCache();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+            byte[] dataArray = byteArrayOutputStream.toByteArray();
+
+            UploadTask uploadTask = filepath.putBytes(dataArray);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    @SuppressWarnings("VisibleForTests")
+                    final Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    String receiver = getArguments().getString(Constants.ARG_RECEIVER_USERNAME);
+                    String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
+                    String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                    String senderUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String receiverFirebaseToken = getArguments().getString(Constants.ARG_FIREBASE_TOKEN);
+                    Chat chat = new Chat(myUserName.userName,
+                            receiver,
+                            senderUid,
+                            receiverUid,
+                            "photo",
+                            "photo",
+                            System.currentTimeMillis(),
+                            downloadUrl.toString());
+                    mChatPresenter.sendMessage(getActivity().getApplicationContext(),
+                            chat,
+                            receiverFirebaseToken);
+                    Conversation conversation = new Conversation(senderUid, receiverUid, "photo", "photo", System.currentTimeMillis(),
+                            myUserName.userName, receiver);
+                            mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
+                }
+            });
+
+        }
+
     private void sendMessage() {
 
         String translatedMessage = null;
