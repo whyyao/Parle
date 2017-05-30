@@ -20,12 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.models.Conversation;
-import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.utils.Constants;
 
 /**
@@ -61,7 +59,7 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
 
         System.out.println(currentUserUid);
         System.out.println(conversation.receiverUid);
-         if(currentUserUid.equals(conversation.receiverUid)){
+        if(currentUserUid.equals(conversation.receiverUid)){
              userName = conversation.senderUserName;
              correctMessage = conversation.translatedLastMessage;
              correctUid = conversation.senderUid;
@@ -71,18 +69,14 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
              correctMessage = conversation.unTranslatedLastMessage;
              correctUid = conversation.receiverUid;
         }
-        FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
+        System.out.println("finding user uid"+correctUid);
+        FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(correctUid).child("photoURL").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren().iterator();
-                while (dataSnapshots.hasNext()) {
-                    DataSnapshot dataSnapshotChild = dataSnapshots.next();
-                    User user = dataSnapshotChild.getValue(User.class);
-                    //System.out.println(user.userName);
-                    if (user.uid.equals(correctUid)) {
-                        Log.d("getting user", user.userName);
-                        pictureURL = user.photoURL;
-                        Log.d("picture URL: ", user.photoURL);
+                    String pictureURL = dataSnapshot.getValue(String.class);
+                       // Log.d("getting user", user.userName);
+                       // pictureURL = user.photoURL;
+                        //Log.d("picture URL: ", user.photoURL);
                         if(pictureURL != null) {
                             Log.d("picture URL is ", pictureURL);
                         }else{Log.d("URL","is null");}
@@ -96,11 +90,8 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
                             holder.imagePhoto.setVisibility(View.GONE);
                             String alphabet = userName.substring(0, 1);
                             holder.txtUserAlphabet.setText(alphabet);
-                        }
                     }
                 }
-            }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
