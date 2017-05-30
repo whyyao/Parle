@@ -17,4 +17,6 @@
     <string name="cancel">取消</string>
     <string name="are_you_sure">你确定？</string>
     <string name="action_settings">设置</string>
+    <string name="search_contact">添加联系人</string>
+    <string name="suggested">建议的</string>
 </resources>

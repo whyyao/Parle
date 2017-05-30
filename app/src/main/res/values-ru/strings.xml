@@ -17,4 +17,6 @@
     <string name="send_button_label">Отправить</string>
     <string name="username">Имя пользователя</string>
     <string name="verify">подтвердите пароль</string>
+    <string name="search_contact">Добавить контакты</string>
+    <string name="suggested">РЕКОМЕНДУЕМЫЙ</string>
 </resources>

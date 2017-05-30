@@ -17,4 +17,6 @@
     <string name="loading">Loading</string>
     <string name="cancel">Cancel</string>
     <string name="action_settings">Settings</string>
+    <string name="search_contact">Add Contacts</string>
+    <string name="suggested">SUGGESTED</string>
 </resources>
