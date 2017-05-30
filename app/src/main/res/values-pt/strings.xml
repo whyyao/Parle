@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parlé</string>
+    <string name="verify">verifique a senha</string>
+    <string name="username">Nome do usuário</string>
+    <string name="send_button_label">enviar</string>
+    <string name="please_wait">Por favor, espere...</string>
+    <string name="password">Senha</string>
+    <string name="name">Nome</string>
+    <string name="logout">Sair</string>
+    <string name="login_register">Não tem uma conta?</string>
+    <string name="login">Entrar</string>
+    <string name="loading">Carregando</string>
+    <string name="language">Língua</string>
+    <string name="email">O email</string>
+    <string name="cancel">Cancelar</string>
+    <string name="are_you_sure">Você tem certeza?</string>
+    <string name="action_settings">Configurações</string>
+    <string name="action_logout">Sair</string>
+</resources>

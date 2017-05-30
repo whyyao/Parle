@@ -41,6 +41,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs48.project.com.parl.Manifest;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.chat.ChatContract;
 import cs48.project.com.parl.core.chat.ChatPresenter;
@@ -242,8 +243,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                             receiver,
                             senderUid,
                             receiverUid,
-                            "photo",
-                            "photo",
+                            Constants.ARG_PHOTO,
+                            Constants.ARG_PHOTO,
                             System.currentTimeMillis(),
                             downloadUrl.toString());
                     mChatPresenter.sendMessage(getActivity().getApplicationContext(),
@@ -255,7 +256,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                 }
             });
         }
-
+    }
+    //private String myUsername;
     private void sendMessage() {
 
         String translatedMessage = null;
