@@ -30,6 +30,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
+        android:id="@+id/page_layout_convolisting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -43,11 +44,11 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/FAB_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/FAB_recycler_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+    <!--</android.support.v7.widget.RecyclerView>-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/FloatingActionButton"
@@ -59,7 +60,7 @@
         android:src="@drawable/ic_add_black_24dp"
         android:tint="@color/white"
         app:borderWidth="0dp"
-        app:layout_anchor="@+id/FAB_recycler_view"
+        app:layout_anchor="@+id/page_layout_convolisting"
         app:layout_behavior=".ui.ScrollAwareFABBehavior"
         app:rippleColor="@color/buttons"
         app:layout_anchorGravity="bottom|right|end"/>
