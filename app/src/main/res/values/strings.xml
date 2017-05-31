@@ -13,6 +13,7 @@
     <string name="yes">Yes</string>
     <string name="photo">[Photo]</string>
     <string name="nearby_users">Nearby Users</string>
+    <string name="search">Search</string>
 
     <string name="user_successfully_added">User successfully added!</string>
     <string name="user_unable_to_add">Unable to add user!</string>

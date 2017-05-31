@@ -23,4 +23,5 @@
     <string name="yes">Sí</string>
     <string name="photo">[Foto]</string>
     <string name="nearby_users">Usuarios Cercanos</string>
+    <string name="search">Buscar</string>
 </resources>

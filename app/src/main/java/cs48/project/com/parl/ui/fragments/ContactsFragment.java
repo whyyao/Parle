@@ -125,7 +125,8 @@ public class ContactsFragment extends Fragment implements GetContactsContract.Vi
     {
         mAdapter = new ListAdapter(mSearchUsers, false);
         mListView.setAdapter(mAdapter);
-        mUserSearchViews.setQueryHint("Search");
+        String search = getString(R.string.search);
+        mUserSearchViews.setQueryHint(search);
         mUserSearchViews.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
             public boolean onQueryTextSubmit(String query) {

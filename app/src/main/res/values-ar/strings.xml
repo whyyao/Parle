@@ -24,4 +24,5 @@
     <string name="yes">نعم فعلا</string>
     <string name="photo">[صورة فوتوغرافية]</string>
     <string name="nearby_users">المستخدمون القريبون</string>
+    <string name="search">بحث</string>
 </resources>
