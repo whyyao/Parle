@@ -19,4 +19,6 @@
     <string name="action_settings">Paramètres</string>
     <string name="search_contact">Ajouter des Contacts</string>
     <string name="suggested">SUGGÉRÉ</string>
+    <string name="delete">Effacer</string>
+    <string name="yes">Oui</string>
 </resources>

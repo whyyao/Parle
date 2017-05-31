@@ -129,9 +129,9 @@ public class ConvoFragment extends Fragment implements GetOneUserContract.View, 
 
     private void deleteConversation(final String otherUid) {
         new AlertDialog.Builder(getActivity())
-                .setTitle("delete")
+                .setTitle(R.string.delete)
                 .setMessage(R.string.are_you_sure)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

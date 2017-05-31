@@ -19,4 +19,6 @@
     <string name="verify">গোপন শব্দ যাচাই</string>
     <string name="search_contact">পরিচিতি যোগ করুন</string>
     <string name="suggested">প্রস্তাবিত</string>
+    <string name="delete">মুছে ফেলা</string>
+    <string name="yes">হাঁ</string>
 </resources>

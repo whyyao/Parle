@@ -20,4 +20,6 @@
     <string name="verify">اكد كلمة المرور</string>
     <string name="search_contact">اضف جهات اتصال</string>
     <string name="suggested">اقترحت</string>
+    <string name="delete">حذف</string>
+    <string name="yes">نعم فعلا</string>
 </resources>

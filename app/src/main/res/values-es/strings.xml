@@ -19,4 +19,6 @@
     <string name="verify">Verificar Contraseña</string>
     <string name="search_contact">Añadir Contactos</string>
     <string name="suggested">SUGIRIÓ</string>
+    <string name="delete">Borrar</string>
+    <string name="yes">Sí</string>
 </resources>

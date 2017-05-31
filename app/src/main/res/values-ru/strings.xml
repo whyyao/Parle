@@ -19,4 +19,6 @@
     <string name="verify">подтвердите пароль</string>
     <string name="search_contact">Добавить контакты</string>
     <string name="suggested">РЕКОМЕНДУЕМЫЙ</string>
+    <string name="delete">Удалить</string>
+    <string name="yes">да</string>
 </resources>

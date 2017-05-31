@@ -19,4 +19,6 @@
     <string name="action_logout">Sair</string>
     <string name="search_contact">Adicionar Contatos</string>
     <string name="suggested">SUGERIDO</string>
+    <string name="delete">Excluir</string>
+    <string name="yes">Sim</string>
 </resources>

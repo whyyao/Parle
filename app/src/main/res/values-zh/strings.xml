@@ -19,4 +19,6 @@
     <string name="action_settings">设置</string>
     <string name="search_contact">添加联系人</string>
     <string name="suggested">建议用户</string>
+    <string name="delete">删除</string>
+    <string name="yes">是</string>
 </resources>

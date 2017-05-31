@@ -13,7 +13,7 @@
     <!--<color name="chatSender">#AC92A6</color>-->
     <!--<color name="chatReceiver">#AC92A6</color>-->
 
-
+    <!--<LIGHT THEME>-->
     <color name="colorPrimary">#bbdefb</color>
     <color name="colorPrimaryDark">#8aacc8</color>
     <color name="colorAccent">#aaaa</color>
@@ -21,6 +21,13 @@
     <color name="chatSender">#5d99c6</color>
     <color name="chatReceiver">#89abc6</color>
 
+    <!--<DARK THEME>-->
+    <color name="colorPrimary_D">#bbdefb</color>
+    <color name="colorPrimaryDark_D">#8aacc8</color>
+    <color name="colorAccent_D">#aaaa</color>
+    <color name="buttons_D">#2966B8</color>
+    <color name="chatSender_D">#5d99c6</color>
+    <color name="chatReceiver_D">#89abc6</color>
 
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>

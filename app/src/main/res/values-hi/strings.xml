@@ -19,4 +19,6 @@
     <string name="verify">पासवर्ड को सत्यापित करें</string>
     <string name="search_contact">संपर्क जोड़ें</string>
     <string name="suggested">सुझाव दिया</string>
+    <string name="delete">हटाना</string>
+    <string name="yes">हाँ</string>
 </resources>

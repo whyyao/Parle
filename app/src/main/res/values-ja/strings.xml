@@ -19,4 +19,6 @@
     <string name="verify">パスワードの確認</string>
     <string name="search_contact">連絡先を追加</string>
     <string name="suggested">疑わしい</string>
+    <string name="delete">削除</string>
+    <string name="yes">はい</string>
 </resources>
