@@ -20,7 +20,7 @@
     <color name="buttons">#5598FB</color>
     <color name="chatSender">#5d99c6</color>
     <color name="chatReceiver">#89abc6</color>
-    <color name ="sendButton">#919293</color>
+    <color name ="preview">#919293</color>
     <color name ="okayButton">#5598FB</color>
 
     <color name="red_50">#FFEBEE</color>

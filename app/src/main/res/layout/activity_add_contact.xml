@@ -46,14 +46,14 @@
 
             <TextView
                 android:id="@+id/nearby_button"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/ic_wifi_black_24dp"
-                android:backgroundTint="@color/buttons" />
+                android:layout_marginEnd="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/nearby"
+                />
 
         </RelativeLayout>
 
@@ -64,6 +64,7 @@
             android:text = "@string/suggested"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"/>
+
         <ListView
             android:id="@+id/list_view_search"
             android:layout_width="match_parent"
