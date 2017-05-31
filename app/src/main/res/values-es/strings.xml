@@ -21,4 +21,6 @@
     <string name="suggested">SUGIRIÓ</string>
     <string name="delete">Borrar</string>
     <string name="yes">Sí</string>
+    <string name="photo">[Foto]</string>
+    <string name="nearby_users">Usuarios Cercanos</string>
 </resources>

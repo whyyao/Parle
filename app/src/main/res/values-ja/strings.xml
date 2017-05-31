@@ -21,4 +21,6 @@
     <string name="suggested">疑わしい</string>
     <string name="delete">削除</string>
     <string name="yes">はい</string>
+    <string name="photo">[写真]</string>
+    <string name="nearby_users">近くのユーザー</string>
 </resources>

@@ -21,4 +21,6 @@
     <string name="suggested">প্রস্তাবিত</string>
     <string name="delete">মুছে ফেলা</string>
     <string name="yes">হাঁ</string>
+    <string name="photo">[ছবি]</string>
+    <string name="nearby_users">কাছাকাছি ব্যবহারকারীরা</string>
 </resources>

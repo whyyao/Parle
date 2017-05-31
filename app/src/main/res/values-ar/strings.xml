@@ -22,4 +22,6 @@
     <string name="suggested">اقترحت</string>
     <string name="delete">حذف</string>
     <string name="yes">نعم فعلا</string>
+    <string name="photo">[صورة فوتوغرافية]</string>
+    <string name="nearby_users">المستخدمون القريبون</string>
 </resources>

@@ -21,4 +21,6 @@
     <string name="suggested">सुझाव दिया</string>
     <string name="delete">हटाना</string>
     <string name="yes">हाँ</string>
+    <string name="photo">[तस्वीर]</string>
+    <string name="nearby_users">निकटवर्ती उपयोगकर्ता</string>
 </resources>

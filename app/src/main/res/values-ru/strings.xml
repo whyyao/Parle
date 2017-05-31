@@ -21,4 +21,6 @@
     <string name="suggested">РЕКОМЕНДУЕМЫЙ</string>
     <string name="delete">Удалить</string>
     <string name="yes">да</string>
+    <string name="photo">[Фото]</string>
+    <string name="nearby_users">Ближайшие пользователи</string>
 </resources>
