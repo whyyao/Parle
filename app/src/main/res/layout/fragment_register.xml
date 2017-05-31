@@ -2,13 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/amber_200"
+    android:background="@drawable/background"
     android:fitsSystemWindows="true" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cyan_200"
+
         android:orientation="vertical"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
@@ -20,20 +20,23 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
         android:layout_marginTop="18dp"
-        android:textColor="@color/black" >
+        android:textColorHint="@color/grey_400"
+        android:textColor="@color/white" >
 
         <EditText
             android:background="@android:color/transparent"
             android:id="@+id/edit_text_email_id"
             android:layout_width="match_parent"
+            android:textColor="@color/white"
             android:layout_height="wrap_content"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
+            android:textColorHint="@color/grey_400"
             android:textColorHighlight="@color/blue_grey_200" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black" />
+            android:background="@color/white" />
     </android.support.design.widget.TextInputLayout>
 
    <!-- Username -->
@@ -41,20 +44,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
+        android:textColorHint="@color/grey_400"
         android:layout_marginTop="18dp" >
 
         <EditText
             android:id="@+id/edit_text_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/grey_400"
             android:background="@android:color/transparent"
-            android:hint="Username"
+            android:hint="@string/username"
+            android:textColor="@color/white"
             android:inputType="text"
             android:textColorHighlight="@color/blue_grey_200" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black" />
+            android:background="@color/white" />
     </android.support.design.widget.TextInputLayout>
 
     <!-- Password -->
@@ -63,20 +69,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
+        android:textColorHint="@color/grey_400"
         android:layout_marginTop="18dp" >
 
         <EditText
             android:id="@+id/edit_text_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/grey_400"
             android:background="@android:color/transparent"
             android:hint="@string/password"
+            android:textColor="@color/white"
             android:inputType="textPassword"
             android:textColorHighlight="@color/blue_grey_200" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black" />
+            android:background="@color/white" />
     </android.support.design.widget.TextInputLayout>
 
     <!-- Password Verify -->
@@ -84,25 +93,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
+            android:textColorHint="@color/grey_400"
             android:layout_marginTop="18dp" >
 
             <EditText
                 android:id="@+id/edit_text_verify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColorHint="@color/grey_400"
+                android:textColor="@color/white"
                 android:background="@android:color/transparent"
-                android:hint="Verify Password"
+                android:hint="@string/verify"
                 android:inputType="textPassword"
                 android:textColorHighlight="@color/blue_grey_200" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/black" />
+                android:background="@color/white" />
         </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColorHint="@color/grey_400"
         android:hint="@string/language"/>
 
     <Spinner
@@ -123,7 +136,8 @@
         android:padding="12dp"
         android:text="@string/register"
         android:textSize = "16dip"
-        android:background="@color/white"
+
+        android:background="@drawable/round_rectangle"
         android:textColor="@color/colorPrimaryDark"/>
     <!--
     <android.support.v4.widget.Space

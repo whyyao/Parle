@@ -24,4 +24,5 @@
     <string name="photo">[照片]</string>
     <string name="nearby_users">附近的用户</string>
     <string name="search">搜索</string>
+    <string name="register">注册</string>
 </resources>
