@@ -39,9 +39,11 @@ public class ListAdapter extends BaseAdapter implements Filterable{
     private LayoutInflater inflater;
     private GetOneUserPresenter mGetOneUserPresenter;
     private List<String> searchUsers = new ArrayList<>();
+    private boolean plusFlag = false;
 
 
-    public ListAdapter(List<User> allUsers) {
+    public ListAdapter(List<User> allUsers, boolean newPlusFlag) {
+        plusFlag = newPlusFlag;
         mData = allUsers;
         mStringFilterList = new ArrayList<User>(allUsers);
         notifyDataSetChanged();
@@ -85,7 +87,11 @@ public class ListAdapter extends BaseAdapter implements Filterable{
             holder.txtUserAlphabet = (TextView) convertView.findViewById(R.id.search_user_pic);
             holder.txtUserEmail = (TextView) convertView.findViewById(R.id.search_email);
             holder.contactpic = (ImageView) convertView.findViewById(R.id.contact_prof_pic);
-
+            holder.txtViewPlus = (TextView) convertView.findViewById(R.id.textView);
+            if(plusFlag == false)
+            {
+                holder.txtViewPlus.setVisibility(convertView.GONE);
+            }
             String pictureURL = mData.get(position).photoURL;
             boolean isPhoto = pictureURL != null;
             if (isPhoto) {

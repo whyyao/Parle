@@ -9,7 +9,8 @@ import android.view.View;
 
 /**
  * Created by jakebliss on 5/8/17.
- */
+ **/
+
 //new Stuff
 public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior{
     public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {
@@ -19,6 +20,7 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior{
     @Override
     public boolean onStartNestedScroll(final CoordinatorLayout coordinatorLayout, final FloatingActionButton child,
                                        final View directTargetChild, final View target, final int nestedScrollAxes) {
+        System.out.println(target);
         // Ensure we react to vertical scrolling
         return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL;
 //                || super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);

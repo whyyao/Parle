@@ -40,7 +40,6 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
     private List<User> mSuggestedUsers;
     ConvoListingPagerAdapter adapter = new ConvoListingPagerAdapter(getSupportFragmentManager());
 
-    private LogoutPresenter mLogoutPresenter;
 
 
     public static void startActivity(Context context) {
