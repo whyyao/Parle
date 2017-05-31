@@ -31,21 +31,23 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
             android:layout_marginTop="18dp"
+            android:textColorHint="@color/grey_400"
             android:textColor="@color/white" >
 
             <EditText
-                android:background="@android:color/transparent"
                 android:id="@+id/edit_text_email_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@color/blue_grey_50"
                 android:hint="@string/email"
-                android:textColor="@color/white"
                 android:inputType="textEmailAddress"
-                android:textColorHighlight="@color/blue_grey_200" />
+                android:textColorHint="@color/grey_400"
+                android:textColor="@color/white" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/black" />
+                android:background="@color/white" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password -->
@@ -54,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
+            android:textColorHint="@color/grey_400"
             android:layout_marginTop="18dp" >
 
             <EditText
@@ -63,12 +66,13 @@
                 android:background="@android:color/transparent"
                 android:hint="@string/password"
                 android:textColor="@color/white"
+                android:textColorHint="@color/grey_400"
                 android:inputType="textPassword"
                 android:textColorHighlight="@color/blue_grey_200" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/black" />
+                android:background="@color/white" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Login -->
