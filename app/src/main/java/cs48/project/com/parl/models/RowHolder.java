@@ -1,8 +1,6 @@
-package cs48.project.com.parl.ui;
+package cs48.project.com.parl.models;
 
 
-import cs48.project.com.parl.R;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 

@@ -20,7 +20,6 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 import com.google.android.gms.nearby.messages.Strategy;
-import com.google.api.client.util.Charsets;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.UnsupportedEncodingException;
@@ -30,15 +29,13 @@ import java.util.List;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.contacts.add.AddContactContract;
 import cs48.project.com.parl.core.contacts.add.AddContactPresenter;
-import cs48.project.com.parl.core.contacts.getAll.GetContactsContract;
 import cs48.project.com.parl.core.contacts.getAll.GetContactsPresenter;
 import cs48.project.com.parl.core.users.getNearby.GetNearbyUsersPresenter;
 import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
 import cs48.project.com.parl.core.users.getall.GetNearbyUsersContract;
-import cs48.project.com.parl.core.users.getall.GetUsersContract;
 import cs48.project.com.parl.models.User;
-import cs48.project.com.parl.ui.ChatMessage;
+import cs48.project.com.parl.models.ChatMessage;
 import cs48.project.com.parl.ui.adapters.NearbyUsersListingRecyclerAdapter;
 import cs48.project.com.parl.utils.ItemClickSupport;
 

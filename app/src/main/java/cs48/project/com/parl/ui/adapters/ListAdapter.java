@@ -1,9 +1,8 @@
 package cs48.project.com.parl.ui.adapters;
 
-import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
 import cs48.project.com.parl.models.User;
-import cs48.project.com.parl.ui.RowHolder;
+import cs48.project.com.parl.models.RowHolder;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,13 +16,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.app.Activity;
-import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import cs48.project.com.parl.R;

@@ -1,5 +1,5 @@
 //from: https://github.com/akkm/NearbySample
-package cs48.project.com.parl.ui;
+package cs48.project.com.parl.models;
 
 import android.os.Build;
 
