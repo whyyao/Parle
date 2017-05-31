@@ -1,9 +1,11 @@
 package cs48.project.com.parl.ui.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,8 @@ import java.util.List;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.conversation.ConversationContract;
 import cs48.project.com.parl.core.conversation.ConversationPresenter;
+import cs48.project.com.parl.core.conversation.delete.DeleteConversationContract;
+import cs48.project.com.parl.core.conversation.delete.DeleteConversationPresenter;
 import cs48.project.com.parl.core.users.getOne.GetOneUserContract;
 import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
 import cs48.project.com.parl.models.Conversation;
@@ -33,7 +37,7 @@ import cs48.project.com.parl.utils.ItemClickSupport;
  * Use the {@link ConvoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConvoFragment extends Fragment implements GetOneUserContract.View, ConversationContract.View, ItemClickSupport.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
+public class ConvoFragment extends Fragment implements GetOneUserContract.View, ConversationContract.View, DeleteConversationContract.View,ItemClickSupport.OnItemClickListener,ItemClickSupport.OnItemLongClickListener, SwipeRefreshLayout.OnRefreshListener{
 //    public static final String ARG_TYPE = "type";
 //    public static final String TYPE_CHATS = "type_chats";
 //    public static final String TYPE_ALL = "type_all";
@@ -42,7 +46,7 @@ public class ConvoFragment extends Fragment implements GetOneUserContract.View, 
     private RecyclerView mRecyclerViewAllConvoListing;
     private GetOneUserPresenter mGetOneUserPresenter;
     private ConvoListingRecyclerAdapter mConvoListingRecyclerAdapter;
-
+    private DeleteConversationPresenter mDeleteConversationPresenter;
     private ConversationPresenter mConversationPresenter;
 
     public static ConvoFragment newInstance() {
@@ -77,6 +81,7 @@ public class ConvoFragment extends Fragment implements GetOneUserContract.View, 
 
     private void init() {
         mConversationPresenter = new ConversationPresenter(this);
+        mDeleteConversationPresenter = new DeleteConversationPresenter(this);
         mGetOneUserPresenter = new GetOneUserPresenter(this);
         getConversations();
         mSwipeRefreshLayout.post(new Runnable() {
@@ -90,7 +95,7 @@ public class ConvoFragment extends Fragment implements GetOneUserContract.View, 
                 .setOnItemClickListener(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
-
+        ItemClickSupport.addTo(mRecyclerViewAllConvoListing).setOnItemLongClickListener(this);
     }
 
     @Override
@@ -105,9 +110,7 @@ public class ConvoFragment extends Fragment implements GetOneUserContract.View, 
 
     private String othersUid;
     private String myUid;
-    private String FirebaseReceiverUserName;
-    private String FirebaseFirebaseToken;
-    private String FirebaseLanguage;
+
     @Override
     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
         Conversation conversation = mConvoListingRecyclerAdapter.getConversation(position);
@@ -122,22 +125,42 @@ public class ConvoFragment extends Fragment implements GetOneUserContract.View, 
             myUid = conversation.senderUid;
         }
         mGetOneUserPresenter.getOneUser(othersUid);
-//        FirebaseDatabase.getInstance().getReference().child("users").child(othersUid).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                User receiver = dataSnapshot.getValue(User.class);
-//                FirebaseReceiverUserName = receiver.userName;
-//                FirebaseFirebaseToken = receiver.firebaseToken;
-//                FirebaseLanguage = receiver.language;
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+    }
 
+    private void deleteConversation(final String otherUid) {
+        new AlertDialog.Builder(getActivity())
+                .setTitle("delete")
+                .setMessage(R.string.are_you_sure)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        mDeleteConversationPresenter.deleteConversation(otherUid);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
 
+    @Override
+    public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v){
+        Conversation conversation = mConvoListingRecyclerAdapter.getConversation(position);
+        String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if(conversation.receiverUid.equals(currentUserUid)){
+            othersUid = conversation.senderUid;
+            //myUid = conversation.receiverUid;
+        }
+        else{
+            othersUid = conversation.receiverUid;
+            //myUid = conversation.senderUid;
+        }
+        deleteConversation(othersUid);
+        return true;
     }
 
     public void onSendConversationSuccess(){
@@ -172,4 +195,11 @@ public class ConvoFragment extends Fragment implements GetOneUserContract.View, 
     public void onGetConversationFailure(String message){
 
     }
+    @Override
+    public void onDeleteConversationSuccess(){
+        onRefresh();
+
+    }
+    @Override
+    public void onDeleteConversationFailure(String message){}
 }

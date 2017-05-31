@@ -8,7 +8,8 @@
     android:paddingBottom="@dimen/padding_small"
     android:paddingEnd="@dimen/padding_avg"
     android:paddingStart="@dimen/padding_avg"
-    android:paddingTop="@dimen/padding_small">
+    android:paddingTop="@dimen/padding_small"
+    android:longClickable="true">
 
     <TextView
         android:id="@+id/search_user_pic"

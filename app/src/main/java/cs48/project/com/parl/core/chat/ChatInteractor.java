@@ -3,7 +3,6 @@ package cs48.project.com.parl.core.chat;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,17 +52,17 @@ public class ChatInteractor implements ChatContract.Interactor {
         final String room_type_2 = chat.receiverUid + "_" + chat.senderUid;
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        databaseReference.child("users").child(chat.senderUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        databaseReference.child("users").child(chat.senderUid).getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         databaseReference.child(Constants.ARG_USERS).child(chat.receiverUid).child("loggedIn").getRef().addValueEventListener(new ValueEventListener() {
 

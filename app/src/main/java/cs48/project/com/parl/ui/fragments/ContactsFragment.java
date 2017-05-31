@@ -118,6 +118,7 @@ public class ContactsFragment extends Fragment implements GetContactsContract.Vi
 
             }
         });
+
     }
 
     public void initializeSearchListener(final List<User> mSearchUsers)
