@@ -4,7 +4,7 @@
     <solid android:color="@color/sendButton"/>
     <corners
         android:bottomLeftRadius="16dp"
-        android:bottomRightRadius="0dp"
+        android:bottomRightRadius="16dp"
         android:topLeftRadius="16dp"
-        android:topRightRadius="16dp" />
+        android:topRightRadius="0dp" />
 </shape>

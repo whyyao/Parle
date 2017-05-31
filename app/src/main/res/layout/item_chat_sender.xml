@@ -51,6 +51,7 @@
         android:background="@drawable/chat_bubble_round_corner_incoming"
         android:padding="@dimen/padding_small"
         android:paddingLeft="20dp"
+        android:layout_marginStart="@dimen/margin_huge"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/grey_100"
         tools:text="Hey Michael" />
