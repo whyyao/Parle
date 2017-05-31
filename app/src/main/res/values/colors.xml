@@ -13,21 +13,15 @@
     <!--<color name="chatSender">#AC92A6</color>-->
     <!--<color name="chatReceiver">#AC92A6</color>-->
 
-    <!--<LIGHT THEME>-->
+
     <color name="colorPrimary">#bbdefb</color>
     <color name="colorPrimaryDark">#8aacc8</color>
     <color name="colorAccent">#aaaa</color>
     <color name="buttons">#2966B8</color>
     <color name="chatSender">#5d99c6</color>
     <color name="chatReceiver">#89abc6</color>
-
-    <!--<DARK THEME>-->
-    <color name="colorPrimary_D">#bbdefb</color>
-    <color name="colorPrimaryDark_D">#8aacc8</color>
-    <color name="colorAccent_D">#aaaa</color>
-    <color name="buttons_D">#2966B8</color>
-    <color name="chatSender_D">#5d99c6</color>
-    <color name="chatReceiver_D">#89abc6</color>
+    <color name ="sendButton">#919293</color>
+    <color name ="okayButton">#5598FB</color>
 
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>
@@ -121,12 +115,12 @@
 
     <color name="blue_grey_50">#ECEFF1</color>
     <color name="blue_grey_100">#CFD8DC</color>
-    <color name="blue_grey_200">#B0BEC5</color>
+    <color name="blue_grey_200">#b0bec5</color>
     <color name="blue_grey_300">#90A4AE</color>
     <color name="blue_grey_400">#78909C</color>
     <color name="blue_grey_500">#607D8B</color>
     <color name="blue_grey_600">#546E7A</color>
-    <color name="blue_grey_700">#455A64</color>
+    <color name="blue_grey_700">#455a64</color>
     <color name="blue_grey_800">#37474F</color>
     <color name="blue_grey_900">#263238</color>
 

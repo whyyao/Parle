@@ -49,8 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_huge"
-            android:background="@color/chatReceiver"
+            android:background="@drawable/chat_bubble_round_corner_outgoing"
             android:padding="@dimen/padding_small"
+            android:paddingLeft="20dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/grey_100"
             tools:text="Hello mate ! \ntest" />

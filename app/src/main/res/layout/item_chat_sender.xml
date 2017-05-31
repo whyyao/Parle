@@ -47,14 +47,13 @@
         android:id="@+id/text_view_chat_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_huge"
         android:layout_toLeftOf="@+id/prof_pic"
-        android:background="@color/chatSender"
+        android:background="@drawable/chat_bubble_round_corner_incoming"
         android:padding="@dimen/padding_small"
+        android:paddingLeft="20dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/grey_100"
-        tools:text="Hey Michael"
-        />
+        tools:text="Hey Michael" />
 
     <ImageView
         android:id="@+id/photoImageView"
