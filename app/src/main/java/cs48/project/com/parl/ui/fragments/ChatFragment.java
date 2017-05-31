@@ -86,7 +86,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
     private ConversationPresenter mConversationPresenter;
     GetMyUserName myUserName;
     private Button mSendButton;
-    private ImageButton mPhotoPickerButton;
+    private Button mPhotoPickerButton;
+    private Button mSendButtonCancel;
 
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mPhotoStorageReference;
@@ -129,7 +130,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
         mRecyclerViewChat = (RecyclerView) view.findViewById(R.id.recycler_view_chat);
         mETxtMessage = (EditText) view.findViewById(R.id.edit_text_message);
         mSendButton = (Button) view.findViewById(R.id.sendButton);
-        mPhotoPickerButton = (ImageButton) view.findViewById(R.id.photoPickerButton);
+        mPhotoPickerButton = (Button) view.findViewById(R.id.photoPickerButton);
+        mSendButtonCancel = (Button) view.findViewById(R.id.sendButtonCancel);
     }
 
     @Override
@@ -157,8 +159,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
             @Override
             public void onClick(View view) {
 
-
-                // TODO: Fire an intent to show an image picker
             }
         });
 
@@ -171,9 +171,13 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().length() > 0) {
+                    mSendButton.setVisibility(View.VISIBLE);
                     mSendButton.setEnabled(true);
+                    mSendButtonCancel.setVisibility(View.GONE);
                 } else {
+                    mSendButton.setVisibility(View.GONE);
                     mSendButton.setEnabled(false);
+                    mSendButtonCancel.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -188,7 +192,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
             @Override
             public void onClick(View view) {
                 sendMessage();
-
+                mETxtMessage.setText("");
             }
         });
 
@@ -250,7 +254,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                     mChatPresenter.sendMessage(getActivity().getApplicationContext(),
                             chat,
                             receiverFirebaseToken);
-                    Conversation conversation = new Conversation(senderUid, receiverUid, "photo", "photo", System.currentTimeMillis(),
+                    Conversation conversation = new Conversation(senderUid, receiverUid, Constants.ARG_PHOTO, Constants.ARG_PHOTO, System.currentTimeMillis(),
                             myUserName.userName, receiver);
                             mConversationPresenter.sendConversation(getActivity().getApplicationContext(), conversation, receiverFirebaseToken);
                 }
@@ -288,7 +292,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
             translatedMessage = message;
         }
 
-        System.out.println(translatedMessage + " This is the translated message");
         String receiver = getArguments().getString(Constants.ARG_RECEIVER_USERNAME);
         String receiverUid = getArguments().getString(Constants.ARG_RECEIVER_UID);
         String sender = FirebaseAuth.getInstance().getCurrentUser().getEmail();

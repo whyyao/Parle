@@ -8,29 +8,34 @@
         android:id="@+id/recycler_view_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/linearLayout"
-        app:layoutManager="LinearLayoutManager" />
+        app:layoutManager="LinearLayoutManager"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/linearLayout" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:orientation="horizontal">
+        android:layout_alignParentStart="true">
 
-        <ImageButton
+        <Button
             android:id="@+id/photoPickerButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="5dp"
             android:layout_gravity="bottom"
-            android:background="@drawable/photo_icon"
+            android:background="@drawable/photo"
              />
 
         <EditText
             android:id="@+id/edit_text_message"
             android:layout_width="0dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
             android:hint="Parlé"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -38,11 +43,26 @@
 
         <Button
             android:id="@+id/sendButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginRight="5dp"
             android:layout_gravity="bottom"
             android:enabled="false"
-            android:background="@drawable/ic_action_name"/>
+            android:background="@drawable/send"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/sendButtonCancel"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="bottom"
+            android:enabled="false"
+            android:background="@drawable/send_copy"/>
 
     </LinearLayout>
 </RelativeLayout>
