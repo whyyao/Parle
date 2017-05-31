@@ -58,6 +58,24 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_convo_listing);
         bindViews();
+
+        mViewPagerUserListing.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1 || position == 0) {
+                    mFloatingActionButton.show();
+                }
+                if (position == 2) {
+                    mFloatingActionButton.hide();
+                }
+            }
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
+
         init();
     }
 
@@ -118,6 +136,7 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
         adapter.addFrag(new SettingFragment(), "ME");
         viewPager.setAdapter(adapter);
     }
+
 
     @Override
     public void onClick(View view) {
