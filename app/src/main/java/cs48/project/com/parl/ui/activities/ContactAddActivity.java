@@ -1,33 +1,20 @@
 package cs48.project.com.parl.ui.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
-import android.app.ProgressDialog;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.telecom.Call;
-import android.text.TextUtils;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Filter;
-import android.widget.Filterable;
 
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.contacts.add.AddContactContract;
@@ -37,18 +24,7 @@ import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
 import cs48.project.com.parl.core.users.getall.GetUsersContract;
 import cs48.project.com.parl.core.users.getall.GetUsersPresenter;
 import cs48.project.com.parl.models.User;
-
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-
-
-import cs48.project.com.parl.ui.adapters.NearbyUsersListingRecyclerAdapter;
 import cs48.project.com.parl.ui.adapters.ListAdapter;
-import cs48.project.com.parl.utils.Constants;
-import cs48.project.com.parl.utils.ItemClickSupport;
 
 /**
  * Created by jakebliss on 5/8/17.
@@ -130,9 +106,10 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
 
     public void initializeSearchListener(final List<User> mSearchUsers)
     {
+        String search = getString(R.string.search);
         mAdapter = new ListAdapter(mSearchUsers, true);
         mListView.setAdapter(mAdapter);
-        mUserSearchViews.setQueryHint("Search");
+        mUserSearchViews.setQueryHint(search);
         mUserSearchViews.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
             public boolean onQueryTextSubmit(String query) {
