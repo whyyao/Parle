@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -18,12 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +38,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs48.project.com.parl.Manifest;
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.chat.ChatContract;
 import cs48.project.com.parl.core.chat.ChatPresenter;
@@ -56,9 +52,8 @@ import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.adapters.ChatRecyclerAdapter;
 import cs48.project.com.parl.utils.Constants;
 import cs48.project.com.parl.utils.ImagePicker;
+import cs48.project.com.parl.utils.ItemClickSupport;
 
-import static android.R.attr.bitmap;
-import static android.R.attr.data;
 import static android.app.Activity.RESULT_OK;
 
 /*
@@ -74,7 +69,7 @@ import com.google.api.services.translate.model.TranslationsResource;*/
  * Use the {@link ChatFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatFragment extends Fragment implements ChatContract.View, ConversationContract.View {
+public class ChatFragment extends Fragment implements ChatContract.View, ConversationContract.View, ItemClickSupport.OnItemClickListener{
     private RecyclerView mRecyclerViewChat;
     private EditText mETxtMessage;
     private ProgressDialog mProgressDialog;
@@ -205,7 +200,10 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
                 startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
             }
         });
-        }
+        ItemClickSupport.addTo(mRecyclerViewChat)
+                .setOnItemClickListener(this);
+
+    }
 
 
     private String senderLang;
@@ -365,5 +363,27 @@ public class ChatFragment extends Fragment implements ChatContract.View, Convers
             mChatPresenter.getMessage(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                     pushNotificationEvent.getUid());
         }
+    }
+
+    @Override
+    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+       // System.out.println("clicked");
+        Chat chat = mChatRecyclerAdapter.getChat(position);
+        //System.out.println("chat message" + chat.message);
+        TextView txtChatMessage = (TextView) v.findViewById(R.id.text_view_chat_message);
+        System.out.println("view "+txtChatMessage.getText().toString());
+        System.out.println("chat translated "+chat.translatedMessage);
+        System.out.println("chat nontranslated "+chat.message);
+
+        if(chat.photoURL != null){
+            return;
+        }
+        if(TextUtils.equals(txtChatMessage.getText().toString(),chat.translatedMessage)){
+            txtChatMessage.setText(chat.message);
+        }
+        else{
+            txtChatMessage.setText(chat.translatedMessage);
+        }
+
     }
 }

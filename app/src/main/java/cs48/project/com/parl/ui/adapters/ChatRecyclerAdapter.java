@@ -47,6 +47,9 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyItemInserted(mChats.size() - 1);
     }
 
+    public Chat getChat(int position){
+        return mChats.get(position);
+    }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -101,6 +104,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             myChatViewHolder.txtUserAlphabet.setText(alphabet);
         }
     }
+
 
 
     private void configureMyChatViewHolder(final MyChatViewHolder myChatViewHolder, int position) {
