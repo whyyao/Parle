@@ -12,6 +12,7 @@ import cs48.project.com.parl.ui.fragments.LoginFragment;
 import cs48.project.com.parl.ui.fragments.SettingFragment;
 
 
+
 public class LoginActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 

@@ -9,12 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Gravity;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -162,9 +165,23 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         String emailId = mETxtEmail.getText().toString();
         String password = mETxtPassword.getText().toString();
         String verify = mETxtVerify.getText().toString();
-        if(!password.equals(verify)) {
+        String username = mETxtUsername.getText().toString();
+        if (!emailId.contains("@") || !emailId.contains(".")) {
+            Toast.makeText(getActivity(), "Please enter a valid e-mail", Toast.LENGTH_LONG).show();
+        }
+        else if (username.length() < 1) {
+            Toast.makeText(getActivity(), "You must enter a username", Toast.LENGTH_LONG).show();
+        }
+        else if (password.length() < 6) {
+            Toast.makeText(getActivity(), "Password must be at least six characters", Toast.LENGTH_LONG).show();
+        }
+        else if (verify.length() < 6) {
+            Toast.makeText(getActivity(), "Please enter the correct password", Toast.LENGTH_LONG).show();
+        }
+        else if(!password.equals(verify)) {
             Toast.makeText(getActivity(), "Passwords do not match", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else {
             mRegisterPresenter.register(getActivity(), emailId, password);
             mProgressDialog.show();
         }
@@ -183,7 +200,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         mProgressDialog.dismiss();
         mProgressDialog.setMessage(getString(R.string.please_wait));
         Log.e(TAG, "onRegistrationFailure: " + message);
-        Toast.makeText(getActivity(), "Registration failed!+\n" + message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Registration failed!\n" + message, Toast.LENGTH_LONG).show();
     }
 
     @Override
