@@ -15,15 +15,11 @@
 
 
     <color name="colorPrimary">#0288d1</color>
-    <color name="blue_style">#0288d1</color>
-    <color name ="okayButton">#0288d1</color>
-
     <color name="colorPrimaryDark">#005b9f</color>
-    <color name="buttons">#005b9f</color>
 
     <color name="colorAccent">#aaaa</color>
-    <color name ="preview">#919293</color>
-
+    <color name="preview">#919293</color>
+    <color name="dark">#444141</color>
 
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>
