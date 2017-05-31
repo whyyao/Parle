@@ -15,7 +15,7 @@
     <string name="language">语言</string>
     <string name="email">电子邮件</string>
     <string name="cancel">取消</string>
-    <string name="are_you_sure">你确定？</string>
+    <string name="are_you_sure">你确定吗？</string>
     <string name="action_settings">设置</string>
     <string name="search_contact">添加联系人</string>
     <string name="suggested">建议用户</string>
