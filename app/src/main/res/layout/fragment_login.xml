@@ -20,15 +20,18 @@
             android:layout_height="92dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:src="@drawable/white_banner" />
+            android:src="@drawable/banner" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
         <!-- E-mail -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
             android:layout_marginTop="18dp"
-            android:textColor="@color/black" >
+            android:textColor="@color/white" >
 
             <EditText
                 android:background="@android:color/transparent"
