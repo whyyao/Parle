@@ -11,14 +11,15 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Nearby Users"
-        android:textAppearance="@android:style/TextAppearance.Material.Large"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:paddingTop="10dp"
+        android:textColor="@color/grey_500"
+        android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="10dp"
             android:layout_marginTop="35dp"
             android:layout_alignParentEnd="true">
 
@@ -27,6 +28,7 @@
                 android:id="@+id/recycler_view_nearby"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingTop="10dp"
                 android:layout_above="@+id/edit_text_message"
 
                 app:layoutManager="LinearLayoutManager" />
