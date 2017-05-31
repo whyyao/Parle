@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -71,7 +72,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                   String message,
                                   String receiver,
                                   String receiverUid,
-                                  String firebaseToken) {
+                                  String firebaseToken
+                                  ) {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra(Constants.ARG_RECEIVER_USERNAME, receiver);
         intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
@@ -82,7 +84,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_messaging)
+                .setSmallIcon(R.drawable.ic_conversation_icon)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher))
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
