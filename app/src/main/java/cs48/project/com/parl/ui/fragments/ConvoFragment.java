@@ -173,7 +173,7 @@ public class ConvoFragment extends Fragment implements GetOneUserContract.View, 
     @Override
     public void onGetOneUserSuccess(User users){
         ChatActivity.startActivity(getActivity(),users.userName,users.uid,users.firebaseToken, users.language);
-        Log.d("get succ!", users.userName);
+//        Log.d("get succ!", users.userName);
     }
     @Override
     public void onGetOneUserFailure(String message){
