@@ -132,50 +132,6 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
             });
         }
 
-//        if(ImageStorage.checkifImageExists(correctUid))
-//        {
-//            File file = ImageStorage.getImage("/"+correctUid+".jpg");
-//            String path = file.getAbsolutePath();
-//            if (path != null){
-//                System.out.println("directly setting");
-//                holder.txtUserAlphabet.setVisibility(View.GONE);
-//                holder.imagePhoto.setVisibility(View.VISIBLE);
-//                Bitmap b = BitmapFactory.decodeFile(path);
-//                holder.imagePhoto.setImageBitmap(b);
-//            }
-//        } else {
-//            FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(correctUid).child("photoURL").addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    String pictureURL = dataSnapshot.getValue(String.class);
-//                    // Log.d("getting user", user.userName);
-//
-//                    boolean isPhoto = pictureURL != null;
-//
-//                    if (isPhoto) {
-//                        System.out.println("there is a photo");
-//                        holder.txtUserAlphabet.setVisibility(View.GONE);
-//                        holder.imagePhoto.setVisibility(View.VISIBLE);
-//                        new GetImages(pictureURL, holder.imagePhoto, correctUid).execute();
-//                        //new DownloadImageTask(holder.imagePhoto).execute(pictureURL);
-//                    } else {
-//                        System.out.println("there isnt a photo");
-//                        holder.txtUserAlphabet.setVisibility(View.VISIBLE);
-//                        holder.imagePhoto.setVisibility(View.GONE);
-//                        String alphabet = userName.substring(0, 1);
-//                        holder.txtUserAlphabet.setText(alphabet);
-//                    }
-//                }
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {}
-//            });
-//        }
-
-
-
-
-       // System.out.printf("Conversation Print: %s\n", userName);
-
 
         holder.txtUsername.setText(userName);
 
@@ -223,62 +179,4 @@ public class ConvoListingRecyclerAdapter extends RecyclerView.Adapter<ConvoListi
             imagePhoto = (ImageView) itemView.findViewById(R.id.contact_picture);
         }
     }
-//    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-//        ImageView bmImage;
-//
-//        public DownloadImageTask(ImageView bmImage) {
-//            this.bmImage = bmImage;
-//        }
-//
-//        protected Bitmap doInBackground(String... urls) {
-//            String urldisplay = urls[0];
-//            Bitmap mIcon11 = null;
-//            try {
-//                InputStream in = new java.net.URL(urldisplay).openStream();
-//                mIcon11 = BitmapFactory.decodeStream(in);
-//            } catch (Exception e) {
-//                Log.e("Error", e.getMessage());
-//                e.printStackTrace();
-//            }
-//            return mIcon11;
-//        }
-//
-//        protected void onPostExecute(Bitmap result) {
-//            bmImage.setImageBitmap(result);
-//        }
-//    }
-
-//    private class GetImages extends AsyncTask<String, Void, Object> {
-//        private String requestUrl, imagename_;
-//        private ImageView view;
-//        private Bitmap bitmap ;
-//        private FileOutputStream fos;
-//        private GetImages(String requestUrl, ImageView view, String _imagename_) {
-//            this.requestUrl = requestUrl;
-//            this.view = view;
-//            this.imagename_ = _imagename_ ;
-//        }
-//
-//        @Override
-//        protected Object doInBackground(String... objects) {
-//            try {
-//                URL url = new URL(requestUrl);
-//                URLConnection conn = url.openConnection();
-//                bitmap = BitmapFactory.decodeStream(conn.getInputStream());
-//            } catch (Exception ex) {
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Object o) {
-//            //view.setImageBitmap(bitmap);
-//            if(!ImageStorage.checkifImageExists(imagename_))
-//            {
-//                System.out.println("does not exit") ;
-//                view.setImageBitmap(bitmap);
-//                ImageStorage.saveToSdCard(bitmap, imagename_);
-//            }
-//        }
-//    }
 }
