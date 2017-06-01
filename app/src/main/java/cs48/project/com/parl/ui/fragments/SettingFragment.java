@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -32,15 +33,17 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.core.logout.LogoutContract;
 import cs48.project.com.parl.core.logout.LogoutPresenter;
-import cs48.project.com.parl.models.Chat;
-import cs48.project.com.parl.models.Conversation;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.activities.LoginActivity;
+import cs48.project.com.parl.utils.BasicImageDownloader;
+import cs48.project.com.parl.utils.BasicImageDownloader.ImageError;
+import cs48.project.com.parl.utils.BasicImageDownloader.OnImageLoaderListener;
 import cs48.project.com.parl.utils.Constants;
 import cs48.project.com.parl.utils.ImagePicker;
 
@@ -88,7 +91,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
                 setEmailTextView();
             }
         };
-        DownloadProfilePic();
         //pictureButton.setImageBitmap(profilePic);
     }
 
@@ -96,9 +98,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
     public void onStart(){
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-        if(profilePic != null) {
-            pictureButton.setImageBitmap(profilePic);
-        }
     }
 
 
@@ -165,10 +164,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
                 final Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 String Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(Uid).child("photoURL").setValue(downloadUrl.toString());
-                DownloadProfilePic();
-                if(profilePic != null) {
-                    pictureButton.setImageBitmap(profilePic);
-                }
+                LoadProfilePic();
             }
         });
     }
@@ -180,52 +176,55 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
 //
 //    }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-//        Bitmap bmImage;
-
-//        public DownloadImageTask(Bitmap bmImage) {
-//            this.bmImage = bmImage;
-//        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            profilePic = result;
-        }
-    }
-    private Bitmap profilePic;
-
-
-    private void DownloadProfilePic(){
-        FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("photoURL").addListenerForSingleValueEvent(new ValueEventListener() {
+    private Bitmap.CompressFormat mFormat = Bitmap.CompressFormat.JPEG;
+    private void LoadProfilePic(){
+        final String fileName = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        File pictureFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                File.separator + "parle" + File.separator + fileName + "." + mFormat.name().toLowerCase());
+        if(pictureFile.exists()){
+            System.out.println("trying to load image");
+            Bitmap b = BasicImageDownloader.readFromDisk(pictureFile);
+            pictureButton.setImageBitmap(b);
+        }else{
+            FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("photoURL").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String URL = dataSnapshot.getValue(String.class);
-               // Log.d("find the URL", URL);
-                new DownloadImageTask().execute(URL);
-            }
+                String pictureURL = dataSnapshot.getValue(String.class);
+                final String fileName = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                File pictureFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                        File.separator + "parle" + File.separator + fileName + "." + mFormat.name().toLowerCase());
+                    boolean isPhoto = pictureURL != null;
+                            if (isPhoto) {
+                                final BasicImageDownloader downloader = new BasicImageDownloader(new OnImageLoaderListener() {
+                                    @Override
+                                    public void onError(ImageError error) {error.printStackTrace();}
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                                    @Override
+                                    public void onProgressChange(int percent) {}
 
-            }
-        });
+                                    @Override
+                                    public void onComplete(Bitmap result) {
+                                        final File myImageFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                                File.separator + "parle" + File.separator + fileName + "." + mFormat.name().toLowerCase());
+                                        BasicImageDownloader.writeToDisk(myImageFile, result, new BasicImageDownloader.OnBitmapSaveListener() {
+                                            @Override
+                                            public void onBitmapSaved() {}
+
+                                            @Override
+                                            public void onBitmapSaveError(ImageError error) {error.printStackTrace();}
+                                        }, mFormat, false);
+                                        pictureButton.setImageBitmap(result);
+                                    }
+                                });
+                                downloader.download(pictureURL, true);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    });
+        }
     }
     private void init(){
-        if(profilePic != null) {
-            pictureButton.setImageBitmap(profilePic);
-        }
         setUsernameTextView();
         setLanguageTextView();
         setEmailTextView();
@@ -233,12 +232,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener, L
         mBtnLogout.setOnClickListener(this);
         mFirebaseStorage = FirebaseStorage.getInstance();
         mUserPhotoStorageReference = mFirebaseStorage.getReference().child("users_photos");
+        LoadProfilePic();
     }
-
-
-
-
-
     private void setUsernameTextView(){
        FirebaseUser curUser = FirebaseAuth.getInstance().getCurrentUser();
         if (curUser != null) {

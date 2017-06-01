@@ -22,14 +22,11 @@ public class SplashActivity extends AppCompatActivity {
         mRunnable = new Runnable() {
             @Override
             public void run() {
-                Log.d("before","exe");
   //               check if user is already logged in or not
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    Log.d("if","exe");
                     // if logged in redirect the user to user listing activity
                     ConvoListingActivity.startActivity(SplashActivity.this);
                 } else {
-                    Log.d("else","exe");
                     // otherwise redirect the user to login activity
                     LoginActivity.startIntent(SplashActivity.this);
                 }

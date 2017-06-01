@@ -3,6 +3,9 @@
     package="cs48.project.com.parl">
     <uses-sdk android:minSdkVersion="9" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name="cs48.project.com.parl.ParleMainApp"
         android:allowBackup="true"
