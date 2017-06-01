@@ -3,6 +3,7 @@ package cs48.project.com.parl.ui.adapters;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,13 +20,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 
 import cs48.project.com.parl.R;
 import cs48.project.com.parl.models.Chat;
-import cs48.project.com.parl.models.User;
+import cs48.project.com.parl.utils.BasicImageDownloader;
+import cs48.project.com.parl.utils.BasicImageDownloader.ImageError;
+import cs48.project.com.parl.utils.BasicImageDownloader.OnImageLoaderListener;
 import cs48.project.com.parl.utils.Constants;
 
 /**
@@ -76,57 +79,69 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             configureOtherChatViewHolder((OtherChatViewHolder) holder, position);
         }
     }
-
-    private void changeProfilePic(Chat chat, MyChatViewHolder myChatViewHolder, String pictureURL){
-        boolean isPhoto = pictureURL != null;
-        if (isPhoto) {
-            myChatViewHolder.txtUserAlphabet.setVisibility(View.GONE);
-            myChatViewHolder.profPicView.setVisibility(View.VISIBLE);
-            new DownloadImageTask(myChatViewHolder.profPicView).execute(pictureURL);
-        } else {
-            myChatViewHolder.txtUserAlphabet.setVisibility(View.VISIBLE);
-            myChatViewHolder.profPicView.setVisibility(View.GONE);
-            String alphabet = chat.sender.substring(0, 1);
-            myChatViewHolder.txtUserAlphabet.setText(alphabet);
-        }
-    }
-
-    private void changeProfilePic2(Chat chat, OtherChatViewHolder myChatViewHolder, String pictureURL){
-        boolean isPhoto = pictureURL != null;
-        if (isPhoto) {
-            myChatViewHolder.txtUserAlphabet.setVisibility(View.GONE);
-            myChatViewHolder.profPicView.setVisibility(View.VISIBLE);
-            new DownloadImageTask(myChatViewHolder.profPicView).execute(pictureURL);
-        } else {
-            myChatViewHolder.txtUserAlphabet.setVisibility(View.VISIBLE);
-            myChatViewHolder.profPicView.setVisibility(View.GONE);
-            String alphabet = chat.sender.substring(0, 1);
-            myChatViewHolder.txtUserAlphabet.setText(alphabet);
-        }
-    }
-
-
-
+    private Bitmap.CompressFormat mFormat = Bitmap.CompressFormat.JPEG;
     private void configureMyChatViewHolder(final MyChatViewHolder myChatViewHolder, int position) {
         final Chat chat = mChats.get(position);
-        FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren().iterator();
-                while (dataSnapshots.hasNext()) {
-                    DataSnapshot dataSnapshotChild = dataSnapshots.next();
-                    User user = dataSnapshotChild.getValue(User.class);
-                    //System.out.println(user.userName);
-                    if (user.uid.equals(chat.senderUid)) {
-                        Log.d("getting user", user.userName);
-                        String pictureURL = user.photoURL;
-                        changeProfilePic(chat, myChatViewHolder, pictureURL);
+        final String fileName = chat.senderUid;
+        File pictureFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                File.separator + "parle" + File.separator + fileName + "." + mFormat.name().toLowerCase());
+
+        System.out.println("absolute pass is: "+pictureFile.getAbsolutePath());
+        if(pictureFile.exists()){
+            System.out.println("trying to load image");
+            Bitmap b = BasicImageDownloader.readFromDisk(pictureFile);
+            myChatViewHolder.txtUserAlphabet.setVisibility(View.GONE);
+            myChatViewHolder.profPicView.setVisibility(View.VISIBLE);
+            myChatViewHolder.profPicView.setImageBitmap(b);
+        }else{
+            FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(fileName).child("photoURL").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String pictureURL = dataSnapshot.getValue(String.class);
+                    // Log.d("getting user", user.userName);
+
+                    boolean isPhoto = pictureURL != null;
+
+                    if (isPhoto) {
+                        final BasicImageDownloader downloader = new BasicImageDownloader(new OnImageLoaderListener() {
+                            @Override
+                            public void onError(ImageError error) {error.printStackTrace();}
+
+                            @Override
+                            public void onProgressChange(int percent) {}
+
+                            @Override
+                            public void onComplete(Bitmap result) {
+                                final File myImageFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                        File.separator + "parle" + File.separator + fileName + "." + mFormat.name().toLowerCase());
+                                BasicImageDownloader.writeToDisk(myImageFile, result, new BasicImageDownloader.OnBitmapSaveListener() {
+                                    @Override
+                                    public void onBitmapSaved() {}
+
+                                    @Override
+                                    public void onBitmapSaveError(ImageError error) {error.printStackTrace();}
+                                }, mFormat, false);
+                                myChatViewHolder.txtUserAlphabet.setVisibility(View.GONE);
+                                myChatViewHolder.profPicView.setVisibility(View.VISIBLE);
+                                myChatViewHolder.profPicView.setImageBitmap(result);
+                            }
+                        });
+                        downloader.download(pictureURL, true);
+                        //System.out.println("there is a photo");
+                        //new DownloadImageTask(holder.imagePhoto).execute(pictureURL);
+                    } else {
+                        //System.out.println("there isnt a photo");
+                        myChatViewHolder.txtUserAlphabet.setVisibility(View.VISIBLE);
+                        myChatViewHolder.profPicView.setVisibility(View.GONE);
+                        String alphabet = chat.sender.substring(0, 1);
+                        myChatViewHolder.txtUserAlphabet.setText(alphabet);
                     }
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            });
+        }
+
 
         boolean isPhoto = chat.photoURL != null;
 
@@ -146,29 +161,65 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void configureOtherChatViewHolder(final OtherChatViewHolder otherChatViewHolder, int position) {
         final Chat chat = mChats.get(position);
 
-        String alphabet = chat.sender.substring(0, 1);
+        final String fileName = chat.senderUid;
+        File pictureFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                File.separator + "parle" + File.separator + fileName + "." + mFormat.name().toLowerCase());
 
-//        otherChatViewHolder.txtChatMessage.setText(chat.translatedMessage);
-        otherChatViewHolder.txtUserAlphabet.setText(alphabet);
+        System.out.println("absolute pass is: "+pictureFile.getAbsolutePath());
+        if(pictureFile.exists()){
+            System.out.println("trying to load image");
+            Bitmap b = BasicImageDownloader.readFromDisk(pictureFile);
+            otherChatViewHolder.txtUserAlphabet.setVisibility(View.GONE);
+            otherChatViewHolder.profPicView.setVisibility(View.VISIBLE);
+            otherChatViewHolder.profPicView.setImageBitmap(b);
+        }else{
+            FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).child(fileName).child("photoURL").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String pictureURL = dataSnapshot.getValue(String.class);
+                    // Log.d("getting user", user.userName);
 
-        FirebaseDatabase.getInstance().getReference().child(Constants.ARG_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren().iterator();
-                while (dataSnapshots.hasNext()) {
-                    DataSnapshot dataSnapshotChild = dataSnapshots.next();
-                    User user = dataSnapshotChild.getValue(User.class);
-                    //System.out.println(user.userName);
-                    if (user.uid.equals(chat.senderUid)) {
-                        Log.d("getting user", user.userName);
-                        String pictureURL = user.photoURL;
-                        changeProfilePic2(chat, otherChatViewHolder, pictureURL);
+                    boolean isPhoto = pictureURL != null;
+
+                    if (isPhoto) {
+                        final BasicImageDownloader downloader = new BasicImageDownloader(new OnImageLoaderListener() {
+                            @Override
+                            public void onError(ImageError error) {error.printStackTrace();}
+
+                            @Override
+                            public void onProgressChange(int percent) {}
+
+                            @Override
+                            public void onComplete(Bitmap result) {
+                                final File myImageFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                        File.separator + "parle" + File.separator + fileName + "." + mFormat.name().toLowerCase());
+                                BasicImageDownloader.writeToDisk(myImageFile, result, new BasicImageDownloader.OnBitmapSaveListener() {
+                                    @Override
+                                    public void onBitmapSaved() {}
+
+                                    @Override
+                                    public void onBitmapSaveError(ImageError error) {error.printStackTrace();}
+                                }, mFormat, false);
+                                otherChatViewHolder.txtUserAlphabet.setVisibility(View.GONE);
+                                otherChatViewHolder.profPicView.setVisibility(View.VISIBLE);
+                                otherChatViewHolder.profPicView.setImageBitmap(result);
+                            }
+                        });
+                        downloader.download(pictureURL, true);
+                        //System.out.println("there is a photo");
+                        //new DownloadImageTask(holder.imagePhoto).execute(pictureURL);
+                    } else {
+                        //System.out.println("there isnt a photo");
+                        otherChatViewHolder.txtUserAlphabet.setVisibility(View.VISIBLE);
+                        otherChatViewHolder.profPicView.setVisibility(View.GONE);
+                        String alphabet = chat.sender.substring(0, 1);
+                        otherChatViewHolder.txtUserAlphabet.setText(alphabet);
                     }
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            });
+        }
 
         boolean isPhoto = chat.photoURL != null;
         if (isPhoto) {

@@ -1,6 +1,5 @@
 package cs48.project.com.parl.ui.activities;
 
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,28 +8,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import cs48.project.com.parl.R;
-import cs48.project.com.parl.core.logout.LogoutPresenter;
 import cs48.project.com.parl.models.User;
 import cs48.project.com.parl.ui.adapters.ConvoListingPagerAdapter;
 import cs48.project.com.parl.ui.fragments.ContactsFragment;
 import cs48.project.com.parl.ui.fragments.ConvoFragment;
 import cs48.project.com.parl.ui.fragments.SettingFragment;
-import cs48.project.com.parl.utils.Constants;
 
 public class ConvoListingActivity extends AppCompatActivity implements View.OnClickListener{
     private Toolbar mToolbar;
@@ -57,8 +44,7 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_convo_listing);
-        bindViews();
-
+        bindViews();;
         mViewPagerUserListing.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -97,7 +83,6 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
     private void init() {
         //set the toolbar
         setSupportActionBar(mToolbar);
-
         //set the view pager adapter
         ConvoListingPagerAdapter convoListingPagerAdapter = new ConvoListingPagerAdapter(getSupportFragmentManager());
         mViewPagerUserListing.setAdapter(convoListingPagerAdapter);
@@ -137,7 +122,6 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
         viewPager.setAdapter(adapter);
     }
 
-
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
@@ -148,6 +132,7 @@ public class ConvoListingActivity extends AppCompatActivity implements View.OnCl
                 break;
         }
     }
+
 
 
 

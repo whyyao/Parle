@@ -1,12 +1,10 @@
 package cs48.project.com.parl.ui.adapters;
 
-import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
-import cs48.project.com.parl.models.User;
-import cs48.project.com.parl.models.RowHolder;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +15,18 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import cs48.project.com.parl.R;
+import cs48.project.com.parl.core.users.getOne.GetOneUserPresenter;
+import cs48.project.com.parl.models.RowHolder;
+import cs48.project.com.parl.models.User;
+import cs48.project.com.parl.utils.BasicImageDownloader;
+import cs48.project.com.parl.utils.BasicImageDownloader.ImageError;
+import cs48.project.com.parl.utils.BasicImageDownloader.OnImageLoaderListener;
 
 /**
  * Created by jakebliss on 5/27/17.
@@ -35,7 +40,7 @@ public class ListAdapter extends BaseAdapter implements Filterable{
     private GetOneUserPresenter mGetOneUserPresenter;
     private List<String> searchUsers = new ArrayList<>();
     private boolean plusFlag = false;
-
+    private Bitmap.CompressFormat mFormat = Bitmap.CompressFormat.JPEG;
 
     public ListAdapter(List<User> allUsers, boolean newPlusFlag) {
         plusFlag = newPlusFlag;
@@ -73,7 +78,7 @@ public class ListAdapter extends BaseAdapter implements Filterable{
         }
 
 
-        RowHolder holder;
+        final RowHolder holder;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.search_row_item, null);
@@ -89,17 +94,48 @@ public class ListAdapter extends BaseAdapter implements Filterable{
             }
             String pictureURL = mData.get(position).photoURL;
             boolean isPhoto = pictureURL != null;
-            if (isPhoto) {
-                holder.txtUserAlphabet.setVisibility(View.GONE);
-                holder.contactpic.setVisibility(View.VISIBLE);
-                new DownloadImageTask(holder.contactpic).execute(pictureURL);
-            } else {
+            if(!isPhoto) {
                 holder.txtUserAlphabet.setVisibility(View.VISIBLE);
                 holder.contactpic.setVisibility(View.GONE);
                 String alphabet = mData.get(position).userName.substring(0, 1);
                 holder.txtUserAlphabet.setText(alphabet);
-            }
+            }else {
+                final String fileName = mData.get(position).uid;
+                File pictureFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                    File.separator + "parle" + File.separator + fileName + "." + mFormat.name().toLowerCase());
 
+                System.out.println("absolute pass is: "+pictureFile.getAbsolutePath());
+                if(pictureFile.exists()){
+                    System.out.println("trying to load image");
+                    Bitmap b = BasicImageDownloader.readFromDisk(pictureFile);
+                    holder.txtUserAlphabet.setVisibility(View.GONE);
+                    holder.contactpic.setVisibility(View.VISIBLE);
+                    holder.contactpic.setImageBitmap(b);
+                }else{
+                    final BasicImageDownloader downloader = new BasicImageDownloader(new OnImageLoaderListener() {
+                        @Override
+                        public void onError(ImageError error) {error.printStackTrace();}
+                        @Override
+                        public void onProgressChange(int percent) {}
+                        @Override
+                        public void onComplete(Bitmap result) {
+                            final File myImageFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                    File.separator + "parle" + File.separator + fileName + "." + mFormat.name().toLowerCase());
+                                    BasicImageDownloader.writeToDisk(myImageFile, result, new BasicImageDownloader.OnBitmapSaveListener() {
+                                        @Override
+                                        public void onBitmapSaved() {}
+
+                                        @Override
+                                        public void onBitmapSaveError(ImageError error) {error.printStackTrace();}
+                                    }, mFormat, false);
+                                    holder.txtUserAlphabet.setVisibility(View.GONE);
+                                    holder.contactpic.setVisibility(View.VISIBLE);
+                                    holder.contactpic.setImageBitmap(result);
+                                }
+                            });
+                            downloader.download(pictureURL, true);
+                        }
+            }
             holder.txtUsername.setText(mData.get(position).userName.toString());
             holder.txtUserEmail.setText(mData.get(position).email.toString());
         } else {
