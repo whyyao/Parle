@@ -109,6 +109,7 @@ public class ContactsFragment extends Fragment implements GetContactsContract.Vi
         mListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
+                System.out.println("click");
                 User selectedUser = (User) parent.getItemAtPosition(position);
                 ChatActivity.startActivity(getActivity(),
                         selectedUser.userName,
