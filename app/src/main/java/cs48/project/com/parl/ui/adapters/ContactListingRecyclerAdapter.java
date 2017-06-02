@@ -18,7 +18,7 @@ import cs48.project.com.parl.R;
 import cs48.project.com.parl.models.User;
 
 /**
- * Created by yaoyuan on 5/7/17.
+ * Created by yaoyuan on 5/7/17.*
  */
 
 public class ContactListingRecyclerAdapter extends RecyclerView.Adapter<ContactListingRecyclerAdapter.ViewHolder> {
