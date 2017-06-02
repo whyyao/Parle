@@ -99,7 +99,7 @@ public class ContactAddActivity extends AppCompatActivity implements AddContactC
             public void onItemClick(AdapterView parent, View view, int position, long id) {
                 User newContact = (User) parent.getItemAtPosition(position);
                 String newContactUid = newContact.uid.toString();
-              AddSearchContact(newContactUid);
+                AddSearchContact(newContactUid);
             }
         });
     }

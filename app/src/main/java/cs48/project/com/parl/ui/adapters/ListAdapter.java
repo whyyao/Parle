@@ -58,6 +58,9 @@ public class ListAdapter extends BaseAdapter implements Filterable{
 
     @Override
     public User getItem(int position) {
+        if(position>mData.size()-1){
+            return null;
+        }
         return mData.get(position);
     }
 
@@ -172,7 +175,7 @@ public class ListAdapter extends BaseAdapter implements Filterable{
                 {
                     suggestedUsers.add(user);
                 }
-//                mStringFilterList.clear();
+//                mStringFilterList.clear();xcv
                 results.count =  suggestedUsers.size();
                 results.values = suggestedUsers;
             }

@@ -111,11 +111,14 @@ public class ContactsFragment extends Fragment implements GetContactsContract.Vi
             public void onItemClick(AdapterView parent, View view, int position, long id) {
                 System.out.println("click");
                 User selectedUser = (User) parent.getItemAtPosition(position);
-                ChatActivity.startActivity(getActivity(),
-                        selectedUser.userName,
-                        selectedUser.uid,
-                        selectedUser.firebaseToken,
-                        selectedUser.language);
+                //User selectedUser = mAdapter.getUser(position);
+                if (selectedUser!= null) {
+                    ChatActivity.startActivity(getActivity(),
+                            selectedUser.userName,
+                            selectedUser.uid,
+                            selectedUser.firebaseToken,
+                            selectedUser.language);
+                }
 
             }
         });
@@ -168,20 +171,20 @@ public class ContactsFragment extends Fragment implements GetContactsContract.Vi
             }
         });
         mContactList = users;
-        if(contactListenerFlag == false) {
+        //if(contactListenerFlag == false) {
             initializeSearchListener(mContactList);
-            contactListenerFlag = true;
-        }
+            //contactListenerFlag = true;
+        //}
     }
 
     @Override
     public void onGetContactsUsersFailure(String message){
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
+//        mSwipeRefreshLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                mSwipeRefreshLayout.setRefreshing(false);
+//            }
+//        });
         Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
     }
 }

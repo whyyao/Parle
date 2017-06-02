@@ -52,8 +52,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="12dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/nearby"
-                />
+                android:background="@drawable/nearby" />
 
         </RelativeLayout>
 
@@ -61,9 +60,9 @@
             android:id="@+id/suggested_text_view"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text = "@string/suggested"
             android:paddingLeft="10dp"
-            android:paddingTop="5dp"/>
+            android:paddingTop="5dp"
+            android:text="@string/suggested" />
 
         <ListView
             android:id="@+id/list_view_search"
