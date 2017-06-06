@@ -24,4 +24,5 @@
     <string name="photo">[写真]</string>
     <string name="nearby_users">近くのユーザー</string>
     <string name="search">サーチ</string>
+    <string name="register">登録</string>
 </resources>

@@ -25,4 +25,6 @@
     <string name="photo">[صورة فوتوغرافية]</string>
     <string name="nearby_users">المستخدمون القريبون</string>
     <string name="search">بحث</string>
+    <string name="nearby"></string>
+    <string name="register">تسجيل</string>
 </resources>

@@ -24,4 +24,5 @@
     <string name="photo">[Foto]</string>
     <string name="nearby_users">Utenti Vicini</string>
     <string name="search">Ricerca</string>
+    <string name="register">REGISTRARE</string>
 </resources>
